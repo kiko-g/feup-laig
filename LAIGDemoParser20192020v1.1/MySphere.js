@@ -29,17 +29,17 @@ class MySphere extends CGFobject {
         var normLength = 1.0 / this.radius;
 
 
-        for(var i = 0; i <= this.stacks; i++){
-
+        for(var i = 0; i <= this.stacks; i++)
+        {
 			var stackAngle = (Math.PI / 2) - i * stackStep; 	// starting from pi/2 to -pi/2
-			var xy = this.radius * Math.cos(stackAngle);				// r * cos(alpha)
-            var z = this.radius * Math.sin(stackAngle);				// r * sin(alpha)
+			var xy = this.radius * Math.cos(stackAngle);		// r * cos(alpha)
+            var z = this.radius * Math.sin(stackAngle);			// r * sin(alpha)
 
-            for (var j = 0; j <= this.sectors; j++){
-
+            for (var j = 0; j <= this.sectors; j++)
+            {
                 var sectorAngle = j* sectorStep;				// starting from 0 to 2pi
                 
-                //Posicoes dos vertices
+                // Vortex positions
 				var x = xy * Math.cos(sectorAngle);				// (r * cos(alpha)) * cos(beta)
                 var y = xy * Math.sin(sectorAngle);
                 this.vertices.push(x);
@@ -58,12 +58,33 @@ class MySphere extends CGFobject {
                 var t = i / this.stacks;
                 this.texCoords.push(s);
                 this.texCoords.push(t);
+            }
+        }
 
+        for(var i = 0; i < this.stacks; i++){
 
-                
+            var k1 = i * (this.sectors + 1);
+            var k2 = k1 + this.sectors + 1;
+
+            for(var j = 0; j < this.sectors; j++, k1++, k2++){
+
+                if(i != 0){
+
+                    this.indices.push(k1);
+                    this.indices.push(k2);
+                    this.indices.push(k1 + 1);
+                }
+
+                if(i != (this.stacks - 1)){
+                    this.indices.push(k1 + 1);
+                    this.indices.push(k2);
+                    this.indices.push(k2 + 1);
+                }
+
             }
 
         }
+
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
