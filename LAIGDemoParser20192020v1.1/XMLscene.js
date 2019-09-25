@@ -33,7 +33,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(1);
         
     }
 
@@ -91,10 +91,10 @@ class XMLscene extends CGFscene {
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
-    onGraphLoaded() {
+    onGraphLoaded()
+    {
         this.axis = new CGFaxis(this, this.graph.referenceLength);
-
-        this.sphere = new MySphere(this, 50.0 ,50.0 ,50.0);
+        this.sphere = new MySphere(this, 1.0, 10, 10);
 
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
 
