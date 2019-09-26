@@ -28,30 +28,30 @@ class MySphere extends CGFobject
 
     initBuffers()
     {
-        var sliceStep = (2*Math.PI) / this.slices;      //fi
-        var stackStep = 0.5*Math.PI / this.stacks;        //theta
         this.vertices = [];
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
+        
+        var sliceStep = (2*Math.PI) / this.slices;    //theta slice
+        var stackStep = Math.PI / this.stacks;        //fi stack
 
         for(var i = 0; i <= this.stacks; i++)
         {
             for (var j = 0; j <= this.slices; j++)
             {
-                var sliceAngle = j * sliceStep;		                                    // starting from 0 to 2pi
-                var stackAngle = i * stackStep;                                         // starting from 0 to pi
-                var x = this.radius * Math.cos(stackAngle) * Math.cos(sliceAngle);	  // (r * cos(fi)) * cos(theta)
+                var stackAngle = i * stackStep;     // starting from 0 to pi
+                var sliceAngle = j * sliceStep;     // starting from 0 to 2pi
+                var x = this.radius * Math.cos(stackAngle) * Math.cos(sliceAngle);	    // (r * cos(fi)) * cos(theta)
                 var y = this.radius * Math.cos(stackAngle) * Math.sin(sliceAngle);      // (r * cos(fi)) * sin(theta)
-                var z = this.radius * Math.sin(stackAngle);	                          // (r * sin(theta))
+                var z = this.radius * Math.sin(stackAngle);	                                // (r * sin(fi))
                 this.vertices.push(x, y, z);
-
+                
                 var nx = x / this.radius;
                 var ny = y / this.radius;
                 var nz = z / this.radius;
                 this.normals.push(nx, ny, nz);
-                // this.normals.push(Math.cos(sliceAngle), Math.sin(sliceAngle), -Math.cos(stackAngle));
-
+               
                 var s = j / this.slices;
                 var t = i / this.stacks;
                 this.texCoords.push(s, 1-t);
