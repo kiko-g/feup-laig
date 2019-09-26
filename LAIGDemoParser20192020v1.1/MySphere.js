@@ -34,9 +34,9 @@ class MySphere extends CGFobject
         this.texCoords = [];
         
         var sliceStep = (2*Math.PI) / this.slices;    //theta slice
-        var stackStep = Math.PI / this.stacks;        //fi stack
+        var stackStep = Math.PI / this.stacks;      //fi stack
 
-        for(var i = 0; i <= this.stacks; i++)
+        for(var i = 0; i <= 2*this.stacks; i++)
         {
             for (var j = 0; j <= this.slices; j++)
             {
@@ -44,7 +44,7 @@ class MySphere extends CGFobject
                 var sliceAngle = j * sliceStep;     // starting from 0 to 2pi
                 var x = this.radius * Math.cos(stackAngle) * Math.cos(sliceAngle);	    // (r * cos(fi)) * cos(theta)
                 var y = this.radius * Math.cos(stackAngle) * Math.sin(sliceAngle);      // (r * cos(fi)) * sin(theta)
-                var z = this.radius * Math.sin(stackAngle);	                                // (r * sin(fi))
+                var z = this.radius * Math.sin(stackAngle);	                            // (r * sin(fi))
                 this.vertices.push(x, y, z);
                 
                 var nx = x / this.radius;
@@ -60,7 +60,7 @@ class MySphere extends CGFobject
 
 
         var k = 0;
-        for(var i = 0; i < this.stacks; i++)
+        for(var i = 0; i < 2*this.stacks; i++)
         {
             for(var j = 0; j <= this.slices; j++)
             {

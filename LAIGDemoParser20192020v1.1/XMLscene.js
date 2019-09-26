@@ -31,6 +31,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
+        this.sphere = new MySphere(this, 1.5, 30, 20);
         this.setUpdatePeriod(1);
     }
 
