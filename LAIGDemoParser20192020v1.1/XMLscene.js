@@ -1,4 +1,4 @@
-var DEGREE_TO_RAD = Math.PI / 180;
+var DEG2RAD = Math.PI / 180;
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -18,14 +18,12 @@ class XMLscene extends CGFscene {
      * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
      * @param {CGFApplication} application
      */
-    init(application) {
+    init(application)
+    {
         super.init(application);
-
-        this.sceneInited = false;
-
         this.initCameras();
-
         this.enableTextures(true);
+        this.sceneInited = false;
 
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
@@ -34,28 +32,27 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(1);
-        
     }
 
     /**
      * Initializes the scene cameras.
      */
-    initCameras() {
+    initCameras(){
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0;
-        // Lights index.
+        var i = 0; // Lights index.
+        
+        //Reads the lights from the scene graph.
+        for (var key in this.graph.lights)
+        {
+            if (i >= 8) break; // Only eight lights allowed by WebGL.
 
-        // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
-            if (i >= 8)
-                break;              // Only eight lights allowed by WebGL.
-
-            if (this.graph.lights.hasOwnProperty(key)) {
+            if (this.graph.lights.hasOwnProperty(key))
+            {
                 var light = this.graph.lights[key];
 
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
@@ -70,10 +67,9 @@ class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].setVisible(true);
-                if (light[0])
-                    this.lights[i].enable();
-                else
-                    this.lights[i].disable();
+                
+                if (light[0]) this.lights[i].enable();
+                else this.lights[i].disable();
 
                 this.lights[i].update();
 
@@ -94,14 +90,11 @@ class XMLscene extends CGFscene {
     onGraphLoaded()
     {
         this.axis = new CGFaxis(this, this.graph.referenceLength);
-        this.sphere = new MySphere(this, 1.0, 10, 10);
+        this.sphere = new MySphere(this, 2.0, 20, 30);
 
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
-
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
-
         this.initLights();
-
         this.sceneInited = true;
     }
 
@@ -127,12 +120,13 @@ class XMLscene extends CGFscene {
         this.sphere.display();
 
 
-        for (var i = 0; i < this.lights.length; i++) {
+        for (var i = 0; i < this.lights.length; i++){
             this.lights[i].setVisible(true);
             this.lights[i].enable();
         }
 
-        if (this.sceneInited) {
+        if (this.sceneInited)
+        {
             // Draw axis
             this.setDefaultAppearance();
 
