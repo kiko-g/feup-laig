@@ -125,7 +125,7 @@ class XMLscene extends CGFscene {
         this.pushMatrix();
         this.axis.display();
         //this.sphere.display();
-        // this.torus.display();
+        //this.torus.display();
 
 
         for (var i = 0; i < this.lights.length; i++) {
