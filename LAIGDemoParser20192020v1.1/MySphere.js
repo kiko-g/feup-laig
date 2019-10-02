@@ -15,7 +15,7 @@ class MySphere extends CGFobject
     * @param {Number} stacks number of stacks
   */
 
-    constructor(scene, radius, slices, stacks) 
+    constructor(scene, id, radius, slices, stacks) 
     {
         super(scene);
         this.radius = radius;
@@ -80,7 +80,6 @@ class MySphere extends CGFobject
     display()
     {
 		this.scene.pushMatrix();
-		// this.scene.scale(this.radius, this.radius, this.radius);
 		this.drawElements(this.scene.gl.TRIANGLES);
 		this.scene.popMatrix();
     }
