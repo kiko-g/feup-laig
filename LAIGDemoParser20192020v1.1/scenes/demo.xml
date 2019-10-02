@@ -48,9 +48,13 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
 
-        <!-- <primitive id="sphere">
-            <rectangle radius="1.0" slices="-1" x2="1.0" />
-        </primitive> -->
+        <primitive id="torus">
+            <torus slices="10" loops="40" inner="0.7" outer="2.0"/>
+        </primitive>
+
+        <primitive id="sphere">
+            <sphere radius="2.0" slices="20" stacks="10" />
+        </primitive>
     </primitives>
 
     <components>

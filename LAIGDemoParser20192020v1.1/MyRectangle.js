@@ -5,8 +5,10 @@
  * @param x - Scale of rectangle in X
  * @param y - Scale of rectangle in Y
  */
-class MyRectangle extends CGFobject {
-	constructor(scene, id, x1, x2, y1, y2) {
+class MyRectangle extends CGFobject
+{
+    constructor(scene, id, x1, x2, y1, y2)
+    {
 		super(scene);
 		this.x1 = x1;
 		this.x2 = x2;
@@ -21,7 +23,7 @@ class MyRectangle extends CGFobject {
 			this.x1, this.y1, 0,	//0
 			this.x2, this.y1, 0,	//1
 			this.x1, this.y2, 0,	//2
-			this.x2, this.y2, 0		//3
+			this.x2, this.y2, 0,	//3
 		];
 
 		//Counter-clockwise reference of vertices
@@ -59,8 +61,8 @@ class MyRectangle extends CGFobject {
 	}
 
 	/**
-	 * @method updateTexCoords
 	 * Updates the list of texture coordinates of the rectangle
+	 * @method updateTexCoords
 	 * @param {Array} coords - Array of texture coordinates
 	 */
 	updateTexCoords(coords) {

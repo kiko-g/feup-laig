@@ -4,11 +4,11 @@
  */
 class MyTorus extends CGFobject
 {
-    constructor(scene, slices, sides, inner, outer) {
+    constructor(scene, id, slices, loops, inner, outer)
+    {
 		super(scene);
-
 		this.slices = slices;
-        this.sides = sides;
+        this.loops = loops;
         this.inner = inner;
         this.outer = outer;
 
@@ -18,7 +18,7 @@ class MyTorus extends CGFobject
     initBuffers()
     {
         var alpha = 2 * Math.PI / this.slices;
-        var beta = 2 * Math.PI/this.sides;
+        var beta = 2 * Math.PI/this.loops;
 
         this.vertices   = [];
         this.indices    = [];
@@ -27,9 +27,9 @@ class MyTorus extends CGFobject
 
         var z = 0;
 		var incS = 1 / this.slices;
-		var incT = 1 / this.sides;
+		var incT = 1 / this.loops;
 
-		for (let i = 0; i <= this.sides; i++) {
+		for (let i = 0; i <= this.loops; i++) {
 			for (var j = 0; j <= this.slices; j++) {
                 this.vertices.push(Math.sin(z)*this.outer + Math.sin(j*alpha) * Math.sin(z) * this.inner, Math.cos(z)*this.outer + Math.sin(j*alpha) * Math.cos(z) * this.inner, Math.cos(j * alpha) * this.inner );
                 
@@ -43,7 +43,7 @@ class MyTorus extends CGFobject
 
 		var ind = 0;
 
-		for (let i = 0; i < this.sides; i++) {
+		for (let i = 0; i < this.loops; i++) {
 			for (let j = 0; j <= this.slices; j++) {
 				if (j != this.slices) {
 					this.indices.push(ind, ind + this.slices + 1, ind + 1 );
