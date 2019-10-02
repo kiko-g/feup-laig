@@ -4,7 +4,7 @@
  */
 class MyTorus extends CGFobject
 {
-    constructor(scene, slices, sides, inner, outer, minS = 0, maxS = 1, minT = 0, maxT = 1) {
+    constructor(scene, slices, sides, inner, outer) {
 		super(scene);
 
 		this.slices = slices;
@@ -12,10 +12,6 @@ class MyTorus extends CGFobject
         this.inner = inner;
         this.outer = outer;
 
-		this.minS = minS;
-		this.maxS = maxS;
-		this.minT = minT;
-		this.maxT = maxT;
         this.initBuffers();
     }
 
@@ -30,8 +26,8 @@ class MyTorus extends CGFobject
         this.texCoords  = [];
 
         var z = 0;
-		var incS = (this.maxS - this.minS) / this.slices;
-		var incT = (this.maxT - this.minT) / this.sides;
+		var incS = 1 / this.slices;
+		var incT = 1 / this.sides;
 
 		for (let i = 0; i <= this.sides; i++) {
 			for (var j = 0; j <= this.slices; j++) {
