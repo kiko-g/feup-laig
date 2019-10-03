@@ -18,7 +18,8 @@ class MySceneGraph {
     /**
      * @constructor
      */
-    constructor(filename, scene) {
+    constructor(filename, scene)
+    {
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
@@ -598,7 +599,7 @@ class MySceneGraph {
 
                 //slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');
-                if (!(slices != null && !isNaN(slices) && slices > 0))
+                if (!(slices != null && !isNaN(slices) && slices > -1))
                     return "unable to parse SLICES of the primitive coordinates for ID = " + primitiveId;
 
                 //stacks
@@ -792,6 +793,7 @@ class MySceneGraph {
 
         //To test the parsing/creation of the primitives, call the display function directly
         this.primitives['rectangle'].display();
+        this.transformations['demoTransform'];
         this.primitives['torus'].display();
     }
 }

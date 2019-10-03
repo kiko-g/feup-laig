@@ -17,7 +17,14 @@ class MyInterface extends CGFinterface {
         //  http://workshop.chromeexperiments.com/examples/gui
 
         this.gui = new dat.GUI();
+        var settings_dropdown = this.gui.addFolder('Global Settings');
+        var lights_dropdown = this.gui.addFolder('Lighting Settings');
 
+        settings_dropdown.open();
+        settings_dropdown.add(this.scene, 'displayAxis').name('Display Axis');
+
+        lights_dropdown.open();
+        // lights_dropdown.add(this.scene, 'displayLights').name('Display Light 0');
         // add a group of controls (and open/expand by defult)
 
         this.initKeys();
@@ -28,21 +35,22 @@ class MyInterface extends CGFinterface {
     /**
      * initKeys
      */
-    initKeys() {
+    initKeys()
+    {
         this.scene.gui=this;
         this.processKeyboard=function(){};
         this.activeKeys={};
     }
 
-    processKeyDown(event) {
+    processKeyDown(event){
         this.activeKeys[event.code]=true;
     };
 
-    processKeyUp(event) {
+    processKeyUp(event){
         this.activeKeys[event.code]=false;
     };
 
-    isKeyPressed(keyCode) {
+    isKeyPressed(keyCode){
         return this.activeKeys[keyCode] || false;
     }
 }

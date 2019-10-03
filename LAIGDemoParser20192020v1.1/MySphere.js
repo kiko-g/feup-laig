@@ -34,7 +34,7 @@ class MySphere extends CGFobject
         this.texCoords = [];
         
         var sliceStep = (2*Math.PI) / this.slices;    //theta slice
-        var stackStep = Math.PI / this.stacks;      //fi stack
+        var stackStep = Math.PI / this.stacks;        //fi stack
 
         for(var i = 0; i <= 2*this.stacks; i++)
         {

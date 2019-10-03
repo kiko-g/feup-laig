@@ -4,6 +4,16 @@
  */
 class MyTorus extends CGFobject
 {
+    /**
+    * Builds a MySphere object.
+    *
+    * @param {CGFscene} scene scene
+    * @param {Number} slices number of slices | a 2D Section of the torus has 'slices' sides
+    * @param {Number} loops number of "loops" aka torus sections/edge count
+    * @param {Number} inner distance from the surface to the inside "center" -- inner radius
+    * @param {Number} outer distance from the center to the inside "center"  -- outer radius
+    */
+
     constructor(scene, id, slices, loops, inner, outer)
     {
 		super(scene);
@@ -17,39 +27,53 @@ class MyTorus extends CGFobject
 
     initBuffers()
     {
-        var alpha = 2 * Math.PI / this.slices;
-        var beta = 2 * Math.PI/this.loops;
+        var fi = 2 * Math.PI / this.loops;
+        var theta = 2 * Math.PI / this.slices;
+        var fiPile = 0; //fi counter per say (pile)
 
         this.vertices   = [];
         this.indices    = [];
         this.normals    = [];
         this.texCoords  = [];
-
-        var z = 0;
-		var incS = 1 / this.slices;
-		var incT = 1 / this.loops;
-
-		for (let i = 0; i <= this.loops; i++) {
-			for (var j = 0; j <= this.slices; j++) {
-                this.vertices.push(Math.sin(z)*this.outer + Math.sin(j*alpha) * Math.sin(z) * this.inner, Math.cos(z)*this.outer + Math.sin(j*alpha) * Math.cos(z) * this.inner, Math.cos(j * alpha) * this.inner );
+		
+        for(var i = 0; i <= this.loops; i++){
+            for (var j = 0; j <= this.slices; j++){
+                this.vertices.push(Math.sin(fiPile)*this.outer + Math.sin(j*theta) * Math.sin(fiPile)*this.inner,
+                                   Math.cos(fiPile)*this.outer + Math.sin(j*theta) * Math.cos(fiPile)*this.inner,
+                                   Math.cos(j * theta) * this.inner);
                 
-                this.normals.push(Math.sin(j*alpha) * Math.sin(z), Math.sin(j*alpha) * Math.cos(z), Math.cos(j * alpha));
-                
-                this.texCoords.push(this.minS + incS * i, this.maxT - incT * j);
+                this.normals.push(Math.sin(j * theta) * Math.sin(fiPile), Math.sin(j*theta) * Math.cos(fiPile), Math.cos(j * theta));
+                this.texCoords.push(i / this.slices, j / this.loops);
 			}
-
-			z += beta;
+			fiPile += fi;
 		}
 
-		var ind = 0;
-
-		for (let i = 0; i < this.loops; i++) {
-			for (let j = 0; j <= this.slices; j++) {
-				if (j != this.slices) {
-					this.indices.push(ind, ind + this.slices + 1, ind + 1 );
-					this.indices.push(ind + this.slices + 1, ind + this.slices + 2,  ind + 1);
+        
+        
+        /**
+         * Simpler to use k instead of combination
+         * of i and j. k counts the toral number of cycles
+         * 
+         * A -> k
+         * B -> k + this.slices + 1
+         * C -> k+1                 (A+1)
+         * D -> k + this.slices + 2 (B+1)
+         * 
+         * INDICES:
+         * A, B, C
+         * B, D, C
+         */
+        
+        var k = 0;
+        for (var i = 0; i < this.loops; i++){
+            for (var j = 0; j <= this.slices; j++)
+            {
+                if (j != this.slices)
+                {
+					this.indices.push(k, k + this.slices + 1, k+1);
+					this.indices.push(k + this.slices + 1, k + this.slices + 2,  k+1);
 				}
-				ind++;
+				k++;
 			}
 		}
 
@@ -60,12 +84,10 @@ class MyTorus extends CGFobject
 
     display()
     {
-    this.scene.pushMatrix();
-    this.drawElements(this.scene.gl.TRIANGLES);
-    this.scene.popMatrix();
+        this.scene.pushMatrix();
+        this.drawElements(this.scene.gl.TRIANGLES);
+        this.scene.popMatrix();
     }
-
-
 
 
     /**
@@ -73,9 +95,10 @@ class MyTorus extends CGFobject
     * @method updateTexCoords
     * @param {Array} coords - Array of texture coordinates
     **/ 
+
     updateTexCoords(coords)
     {
-            this.texCoords = [...coords];
-         this.updateTexCoordsGLBuffers();
+        this.texCoords = [...coords];
+        this.updateTexCoordsGLBuffers();
     }
 }
