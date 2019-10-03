@@ -8,8 +8,8 @@ class MyTorus extends CGFobject
     * Builds a MySphere object.
     *
     * @param {CGFscene} scene scene
-    * @param {Number} slices number of slices | a 2D Section of the torus has 'slices' sides
-    * @param {Number} loops number of "loops" aka torus sections/edge count
+    * @param {Number} slices number of slices | torus sectors | "edge count"
+    * @param {Number} loops number of "loops" | A 2D Section of the torus has #loops sides
     * @param {Number} inner distance from the surface to the inside "center" -- inner radius
     * @param {Number} outer distance from the center to the inside "center"  -- outer radius
     */
