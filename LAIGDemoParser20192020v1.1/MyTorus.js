@@ -14,11 +14,11 @@ class MyTorus extends CGFobject
     * @param {Number} outer distance from the center to the inside "center"  -- outer radius
     */
 
-    constructor(scene, id, slices, loops, inner, outer)
+    constructor(scene, id, loops, slices, inner, outer)
     {
 		super(scene);
-		this.slices = slices;
         this.loops = loops;
+		this.slices = slices;
         this.inner = inner;
         this.outer = outer;
 
@@ -27,9 +27,9 @@ class MyTorus extends CGFobject
 
     initBuffers()
     {
-        var fi = 2 * Math.PI / this.loops;
+        var phi = 2 * Math.PI / this.loops;
         var theta = 2 * Math.PI / this.slices;
-        var fiPile = 0; //fi counter per say (pile)
+        var phiPile = 0; //phi counter per say (pile)
 
         this.vertices   = [];
         this.indices    = [];
@@ -38,17 +38,16 @@ class MyTorus extends CGFobject
 		
         for(var i = 0; i <= this.loops; i++){
             for (var j = 0; j <= this.slices; j++){
-                this.vertices.push(Math.sin(fiPile)*this.outer + Math.sin(j*theta) * Math.sin(fiPile)*this.inner,
-                                   Math.cos(fiPile)*this.outer + Math.sin(j*theta) * Math.cos(fiPile)*this.inner,
+                this.vertices.push(Math.sin(phiPile)*this.outer + Math.sin(j*theta) * Math.sin(phiPile)*this.inner,
+                                   Math.cos(phiPile)*this.outer + Math.sin(j*theta) * Math.cos(phiPile)*this.inner,
                                    Math.cos(j * theta) * this.inner);
                 
-                this.normals.push(Math.sin(j * theta) * Math.sin(fiPile), Math.sin(j*theta) * Math.cos(fiPile), Math.cos(j * theta));
+                this.normals.push(Math.sin(j * theta) * Math.sin(phiPile), Math.sin(j*theta) * Math.cos(phiPile), Math.cos(j * theta));
                 this.texCoords.push(i / this.slices, j / this.loops);
 			}
-			fiPile += fi;
+			phiPile += phi;
 		}
 
-        
         
         /**
          * Simpler to use k instead of combination

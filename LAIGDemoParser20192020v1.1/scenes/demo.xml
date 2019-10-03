@@ -51,7 +51,7 @@
         </primitive>
 
         <primitive id="torus">
-            <torus slices="3" loops="10" inner="0.5" outer="3.0"/>
+            <torus loops="40" slices="20" inner="0.6" outer="3.0"/>
         </primitive>
 
         <primitive id="sphere">
