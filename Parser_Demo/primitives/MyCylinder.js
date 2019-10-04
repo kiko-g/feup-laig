@@ -39,30 +39,53 @@ class MyCylinder extends CGFobject
 		this.indices    = [];
 		this.texCoords  = [];
 
-		var z = 0;
+		var stackPile = 0; //works as a "current height"
 
         for (var i = 0; i <= this.stacks; i++)
         {
             for (var j = 0; j <= this.slices; j++)
             {
-				this.vertices.push(Math.cos(j * theta) * radius, Math.sin(j * theta) * radius, z);
-				this.normals.push(Math.cos(j * theta), Math.sin(j * theta), z);
+				this.vertices.push(Math.cos(j * theta) * radius, Math.sin(j * theta) * radius, stackPile);
+				this.normals.push(Math.cos(j * theta), Math.sin(j * theta), stackPile);
                 this.texCoords.push(1.0 - j / this.slices, 0.0 + i / this.stacks);
             }
             
-            z += this.height / this.stacks;
+            stackPile += this.height / this.stacks;
 		}
 
 
+        /**
+         * Simpler to use k instead of combination
+         * of i and j. k counts the toral number of cycles
+         * 
+         * A -> k
+         * B -> k + this.slices + 1
+         * C -> k+1                 (A+1)
+         * D -> k + this.slices + 2 (B+1)
+         * 
+         * INDICES:
+         * C, B, A
+         * D, C, B 
+         * 
+         * Notice that the indices order is the
+         * same with the torus, but reversed
+         */
 
+
+        var a, b, c, d;
 		var k = 0;
 		for (var i = 0; i < this.stacks; i++){
             for (var j = 0; j <= this.slices; j++)
             {
                 if (j != this.slices)
                 {
-                    this.indices.push(k + 1, k + this.slices + 1, k);
-                    this.indices.push(k + 1, k + this.slices + 2, k + this.slices + 1);
+                    a = k; 
+                    b = k + this.slices +1;
+                    c = a + 1;
+                    d = b + 1;
+
+                    this.indices.push(c, b, a);
+                    this.indices.push(c, d, b);
 				}
 				k++;
 			}

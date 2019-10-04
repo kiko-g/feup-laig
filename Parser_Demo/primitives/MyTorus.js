@@ -61,16 +61,25 @@ class MyTorus extends CGFobject
          * INDICES:
          * A, B, C
          * B, D, C
+         * 
+         * Notice that the indices order is the
+         * same with the cylinder but reversed
          */
         
+        var a, b, c, d;
         var k = 0;
         for (var i = 0; i < this.loops; i++){
             for (var j = 0; j <= this.slices; j++)
             {
                 if (j != this.slices)
                 {
-					this.indices.push(k, k + this.slices + 1, k+1);
-					this.indices.push(k + this.slices + 1, k + this.slices + 2,  k+1);
+                    a = k;
+                    b = k + this.slices + 1;
+                    c = a + 1;
+                    d = b + 1;
+
+					this.indices.push(a, b, c);
+					this.indices.push(b, d, c);
 				}
 				k++;
 			}
