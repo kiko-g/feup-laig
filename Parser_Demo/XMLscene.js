@@ -23,6 +23,7 @@ class XMLscene extends CGFscene {
         super.init(application);
         this.sceneInited = false;
         this.displayAxis = true;
+        this.displayNormals = true;
 
         this.initCameras();
         this.enableTextures(true);
@@ -37,12 +38,13 @@ class XMLscene extends CGFscene {
         
     }
 
-    /**
-     * Initializes the scene cameras.
-     */
-    initCameras() {
+    // Initializes the scene cameras.
+    initCameras()
+    {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
+    
+    
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -80,37 +82,39 @@ class XMLscene extends CGFscene {
         }
     }
 
-    setDefaultAppearance()
-    {
-        this.setAmbient(0.2, 0.9, 1.0, 1.0);
-        this.setDiffuse(0.2, 1.0, 1.0, 1.0);
-        this.setSpecular(0.0, 0.0, 1.0, 1.0);
-        this.setShininess(100.0);
-    }
-
+    
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded()
     {
         this.axis = new CGFaxis(this, this.graph.referenceLength);
-
+        
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
         this.initLights();
-
+        
         this.sceneInited = true;
     }
+    
+    
+    setDefaultAppearance()
+    {
+        this.setAmbient(255/255, 211/255, 0, 1.0);
+        this.setDiffuse(255/255, 211/255, 0, 1.0);
+        this.setSpecular(255/255, 211/255, 0, 1.0);
+        this.setShininess(100.0);
+    }
+
+
 
     /**
      *  Displays the scene.
-     * 
-     * 
      */
+
     display()
     {
         // ---- BEGIN Background, camera and axis setup
-
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -124,20 +128,20 @@ class XMLscene extends CGFscene {
 
         this.pushMatrix();
         if(this.displayAxis) this.axis.display();
+        // if(this.displayNormals) this.graph.primitives['torus'].enableNormalViz();
 
-
-        for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
+        for (var i = 0; i < this.lights.length; i++)
+        {
+            // this.lights[i].update();
+            this.lights[0].setPosition(20, 20, 20);
+            this.lights[0].setVisible(true);
             this.lights[i].enable();
         }
 
         if (this.sceneInited)
         {
-            // Draw axis
             this.setDefaultAppearance();
-
-            // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            this.graph.displayScene();      // Displays the scene (MySceneGraph function).
         }
 
         this.popMatrix();

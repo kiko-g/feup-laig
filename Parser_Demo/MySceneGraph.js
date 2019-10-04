@@ -608,9 +608,36 @@ class MySceneGraph {
                     return "unable to parse LOOPS of the primitive coordinates for ID = " + primitiveId;
 
                 var tor = new MyTorus(this.scene, primitiveId, slices, loops, inner, outer);
-
                 this.primitives[primitiveId] = tor;
             }
+
+
+            if (primitiveType == 'cylinder')
+            {
+                //slices
+                var slices = this.reader.getFloat(grandChildren[0], 'slices');
+                if (!(slices != null && !isNaN(slices) && slices > 0))
+                    return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
+
+                //stacks
+                var stacks = this.reader.getFloat(grandChildren[0], 'stacks');
+                if (!(stacks != null && !isNaN(stacks) && stacks > 0)) 
+                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
+
+                //radius
+                var radius = this.reader.getFloat(grandChildren[0], 'radius');
+                if (!(radius != null && !isNaN(radius) && radius > 0))
+                    return "unable to parse radius of the primitive coordinates for ID = " + primitiveId;
+
+                //height
+                var height = this.reader.getFloat(grandChildren[0], 'height');
+                if (!(height != null && !isNaN(height) && height > 0))
+                    return "unable to parse radius of the primitive coordinates for ID = " + primitiveId;
+
+                var cyli = new MyCylinder(this.scene, primitiveId, slices, stacks, radius, height);
+                this.primitives[primitiveId] = cyli;
+            }
+
 
             //---------------------------------
             else console.warn("To do: Parse other primitives.");
@@ -792,8 +819,9 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
-        this.primitives['rectangle'].display();
+        // this.primitives['rectangle'].display();
         this.transformations['demoTransform'];
         this.primitives['torus'].display();
+        this.primitives['cylinder'].display();
     }
 }

@@ -22,6 +22,7 @@ class MyInterface extends CGFinterface {
 
         settings_dropdown.open();
         settings_dropdown.add(this.scene, 'displayAxis').name('Display Axis');
+        settings_dropdown.add(this.scene, 'displayNormals').name('Display Normals');
 
         lights_dropdown.open();
         // lights_dropdown.add(this.scene, 'displayLights').name('Display Light 0');
