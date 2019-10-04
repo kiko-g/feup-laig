@@ -478,12 +478,44 @@ class MySceneGraph {
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'scale':                        
-                        this.onXMLMinorError("To do: Parse scale transformations.");
+                        var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'rotate':
-                        // angle
-                        this.onXMLMinorError("To do: Parse rotate transformations.");
-                        break;
+                        var axis = this.reader.getString(grandChildren[j], "axis");
+                        if(axis == null){
+                            this.onXMLMinorError("Axis unspecified");
+                            break;
+                        }
+                        
+                        var angle = this.reader.getString(grandChildren[j], "angle");
+                        if(angle == null){
+                            this.onXMLMinorError("Angle unspecified");
+                            break;
+                        }
+                        else if(isNaN(angle))
+                        this.onXMLMinorError("Angle NaN");
+
+                        switch(axis){
+                            case 'x':
+                                axis = [1,0,0];
+                                break;
+                            case 'y':
+                                axis = [0,1,0];
+                                break;
+                            case 'z':
+                                axis = [0,0,1];
+                                break;
+                        }
+
+                        var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
+                        transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, vector);
+
+
+                       break;
                 }
             }
             this.transformations[transformationID] = transfMatrix;
@@ -819,9 +851,11 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
+        this.scene.pushMatrix();
         // this.primitives['rectangle'].display();
-        this.transformations['demoTransform'];
+        this.scene.multMatrix(this.transformations['demoTransform']);
         this.primitives['torus'].display();
         this.primitives['cylinder'].display();
+        this.scene.popMatrix();
     }
 }
