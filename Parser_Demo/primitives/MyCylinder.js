@@ -39,18 +39,18 @@ class MyCylinder extends CGFobject
 		this.indices    = [];
 		this.texCoords  = [];
 
-		var z = 0;
+		var stackPile = 0; //works as a "current height"
 
         for (var i = 0; i <= this.stacks; i++)
         {
             for (var j = 0; j <= this.slices; j++)
             {
-				this.vertices.push(Math.cos(j * theta) * radius, Math.sin(j * theta) * radius, z);
-				this.normals.push(Math.cos(j * theta), Math.sin(j * theta), z);
+				this.vertices.push(Math.cos(j * theta) * radius, Math.sin(j * theta) * radius, stackPile);
+				this.normals.push(Math.cos(j * theta), Math.sin(j * theta), stackPile);
                 this.texCoords.push(1.0 - j / this.slices, 0.0 + i / this.stacks);
             }
             
-            z += this.height / this.stacks;
+            stackPile += this.height / this.stacks;
 		}
 
 
