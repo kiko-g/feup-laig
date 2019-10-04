@@ -54,15 +54,38 @@ class MyCylinder extends CGFobject
 		}
 
 
+        /**
+         * Simpler to use k instead of combination
+         * of i and j. k counts the toral number of cycles
+         * 
+         * A -> k
+         * B -> k + this.slices + 1
+         * C -> k+1                 (A+1)
+         * D -> k + this.slices + 2 (B+1)
+         * 
+         * INDICES:
+         * C, B, A
+         * D, C, B 
+         * 
+         * Notice that the indices order is the
+         * same with the torus, but reversed
+         */
 
+
+        var a, b, c, d;
 		var k = 0;
 		for (var i = 0; i < this.stacks; i++){
             for (var j = 0; j <= this.slices; j++)
             {
                 if (j != this.slices)
                 {
-                    this.indices.push(k + 1, k + this.slices + 1, k);
-                    this.indices.push(k + 1, k + this.slices + 2, k + this.slices + 1);
+                    a = k; 
+                    b = k + this.slices +1;
+                    c = a + 1;
+                    d = b + 1;
+
+                    this.indices.push(c, b, a);
+                    this.indices.push(c, d, b);
 				}
 				k++;
 			}
