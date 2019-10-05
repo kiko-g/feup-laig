@@ -790,11 +790,11 @@ class MySceneGraph {
             this.onXMLMinorError("To do: Parse components.");
             
             // Transformations
-            var transfMatrix;
+            var transfComp;
             grandgrandChildren = grandChildren[transformationIndex].children;
 
             if(grandgrandChildren.length == 0)
-                transfMatrix = mat4.create();
+                transfComp = mat4.create();
 
             else if(grandgrandChildren[0].nodeName == "transformationref"){
 
@@ -803,7 +803,7 @@ class MySceneGraph {
                 if(transRefID == null)
                     return "unable to parse transformation id of component ID " + componentID;
 
-                transfMatrix = this.transformations[transRefID];
+                transfComp = this.transformations[transRefID];
 
                 if(transfMatrix == null){
                     return "no such transformation with ID " + transRefID + " for component ID " + componentID;
@@ -813,7 +813,7 @@ class MySceneGraph {
 
             }else{
 
-                transfMatrix = this.parseHelper(grandgrandChildren, componentID);
+                transfComp = this.parseHelper(grandgrandChildren, componentID);
 
             }
 
@@ -822,18 +822,25 @@ class MySceneGraph {
             var materialsComp = [];
 
             grandgrandChildren = grandChildren[materialsIndex].children;
+
             for(var j = 0; j < grandgrandChildren.length; j++) {
                 materialsComp.push(this.materials[this.reader.getString(grandgrandChildren[j], 'id')]);
             }
 
             // Texture
-            var textureComp = this.textures[this.reader.getString(grandChildren[textureIndex], 'id')];
+            var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
+            if (textureID == null)
+                return "Could not parse texture id of component" + componentID;
+            var textureComp = this.textures[textureID];
+            if (textureComp == null) {
+                return "no textures with ID " + textureID + " for component" + componentID;
+            }
             var ls = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false) || 1;
             var lt = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false) || 1;
 
 
             // Children
-            var compChildren = [];
+            var childrenComp = [];
             var primChildren = [];
 
             grandgrandChildren = grandChildren[childrenIndex].children;
@@ -851,7 +858,7 @@ class MySceneGraph {
                         return "no such component with ID " + compRef + " for component ID " + componentID;
                     }
 
-                    compChildren.push(compRef);
+                    childrenComp.push(compRef);
                 }
                 else if(grandgrandChildren[j].nodeName == "primitiveref") {
 
@@ -870,7 +877,7 @@ class MySceneGraph {
                     this.onXMLMinorError("component children needs to be a primitiveref or componentref");
 
             }
-            this.components[componentID] = new MyComponent(this.scene, componentID, transformationComp, materialsComp, textureComp, compChildren, primChildren, ls, lt);
+            this.components[componentID] = new MyNode(this.scene, componentID, transfComp, materialsComp, textureComp, childrenComp, primChildren, ls, lt);
         }
     }
 
