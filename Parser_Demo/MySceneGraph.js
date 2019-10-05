@@ -392,9 +392,54 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-
         //For each texture in textures block, check ID and file URL
-        this.onXMLMinorError("To do: Parse textures.");
+        var children = texturesNode.children;
+
+        this.textures = [];
+        var numTextures = 0;
+
+        // Any number of textures.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "texture") 
+                continue;
+
+            // Gets the texture id
+            var textureID = this.reader.getString(children[i], 'id');
+            if (textureID == null)
+                return "No ID";
+
+            if (this.textures[textureID] != null)
+                return "ID's must be unique";
+
+            // Checking for a valid file
+            var file = this.reader.getString(children[i], 'file');
+            if(file == null) {
+                return "No file defined for " + textureID;
+            }
+
+            // Checking if file exists
+            var reader = new File([""], file);
+            if(reader.fileSize == undefined && reader.size == undefined) {
+                return "File doesnt exist for " + textureID;
+            }
+
+            var png = file.match(/\.png$/i);
+            var jpg = file.match(/\.jpg$/i);
+            if(jpg == null && png == null) {
+                return "Invalid file extension for " + textureID;
+            }
+
+            var texture = new CGFtexture(this.scene, file);
+            this.textures[textureID] = texture;
+
+            numTextures++;
+        }
+
+        if(numTextures == 0){
+            return "No texture was defined...";
+        }
+
         return null;
     }
 
@@ -829,14 +874,24 @@ class MySceneGraph {
 
             // Texture
             var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
+            var textureComp = [];
+
             if (textureID == null)
-                return "Could not parse texture id of component" + componentID;
-            var textureComp = this.textures[textureID];
-            if (textureComp == null) {
-                return "no textures with ID " + textureID + " for component" + componentID;
+                return "No texture declared";
+
+            if(textureID == "inherit"){
+                textureComp.push(componentID);
             }
+            else{
+                if(this.textures[textureID] == null)
+                    return "invalid texture ID" + textureID + "doesnt exist";
+                else textureComp = this.textures[textureID];
+            }
+
+
             var ls = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false) || 1;
             var lt = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false) || 1;
+        
 
 
             // Children
