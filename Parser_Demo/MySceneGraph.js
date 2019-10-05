@@ -688,6 +688,7 @@ class MySceneGraph {
 
         this.components = [];
 
+        var allIDs = [];
         var grandChildren = [];
         var grandgrandChildren = [];
         var nodeNames = [];
@@ -704,6 +705,7 @@ class MySceneGraph {
             var componentID = this.reader.getString(children[i], 'id');
             if (componentID == null)
                 return "no ID defined for componentID";
+            allIDs[i] = componentID;
 
             // Checks for repeated IDs.
             if (this.components[componentID] != null)
@@ -722,13 +724,142 @@ class MySceneGraph {
             var childrenIndex = nodeNames.indexOf("children");
 
             this.onXMLMinorError("To do: Parse components.");
+            
             // Transformations
+            var transfMatrix;
+            grandgrandChildren = grandChildren[transformationIndex].children;
+
+            if(grandgrandChildren.length == 0)
+                transfMatrix = mat4.create();
+            else if(grandgrandChildren[0].nodeName == "transformationref"){
+
+                var transRefID = this.reader.getString(grandgrandChildren[0], 'id');
+
+                if(transRefID == null)
+                    return "unable to parse transformation id of component ID " + componentID;
+
+                transfMatrix = this.transformations[transRefID];
+
+                if(transfMatrix == null){
+                    return "no such transformation with ID " + transRefID + " for component ID " + componentID;
+                }
+                if(grandgrandChildren.length > 1)
+                    this.onXMLMinorError("More than one declaration for" + componentID);
+
+            }else{
+
+                var transfMatrix = mat4.create();
+
+                var transformationID = this.reader.getString(grandChildren[i], 'id');//???????????????????????
+
+                for(var j = 0; j < grandgrandChildren.length; j++){
+    
+                    switch(grandgrandChildren[j].nodeName){
+                            
+                        case 'translate':
+                                var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
+                                if (!Array.isArray(coordinates))
+                                    return coordinates;
+        
+                                transformationComp = mat4.translate(transfMatrix, transfMatrix, coordinates);
+                                break;
+
+                        case 'scale':                        
+                                var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
+                                if (!Array.isArray(coordinates))
+                                    return coordinates;
+        
+                                transformationComp = mat4.scale(transfMatrix, transfMatrix, coordinates);
+                                break;
+
+                            case 'rotate':
+                                var axis = this.reader.getString(grandChildren[j], "axis");
+                                if(axis == null){
+                                    this.onXMLMinorError("Axis unspecified");
+                                    break;
+                                }
+                                
+                                var angle = this.reader.getString(grandChildren[j], "angle");
+                                if(angle == null){
+                                    this.onXMLMinorError("Angle unspecified");
+                                    break;
+                                }
+                                else if(isNaN(angle))
+                                    this.onXMLMinorError("Angle NaN");
+        
+                                switch(axis){
+                                    case 'x':
+                                        axis = [1,0,0];
+                                        break;
+                                    case 'y':
+                                        axis = [0,1,0];
+                                        break;
+                                    case 'z':
+                                        axis = [0,0,1];
+                                        break;
+                                }
+
+                                var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
+                                transformationComp = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, vector);
+                          }
+                }
+            }
+
 
             // Materials
+            var materialsComp = [];
+
+            grandgrandChildren = grandChildren[materialsIndex].children;
+            for(var j = 0; j < grandgrandChildren.length; j++) {
+                materials.push(this.materials[this.reader.getString(grandgrandChildren[j], 'id')]);
+            }
 
             // Texture
+            var textureComp = this.textures[this.reader.getString(grandChildren[textureIndex], 'id')];
+
+            var ls = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false) || 1;
+            var lt = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false) || 1;
+
 
             // Children
+            var compChildren = [];
+            var primChildren = [];
+
+            grandgrandChildren = grandChildren[childrenIndex].children;
+
+            for(var j = 0; j < grandgrandChildren.length; j++){
+
+                if(grandgrandChildren[j].nodeName == "componentref") {
+
+                    var compRef = this.reader.getString(grandgrandChildren[j], 'id');
+                    if(compRef == null) {
+                        return "unable to parse componentref id of component ID " + componentID;
+                    }
+
+                    if(allIDs.indexOf(compRef) == -1){
+                        return "no such component with ID " + compRef + " for component ID " + componentID;
+                    }
+
+                    compChildren.push(compRef);
+                }
+                else if(grandgrandChildren[j].nodeName == "primitiveref") {
+
+                    var primRef = this.reader.getString(grandgrandChildren[j], 'id');
+
+                    if(primRef == null) {
+                        return "unable to parse primitiveref id of component ID " + componentID;
+                    }
+                    if(this.primitives[primRef] == null){
+                        return "no such primitive with ID " + primRef + " for component ID " + componentID;
+                    }
+
+                    primChildren.push(primRef);
+                }
+                else
+                    this.onXMLMinorError("component children needs to be a primitiveref or componentref");
+
+            }
+            this.components[componentID] = new MyComponent(this.scene, componentID, transformationComp, materialsComp, textureComp, compChildren, primChildren, ls, lt);
         }
     }
 
