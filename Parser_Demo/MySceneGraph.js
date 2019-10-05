@@ -678,7 +678,71 @@ class MySceneGraph {
         this.log("Parsed primitives");
         return null;
     }
+    //--------------
 
+    parseHelper(list, transformationID){
+
+        var transfMatrix = mat4.create();
+
+        for (var j = 0; j < list.length; j++) {
+            switch (list[j].nodeName) {
+                case 'translate':
+                    var coordinates = this.parseCoordinates3D(list[j], "translate transformation for ID " + transformationID);
+                    if (!Array.isArray(coordinates))
+                        return coordinates;
+
+                    transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
+                    break;
+                case 'scale':                        
+                    var coordinates = this.parseCoordinates3D(list[j], "translate transformation for ID " + transformationID);
+                    if (!Array.isArray(coordinates))
+                        return coordinates;
+
+                    transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
+                    break;
+                case 'rotate':
+                    var axis = this.reader.getString(list[j], "axis");
+                    if(axis == null){
+                        this.onXMLMinorError("Axis unspecified");
+                        break;
+                    }
+                    
+                    var angle = this.reader.getString(list[j], "angle");
+                    if(angle == null){
+                        this.onXMLMinorError("Angle unspecified");
+                        break;
+                    }
+                    else if(isNaN(angle))
+                    this.onXMLMinorError("Angle NaN");
+
+                    switch(axis){
+                        case 'x':
+                            axis = [1,0,0];
+                            break;
+                        case 'y':
+                            axis = [0,1,0];
+                            break;
+                        case 'z':
+                            axis = [0,0,1];
+                            break;
+                    }
+
+                    var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
+                    transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, vector);
+
+
+                   break;
+            }
+        }
+
+        return transfMatrix;
+    }
+
+
+
+
+
+    //------------------
     /**
    * Parses the <components> block.
    * @param {components block element} componentsNode
@@ -731,6 +795,7 @@ class MySceneGraph {
 
             if(grandgrandChildren.length == 0)
                 transfMatrix = mat4.create();
+
             else if(grandgrandChildren[0].nodeName == "transformationref"){
 
                 var transRefID = this.reader.getString(grandgrandChildren[0], 'id');
@@ -748,61 +813,8 @@ class MySceneGraph {
 
             }else{
 
-                var transfMatrix = mat4.create();
+                transfMatrix = this.parseHelper(grandgrandChildren, componentID);
 
-                var transformationID = this.reader.getString(grandChildren[i], 'id');//???????????????????????
-
-                for(var j = 0; j < grandgrandChildren.length; j++){
-    
-                    switch(grandgrandChildren[j].nodeName){
-                            
-                        case 'translate':
-                                var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
-                                if (!Array.isArray(coordinates))
-                                    return coordinates;
-        
-                                transformationComp = mat4.translate(transfMatrix, transfMatrix, coordinates);
-                                break;
-
-                        case 'scale':                        
-                                var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
-                                if (!Array.isArray(coordinates))
-                                    return coordinates;
-        
-                                transformationComp = mat4.scale(transfMatrix, transfMatrix, coordinates);
-                                break;
-
-                            case 'rotate':
-                                var axis = this.reader.getString(grandChildren[j], "axis");
-                                if(axis == null){
-                                    this.onXMLMinorError("Axis unspecified");
-                                    break;
-                                }
-                                
-                                var angle = this.reader.getString(grandChildren[j], "angle");
-                                if(angle == null){
-                                    this.onXMLMinorError("Angle unspecified");
-                                    break;
-                                }
-                                else if(isNaN(angle))
-                                    this.onXMLMinorError("Angle NaN");
-        
-                                switch(axis){
-                                    case 'x':
-                                        axis = [1,0,0];
-                                        break;
-                                    case 'y':
-                                        axis = [0,1,0];
-                                        break;
-                                    case 'z':
-                                        axis = [0,0,1];
-                                        break;
-                                }
-
-                                var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
-                                transformationComp = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, vector);
-                          }
-                }
             }
 
 
@@ -811,12 +823,11 @@ class MySceneGraph {
 
             grandgrandChildren = grandChildren[materialsIndex].children;
             for(var j = 0; j < grandgrandChildren.length; j++) {
-                materials.push(this.materials[this.reader.getString(grandgrandChildren[j], 'id')]);
+                materialsComp.push(this.materials[this.reader.getString(grandgrandChildren[j], 'id')]);
             }
 
             // Texture
             var textureComp = this.textures[this.reader.getString(grandChildren[textureIndex], 'id')];
-
             var ls = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false) || 1;
             var lt = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false) || 1;
 
