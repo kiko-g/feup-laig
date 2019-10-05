@@ -1,4 +1,4 @@
-<lxs>
+<lxs>    
     <scene root="demoRoot" axis_length="5"/>
 
     <views default="defaultCamera">
@@ -16,34 +16,56 @@
 
 
     <lights>
-        <omni id="demoLight" enabled="1">
-            <location x="10.8" y="11.9" z="10" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+        <omni id="L1" enabled="1">
+            <location x="5.0" y="5.0" z="5.0" w="1.0" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
     </lights>
 
+
+
     <textures>
-        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="vidral" file="scenes/images/vidral.jpg" />
+        <texture id="trunk"  file="scenes/images/trunk-image.jpg" />
+        <texture id="rocks"  file="scenes/images/rocks.jpg" />
+        <texture id="leaves" file="scenes/images/leaves.jpg" />
     </textures>
 
+
+
     <materials>
-        <material id="demoMaterial" shininess="10">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        <material id="lightblue-gloss" shininess="10">
+            <emission r="0.75" g="1" b="1" a="1.0" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse  r="0.8" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.8" g="1.0" b="1.0" a="1.0" />
         </material>
     </materials>
 
+
+
     <transformations>
-        <transformation id="demoTransform">
-            <scale x="2" y="1" z="1.5" />
-            <rotate axis="x" angle="-45" />
-            <rotate axis="z" angle="-45" />
+    <!-- SQUEEZE TRANSFORM -->
+        <transformation id="squeeze_x">
+            <scale x="0.1" y="1" z="1" />
         </transformation>
+        <transformation id="squeeze_y">
+            <scale x="1" y="0.1" z="1" />
+        </transformation>
+        <transformation id="squeeze_z">
+            <scale x="1" y="1" z="0.1" />
+        </transformation>
+        <transformation id="squeeze_all">
+            <scale x="0.1" y="0.1" z="0.1" />
+        </transformation>        
+    <!-- END SQUEEZE TRANSFORM -->
+
+    
     </transformations>
+
+
 
     <primitives>
     <!--  -->
@@ -68,8 +90,8 @@
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
+                <translate x="0" y="7" z="1" />
+                <scale x="9" y="1" z="10" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />

@@ -1,5 +1,4 @@
 var DEGREE_TO_RAD = Math.PI / 180;
-
 // Order of the groups in the XML document.
 var SCENE_INDEX = 0;
 var VIEWS_INDEX = 1;
@@ -14,7 +13,9 @@ var COMPONENTS_INDEX = 8;
 /**
  * MySceneGraph class, representing the scene graph.
  */
-class MySceneGraph {
+
+class MySceneGraph
+{
     /**
      * @constructor
      */
@@ -67,27 +68,26 @@ class MySceneGraph {
         this.scene.onGraphLoaded();
     }
 
+
+    
     /**
      * Parses the XML file, processing each block.
      * @param {XML root element} rootElement
      */
-    parseXMLFile(rootElement) {
+    parseXMLFile(rootElement){
         if (rootElement.nodeName != "lxs")
             return "root tag <lxs> missing";
-
-        var nodes = rootElement.children;
-
+                
         // Reads the names of the nodes to an auxiliary buffer.
         var nodeNames = [];
+        var nodes = rootElement.children;
 
-        for (var i = 0; i < nodes.length; i++) {
+        for (var i = 0; i < nodes.length; i++)
             nodeNames.push(nodes[i].nodeName);
-        }
 
         var error;
 
-        // Processes each node, verifying errors.
-
+        // PROCESS EVERY XML NODE, verifying errors.
         // <scene>
         var index;
         if ((index = nodeNames.indexOf("scene")) == -1)
@@ -101,6 +101,7 @@ class MySceneGraph {
                 return error;
         }
 
+
         // <views>
         if ((index = nodeNames.indexOf("views")) == -1)
             return "tag <views> missing";
@@ -112,6 +113,7 @@ class MySceneGraph {
             if ((error = this.parseView(nodes[index])) != null)
                 return error;
         }
+
 
         // <ambient>
         if ((index = nodeNames.indexOf("ambient")) == -1)
@@ -125,6 +127,7 @@ class MySceneGraph {
                 return error;
         }
 
+        
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1)
             return "tag <lights> missing";
@@ -136,6 +139,8 @@ class MySceneGraph {
             if ((error = this.parseLights(nodes[index])) != null)
                 return error;
         }
+        
+        
         // <textures>
         if ((index = nodeNames.indexOf("textures")) == -1)
             return "tag <textures> missing";
@@ -148,6 +153,7 @@ class MySceneGraph {
                 return error;
         }
 
+        
         // <materials>
         if ((index = nodeNames.indexOf("materials")) == -1)
             return "tag <materials> missing";
@@ -160,6 +166,7 @@ class MySceneGraph {
                 return error;
         }
 
+        
         // <transformations>
         if ((index = nodeNames.indexOf("transformations")) == -1)
             return "tag <transformations> missing";
@@ -172,6 +179,7 @@ class MySceneGraph {
                 return error;
         }
 
+        
         // <primitives>
         if ((index = nodeNames.indexOf("primitives")) == -1)
             return "tag <primitives> missing";
@@ -184,6 +192,7 @@ class MySceneGraph {
                 return error;
         }
 
+        
         // <components>
         if ((index = nodeNames.indexOf("components")) == -1)
             return "tag <components> missing";
@@ -197,6 +206,7 @@ class MySceneGraph {
         }
         this.log("all parsed");
     }
+
 
     /**
      * Parses the <scene> block. 
@@ -398,6 +408,8 @@ class MySceneGraph {
         return null;
     }
 
+
+
     /**
      * Parses the <materials> node.
      * @param {materials block element} materialsNode
@@ -434,6 +446,9 @@ class MySceneGraph {
         //this.log("Parsed materials");
         return null;
     }
+    // END <materials> parsing
+
+
 
     /**
      * Parses the <transformations> block.
@@ -819,43 +834,50 @@ class MySceneGraph {
         return color;
     }
 
-    /*
+
+
+    /**
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
      */
-    onXMLError(message) {
+    onXMLError(message){
         console.error("XML Loading Error: " + message);
         this.loadedOk = false;
     }
 
+    
     /**
      * Callback to be executed on any minor error, showing a warning on the console.
      * @param {string} message
      */
-    onXMLMinorError(message) {
-        console.warn("Warning: " + message);
-    }
+    onXMLMinorError(message) { console.warn("Warning: " + message); }
+
 
     /**
      * Callback to be executed on any message.
      * @param {string} message
      */
-    log(message) {
-        console.log("   " + message);
-    }
+    log(message) { console.log("   " + message); }
+
+
+
 
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
-    displayScene() {
+    displayScene()
+    {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
         this.scene.pushMatrix();
-        // this.primitives['rectangle'].display();
-        this.scene.multMatrix(this.transformations['demoTransform']);
+        
+        this.scene.multMatrix(this.transformations['squeeze_z']);
         this.primitives['torus'].display();
-        this.primitives['cylinder'].display();
+        this.primitives['sphere'].display();
+        this.scene.popMatrix();
+        this.scene.pushMatrix();
+
         this.scene.popMatrix();
     }
 }
