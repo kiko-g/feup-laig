@@ -227,7 +227,6 @@ class MySceneGraph
             this.onXMLMinorError("no axis_length defined for scene; assuming 'length = 1'");
 
         this.referenceLength = axis_length || 1;
-
         this.log("Parsed scene");
 
         return null;
@@ -242,6 +241,8 @@ class MySceneGraph
 
         return null;
     }
+
+
 
     /**
      * Parses the <ambient> node.
@@ -279,16 +280,17 @@ class MySceneGraph
         return null;
     }
 
+
+
     /**
      * Parses the <light> node.
      * @param {lights block element} lightsNode
      */
-    parseLights(lightsNode) {
-        var children = lightsNode.children;
-
+    parseLights(lightsNode)
+    {
         this.lights = [];
         var numLights = 0;
-
+        var children = lightsNode.children;
         var grandChildren = [];
         var nodeNames = [];
 
@@ -397,11 +399,28 @@ class MySceneGraph
         return null;
     }
 
+
+
     /**
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
      */
-    parseTextures(texturesNode) {
+    parseTextures(texturesNode)
+    {
+        var children = texturesNode.children;
+        var grandChildren = [];
+        var nodeNames = [];
+        this.textures = [];
+        
+        // Any number of materials.
+        for (var i = 0; i < children.length; i++)
+        {
+            if (children[i].nodeName != "texture")
+            {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }        
+        }
 
         //For each texture in textures block, check ID and file URL
         this.onXMLMinorError("To do: Parse textures.");
@@ -414,17 +433,16 @@ class MySceneGraph
      * Parses the <materials> node.
      * @param {materials block element} materialsNode
      */
-    parseMaterials(materialsNode) {
+    parseMaterials(materialsNode)
+    {
         var children = materialsNode.children;
-
-        this.materials = [];
-
         var grandChildren = [];
         var nodeNames = [];
+        this.materials = [];
 
         // Any number of materials.
-        for (var i = 0; i < children.length; i++) {
-
+        for (var i = 0; i < children.length; i++)
+        {
             if (children[i].nodeName != "material") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
@@ -762,12 +780,11 @@ class MySceneGraph
    * Parses the <components> block.
    * @param {components block element} componentsNode
    */
-    parseComponents(componentsNode) {
-        var children = componentsNode.children;
-
+    parseComponents(componentsNode)
+    {
         this.components = [];
-
         var allIDs = [];
+        var children = componentsNode.children;
         var grandChildren = [];
         var grandgrandChildren = [];
         var nodeNames = [];
@@ -811,26 +828,22 @@ class MySceneGraph
             if(grandgrandChildren.length == 0)
                 transfComp = mat4.create();
 
-            else if(grandgrandChildren[0].nodeName == "transformationref"){
-
+            else if(grandgrandChildren[0].nodeName == "transformationref")
+            {
                 var transRefID = this.reader.getString(grandgrandChildren[0], 'id');
-
                 if(transRefID == null)
                     return "unable to parse transformation id of component ID " + componentID;
 
                 transfComp = this.transformations[transRefID];
 
-                if(transfMatrix == null){
+                if(transfMatrix == null)
                     return "no such transformation with ID " + transRefID + " for component ID " + componentID;
-                }
+                
                 if(grandgrandChildren.length > 1)
                     this.onXMLMinorError("More than one declaration for" + componentID);
-
-            }else{
-
-                transfComp = this.parseHelper(grandgrandChildren, componentID);
-
             }
+            else transfComp = this.parseHelper(grandgrandChildren, componentID);
+            
 
 
             // Materials
@@ -838,9 +851,8 @@ class MySceneGraph
 
             grandgrandChildren = grandChildren[materialsIndex].children;
 
-            for(var j = 0; j < grandgrandChildren.length; j++) {
+            for(var j = 0; j < grandgrandChildren.length; j++)
                 materialsComp.push(this.materials[this.reader.getString(grandgrandChildren[j], 'id')]);
-            }
 
             // Texture
             var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
@@ -925,12 +937,15 @@ class MySceneGraph
         return position;
     }
 
+
+
     /**
      * Parse the coordinates from a node with ID = id
      * @param {block element} node
      * @param {message to be displayed in case of error} messageError
      */
-    parseCoordinates4D(node, messageError) {
+    parseCoordinates4D(node, messageError)
+    {
         var position = [];
 
         //Get x, y, z
@@ -939,23 +954,24 @@ class MySceneGraph
         if (!Array.isArray(position))
             return position;
 
-
         // w
         var w = this.reader.getFloat(node, 'w');
         if (!(w != null && !isNaN(w)))
             return "unable to parse w-coordinate of the " + messageError;
 
         position.push(w);
-
         return position;
     }
+
+
 
     /**
      * Parse the color components from a node
      * @param {block element} node
      * @param {message to be displayed in case of error} messageError
      */
-    parseColor(node, messageError) {
+    parseColor(node, messageError)
+    {
         var color = [];
 
         // R
@@ -979,7 +995,6 @@ class MySceneGraph
             return "unable to parse A component of the " + messageError;
 
         color.push(...[r, g, b, a]);
-
         return color;
     }
 
@@ -1017,7 +1032,6 @@ class MySceneGraph
     displayScene()
     {
         //To do: Create display loop for transversing the scene graph
-
         //To test the parsing/creation of the primitives, call the display function directly
         this.scene.pushMatrix();
         
