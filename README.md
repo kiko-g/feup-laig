@@ -3,4 +3,4 @@
 ##### Project works of:
 
 > [Francisco Gonçalves](github.com/kiko-g)\
-> [Eduardo Macedo](github.com/EduMacedo99)\
+> [Eduardo Macedo](github.com/EduMacedo99)
