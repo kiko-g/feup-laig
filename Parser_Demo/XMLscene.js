@@ -1,9 +1,9 @@
 var DEGREE_TO_RAD = Math.PI / 180;
-
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
-class XMLscene extends CGFscene {
+class XMLscene extends CGFscene 
+{
     /**
      * @constructor
      * @param {MyInterface} myinterface 
@@ -148,13 +148,3 @@ class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 }
-
-
-
-/** ENTREGA DIA 6
- * Cena nao muito complexa
- * 
- * 
- * 
- * 
- */ 
