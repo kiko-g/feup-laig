@@ -1,16 +1,19 @@
 class MyNode extends CGFobject
 {
-    constructor(scene, id)
+    constructor(scene, nodeID)
     {
         super(scene);
-        this.id = id;
+        this.nodeN = nodeID;
         this.children = [];
-        this.leaves   = [];
+        this.leaves = [];
+        this.materials = nodeID.materials;
+        this.textureID = null;
+        this.visited = false;
         this.transfMatrix = mat4.create();
         mat4.identity(this.transfMatrix);
-        this.visited = false;
     }
 
+    addChild(nodeID){ this.children.push(nodeID) };
     setTexture(texture) { this.texture = texture; }
-    setTransfMatrix(transfMatrix) { this.transfMatrix = transfMatrix; }
+    // setTransfMatrix(transfMatrix) { this.transfMatrix = transfMatrix; }
 }

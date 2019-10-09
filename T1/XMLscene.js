@@ -53,7 +53,7 @@ class XMLscene extends CGFscene
         var i = 0;  // Lights index.
 
         // Reads the lights from the scene graph.
-        for (var key in this.graph.lights)
+        for (let key in this.graph.lights)
         {
             if (i >= 8) break; // Only eight lights allowed by WebGL.
 
@@ -130,7 +130,7 @@ class XMLscene extends CGFscene
         if(this.displayAxis) this.axis.display();
         // if(this.displayNormals) this.graph.primitives['torus'].enableNormalViz();
 
-        for (var i = 0; i < this.lights.length; i++)
+        for (let i = 0; i < this.lights.length; i++)
         {
             // this.lights[i].update();
             this.lights[0].setPosition(20, 20, 20);
