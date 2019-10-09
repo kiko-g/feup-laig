@@ -15,10 +15,10 @@ class MyMaterial {
 
     apply(appearence) {
         //use ... because of vector
+        appearence.setShininess(this.shininess); //one number
+        appearence.setEmission(...this.emission);
         appearence.setAmbient(...this.ambient);
         appearence.setDiffuse(...this.diffuse);
         appearence.setSpecular(...this.specular);
-        appearence.setShininess(this.shininess); //one number
-        appearence.setEmission(...this.emission);
     }
 }
