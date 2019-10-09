@@ -2,7 +2,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
 // Order of the groups in the XML document.
 var SCENE_INDEX = 0;
 var VIEWS_INDEX = 1;
-var AMBIENT_INDEX = 2;
+var GLOBALS_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
@@ -27,6 +27,7 @@ class MySceneGraph
         this.nodes = [];
         this.idRoot = null;      // The id of the root element.
         this.loadedOk = null;
+        this.displayOk = false;
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -53,6 +54,7 @@ class MySceneGraph
         var error = this.parseXMLFile(rootElement); // Here should go the calls for different functions to parse the various blocks
         if (error != null) { this.onXMLError(error); return; }
         this.loadedOk = true;
+        this.displayOk = false;
         /**
          * As the graph loaded ok, signal the scene so that any
          * additional initialization depending on the graph can take place */
@@ -99,12 +101,12 @@ class MySceneGraph
         }
 
 
-        // <ambient>
-        if ((index = nodeNames.indexOf("ambient")) == -1) return "tag <globals> missing";
+        // <globals>
+        if ((index = nodeNames.indexOf("globals")) == -1) return "tag <globals> missing";
         else {
-            if (index != AMBIENT_INDEX) this.onXMLMinorError("tag <globals> out of order");
+            if (index != GLOBALS_INDEX) this.onXMLMinorError("tag <globals> out of order");
             if ((error = this.parseGlobals(nodes[index])) != null) return error;
-            //Parse ambient block
+            //Parse globals block
         }
 
         
@@ -1117,30 +1119,41 @@ class MySceneGraph
     
     
     // ==================================================================================================================================
-    goThroughGraph(component)
+    goThroughGraph(componentID, mat, tex)
     {
-        
+        var currentnode = this.components[componentID];
+        for(let m=0; m<mat.length; m++) console.log("<"+m+"> " + currentnode.materials[mat[m]])
+        var ch = currentnode.children;
+        var MATS;       // = mat;
+        var TEX_ID;     // = tex;
 
-        //Visit the node desendants, in case of primitive, display them, in case of intermediate nodes call descendants recursively
-        for (let i = 0; i < children.length; i++)
+        if (currentnode.texture != "inherit") TEX_ID = currentnode.texture;
+        else TEX_ID = tex;
+        if (currentnode.materials[0] != "inherit") MATS = currentnode.materials;
+        else MATS = mat;
+
+        //scene transformations
+        this.scene.multMatrix(currentnode.transfMatrix);
+
+        var childID;
+        var currentTexture = currentnode.texture[TEX_ID];
+        var currentMaterial = currentnode.materials[MATS[(this.scene.materialcounter % MATS.length)]]; //
+        
+        for(var i = 0; i < ch.length; i++)
         {
-            var child = children[i];
             this.scene.pushMatrix();
 
-            if (this.primitives[child] != null) {
-                    currentMAT.apply();
-                    this.primitives[children[i]].display();
-                }
-                else {
-                this.currentNode.visited = true;
-                this.goThroughGraph(children[i], materialsComp, textureID);
-            } 
+            childID = ch[i];
+            if(currentnode.leaves[childID] != null){
+                currentMaterial.apply();
+                currentTexture.bind();
+                currentnode.leaves[child[i]].display();
+            }
+            else this.goThroughGraph(child[i], MATS, TEX); 
 
             this.scene.popMatrix();
         }
     }
-
-
 
 
 
@@ -1150,9 +1163,7 @@ class MySceneGraph
      */
     displayScene()
     {
-        // this.processNode(this.idRoot);
-        // goThroughGraph
-        // parentMAT, parentTEX
+        this.goThroughGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
         
         this.scene.pushMatrix();
         this.primitives['sphere'].display()
@@ -1183,6 +1194,16 @@ class MySceneGraph
      */
     onXMLError(message) { console.error("XML Loading Error: " + message); this.loadedOk = false; }
 
+
+
+    /**
+     * Callback to be executed on any displaying error, showing an error on the console.
+     * @param {string} message
+     */
+    onDisplayError(message) {
+        console.error("Display Error: " + message);
+        this.displayOk = false;
+    }
 
     /**
      * Callback to be executed on any minor error, showing a warning on the console.

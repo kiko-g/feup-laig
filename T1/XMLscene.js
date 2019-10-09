@@ -24,6 +24,7 @@ class XMLscene extends CGFscene
         this.sceneInited = false;
         this.displayAxis = true;
         this.displayNormals = true;
+        this.materialcounter = 0;
 
         this.initCameras();
         this.enableTextures(true);

@@ -24,15 +24,7 @@ class MyComponent extends CGFobject
         this.leaves = primitiveChildren;
         this.length_t = length_t;
         this.length_s = length_s;
-        this.loaded = false;
-
-        this.activeMaterialID = 0;
-    }
-
-    updateMaterial(){
-        //used for cycling materials with M key
-        this.activeMaterialID++;
-        this.activeMaterialID = this.activeMaterialID % this.materials.length;
+        // this.loaded = false;
     }
     
     // addChild(nodeID){ this.children.push(nodeID) };
