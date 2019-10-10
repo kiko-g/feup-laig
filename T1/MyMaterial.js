@@ -26,4 +26,4 @@ class MyMaterial {
     class MyMaterialInherit extends MyMaterial
     {
         apply(appearence) { /* do Nothing */ }
-    }  
+    }

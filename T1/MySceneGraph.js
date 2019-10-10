@@ -898,13 +898,15 @@ class MySceneGraph
             }
 
             if (materialscomp.length == 0) this.onXMLError("No material in component " + componentID);
-            var materials = { current: 0, materials: materialscomp }; //build
+            for(let m=0; m<materialscomp.length; m++) this.log(materialscomp[m]);
+            let materials = { current: 0, materials: materialscomp }; //build
+
 
 
 
             //Textures section
             let textureNode = grandChildren[textureIndex];
-            let tex = "";
+            let tex = ""; //tex string
 
             let texID = this.reader.getString(textureNode, "id");
             if(texID == null) { this.onXMLError("No texture ID in component " + componentID); return null; }
@@ -953,7 +955,7 @@ class MySceneGraph
 
             // ============= BUILD COMPONENT AND IT TO COMPONENT LIST =============
             // ====================================================================
-            this.components[componentID] = new MyComponent(this.scene, componentID, transfMatrix, materials, texture, componentChildren, primitiveChildren, length_t, length_s);
+            this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren, true);
             // ====================================================================
         }
 
@@ -1104,26 +1106,28 @@ class MySceneGraph
     goThroughGraph(componentID, mat, tex)
     {
         var currentnode = this.components[componentID];
-        // for(let m=0; m<mat.length; m++) console.log("<"+m+"> " + currentnode.materials[m]);
-        var ch = currentnode.children;
+        var ch = currentnode.children; //----------------------------
+        for (let m = 0; m < 1; m++) console.log("<" + m + "> " + ch.length);
         var MATS, TEX;
 
         if (currentnode.texture.texture != "inherit") TEX = currentnode.texture.texture;
-        else TEX_ID = tex.texture;
-        if (currentnode.materials.materials != "inherit") MATS = currentnode.materials[0];
+        else TEX = tex.texture;
+        if (currentnode.materials.materials != "inherit") MATS = currentnode.materials;
         else MATS = mat.materials;
 
         //scene transformations
         this.scene.multMatrix(currentnode.transfMatrix);
 
         
-        var currentTexture = currentnode.texture.texture[TEX];
-        var currentMaterial = currentnode.materials.materials[MATS[this.scene.materialcounter % MATS.length]]; //
+        var currentTexture = currentnode.texture.texture;
+        // var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
+        // this.log(currentTexture);
+        // this.log(currentMaterial);
         
         for(var i = 0; i < ch.length; i++)
         {
             if(currentnode.leaves[ch[i]] != null){
-                currentMaterial.apply();
+                // currentMaterial.apply();
                 currentTexture.bind();
                 this.scene.pushMatrix();
                 currentnode.leaves[ch[i]].display();
@@ -1145,9 +1149,10 @@ class MySceneGraph
      */
     displayScene()
     {
-        // this.components[this.idRoot].display(this.scene);
-        this.goThroughGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
+        this.components[this.idRoot].display();
+        // this.goThroughGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
         // for(let m=0; m<1; m++) this.log(this.components[this.idRoot]);
+
 
         
         this.scene.pushMatrix();
