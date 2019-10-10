@@ -32,8 +32,7 @@ class MyCylinder extends CGFobject {
         let theta = 2 * Math.PI / this.slices;
         let radius = Math.min(this.top, this.base); //current radius
         let stackPile = 0;                          //works as a "current height"
-        if(this.base >= this.top) let dif = this.base-this.top;
-        else let dif = this.top-this.base; //difference between base and top radius
+        let dif = Math.abs(this.base-this.top); //difference between base and top radius
 
         this.vertices = [];
         this.normals = [];
@@ -46,7 +45,7 @@ class MyCylinder extends CGFobject {
                 this.normals.push(Math.cos(j * theta), Math.sin(j * theta), stackPile);
                 this.texCoords.push(1.0 - j / this.slices, 0.0 + i / this.stacks);
             }
-            radius = dif / this.stacks;
+            radius += dif / this.stacks;
             stackPile += this.height / this.stacks;
         }
 
