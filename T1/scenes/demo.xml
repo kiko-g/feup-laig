@@ -135,7 +135,7 @@
             <torus loops="30" slices="60" inner="0.2" outer="3.0"/>
         </primitive>
         <primitive id="cylinder">
-            <cylinder slices="20" stacks="10" radius="0.09" height="2" />
+            <cylinder slices="20" stacks="10" base="0.2" top="0.4" height="2" />
         </primitive>
     </primitives>
 

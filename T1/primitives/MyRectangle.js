@@ -9,7 +9,8 @@ class MyRectangle extends CGFobject
 {
     constructor(scene, id, x1, x2, y1, y2)
     {
-		super(scene);
+        super(scene);
+        this.id = id;
 		this.x1 = x1;
 		this.x2 = x2;
 		this.y1 = y1;

@@ -18,6 +18,7 @@ class MySphere extends CGFobject
     constructor(scene, id, radius, slices, stacks) 
     {
         super(scene);
+        this.id = id;
         this.radius = radius;
         this.slices = slices;
         this.stacks = stacks;
