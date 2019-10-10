@@ -2,7 +2,6 @@
  * MyCylinder
  * @constructor
  */
-
 class MyCylinder extends CGFobject {
 	/**
 	 * Builds a cylinder object uncovered on both sides
@@ -16,8 +15,8 @@ class MyCylinder extends CGFobject {
     constructor(scene, id, slices, stacks, base, top, height) {
         super(scene);
         this.id = id;
-        this.slices = slices;
-        this.stacks = stacks;
+        this.slices = Math.floor(slices);
+        this.stacks = Math.floor(stacks);
         this.base = base;
         this.top = top;
         this.height = height;
@@ -29,10 +28,12 @@ class MyCylinder extends CGFobject {
 	 * Initializes vertices, indices, normals and texture coordinates.
 	 */
     initBuffers() {
-        let theta = 2 * Math.PI / this.slices;
-        let radius = Math.min(this.top, this.base); //current radius
-        let stackPile = 0;                          //works as a "current height"
-        let dif = Math.abs(this.base-this.top); //difference between base and top radius
+        var theta = 2 * Math.PI / this.slices;
+        var radius = Math.min(this.top, this.base); //current radius
+        var stackPile = 0;                          //works as a "current height"
+        var slicePile;                          //works as a "current thehta"
+        var dif = Math.abs(this.base-this.top); //difference between base and top radius
+        var slope = dif/this.height;
 
         this.vertices = [];
         this.normals = [];
@@ -40,10 +41,12 @@ class MyCylinder extends CGFobject {
         this.texCoords = [];
 
         for (var i = 0; i <= this.stacks; i++) {
+            slicePile=0;
             for (var j = 0; j <= this.slices; j++) {
-                this.vertices.push(Math.cos(j * theta) * radius, Math.sin(j * theta) * radius, stackPile);
-                this.normals.push(Math.cos(j * theta), Math.sin(j * theta), stackPile);
-                this.texCoords.push(1.0 - j / this.slices, 0.0 + i / this.stacks);
+                this.vertices.push(Math.cos(slicePile) * radius, Math.sin(slicePile) * radius, stackPile);
+                this.normals.push(Math.cos(slicePile), Math.sin(slicePile), slope);
+                this.texCoords.push(j / this.slices, i / this.stacks);
+                slicePile = (j+1)*theta;
             }
             radius += dif / this.stacks;
             stackPile += this.height / this.stacks;

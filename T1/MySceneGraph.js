@@ -166,7 +166,8 @@ class MySceneGraph
 
 
 
-    
+    // ==========================================================
+
 
 
     /**
@@ -199,108 +200,110 @@ class MySceneGraph
      */
     parseViews(viewsNode)
     {
-        var defaultViewID = viewsNode.getAttribute("default");
+        //get Default View ID for the nodes
+        let defaultViewID = viewsNode.getAttribute("default");
         if (defaultViewID == null) this.onXMLMinorError("No default view defined.");
-        
-        this.views = [];
-        var defaultViewDefined = false;
-        var children = viewsNode.children;
 
-        for (var i = 0; i < children.length; ++i)
-        {
-            var childNode = children[i];
-            var viewtype = childNode.nodeName;
-            if (viewtype != 'ortho' && viewtype != 'perspective') {
-                this.onXMLMinorError('unknown tag <' + viewtype + '>');
+        this.views = [];
+        // this.defaultView = defaultViewID;
+
+        let defaultViewExists = false;
+
+        //get all views inside views element
+        let children = viewsNode.children;
+        if (children.length == 0) this.onXMLError("No views Provided!");
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i];
+            let name = child.nodeName;
+            //if view has an invalid name throw error and proceed.
+            if (name != "ortho" && name != "perspective") {
+                this.onXMLMinorError("Unexpedted view: " + name);
                 continue;
             }
 
-            //perspective/ortho children
-            var id = childNode.getAttribute("id");
-            if (id == null) this.onXMLMinorError("ID for " + viewtype + " view not specified");
-            if (id == defaultViewID) defaultViewDefined = true;
-            
-            var near = childNode.getAttribute("near");
-            if (near == null) this.onXMLMinorError("Near attribute for " + viewtype + " view not specified");
-            var far = childNode.getAttribute("far");
-            if (far == null) this.onXMLMinorError("Far attribute for " + viewtype + " view not specified");
+            //get ID and test for errors.
+            let viewId = child.getAttribute("id");
+            if (viewId == null) this.onXMLMinorError("ID for " + name + " view not provided!");
+            if (viewId == defaultViewID) defaultViewExists = true;
 
+            //get near and far and test for errors.
+            let viewNear = parseFloat(child.getAttribute("near"));
+            if (viewNear == null) this.onXMLMinorError("Near attribute for " + name + " view not provided!");
+            let viewFar = parseFloat(child.getAttribute("far"));
+            if (viewFar == null) this.onXMLMinorError("Far attribute for " + name + " view not provided!");
 
-
-            // Reads the names of the nodes to an auxiliary buffer.
-            var nodeNames = [];
-            var grandChildren = childNode.children;
-            for (var j = 0; j < grandChildren.length; j++) nodeNames.push(grandChildren[j].nodeName);
-
-            var from, to;
-            var fromx, fromy, fromz;
-            var tox, toy, toz;
-            
-            from = childNode.getElementsByTagName("from");
-            if(from.length == 0) this.onXMLMinorError("FROM element for " + viewtype + " view");
-            else if (from.length > 1) this.onXMLMinorError("More than 1 FROM element for " + viewtype + " view");
+            //get from array values and test for errors.
+            let fromList = child.getElementsByTagName("from");
+            let fromX;
+            let fromY;
+            let fromZ;
+            if (fromList.length == 0) {
+                this.onXMLMinorError("From element for " + name + " view not provided!");
+            }
+            else if (fromList.length > 1) {
+                this.onXMLMinorError("More than 1 For element for " + name + " view provided!");
+            }
             else {
-                fromx = from[0].getAttribute("x");
-                fromy = from[0].getAttribute("y");
-                fromz = from[0].getAttribute("z");
+                fromX = parseFloat(fromList[0].getAttribute("x"));
+                fromY = parseFloat(fromList[0].getAttribute("y"));
+                fromZ = parseFloat(fromList[0].getAttribute("z"));
             }
 
-
-            to = childNode.getElementsByTagName("to");
-            if(to.length == 0) this.onXMLMinorError("FROM element for " + viewtype + " view");
-            if(to.length > 1) this.onXMLMinorError("More than 1 FROM element for " + viewtype + " view");
-            else {
-                tox = to[0].getAttribute("x");
-                toy = to[0].getAttribute("y");
-                toz = to[0].getAttribute("z");
+            //get to array values and test for errors.
+            let toList = child.getElementsByTagName("to");
+            let toX;
+            let toY;
+            let toZ;
+            if (toList.length == 0) {
+                this.onXMLMinorError("To element for " + name + " view not provided!");
             }
-
+            else if (toList.length > 1) {
+                this.onXMLMinorError("More than 1 To element for " + name + " view provided!");
+            }
+            else {
+                toX = parseFloat(toList[0].getAttribute("x"));
+                toY = parseFloat(toList[0].getAttribute("y"));
+                toZ = parseFloat(toList[0].getAttribute("z"));
+            }
 
             //create object with currentView to add to our views array
-            var currentView = { 
-                id: id, 
-                near: near,
-                far: far,
-                from: { x: fromx, y: fromy, z: fromz },
-                to: { x: tox, y: toy, z: toz }
-            }
+            let currentView = { id: viewId, near: viewNear, far: viewFar, from: vec3.fromValues(fromX, fromY, fromZ), to: vec3.fromValues(toX, toY, toZ) }
 
-
-            if (viewtype == "perspective") {
-                var angle = childNode.getAttribute("angle");
-                if (angle == null) this.onXMLMinorError("no angle attribute for " + viewtype);
+            //complete currentView object with appropriate information depending on the view type
+            if (name = "perspective") {
+                let viewAngle = parseFloat(child.getAttribute("angle"));
+                if (viewAngle == null) this.onXMLMinorError("no angle attribute for " + name + " view provided!");
                 currentView.type = "perspective";
-                currentView.angle = angle;
-            }
-            else if (viewtype == "ortho") {
-                var viewTop = childNode.getAttribute("top");
-                var viewBottom = childNode.getAttribute("bottom");
-                var viewLeft = childNode.getAttribute("left");
-                var viewRight = childNode.getAttribute("right");
 
-                var up = childNode.child.getElementsByTagName("up");
-                var upX = up[0].getAttribute("x");
-                var upY = up[0].getAttribute("y");
-                var upZ = up[0].getAttribute("z");
+                currentView.angle = viewAngle;
+            }
+            else if (name = "ortho") {
+                let viewTop = child.getAttribute("top");
+                let viewBottom = child.getAttribute("bottom");
+                let viewLeft = child.getAttribute("left");
+                let viewRight = child.getAttribute("right");
+
+                let upList = child.child.getElementsByTagName("up");
+                let upX = parseFloat(upList[0].getAttribute("x"));
+                let upY = parseFloat(upList[0].getAttribute("y"));
+                let upZ = parseFloat(upList[0].getAttribute("z"));
 
                 currentView.type = "ortho";
-                currentView.angle = angle;
+                currentView.angle = viewAngle;
                 currentView.top = viewTop;
                 currentView.bottom = viewBottom;
                 currentView.left = viewLeft;
                 currentView.right = viewRight;
-                currentView.up = { x: upX, y: upY, z: upZ };
+                currentView.up = vec3.fromValues(upX, upY, upZ);
             }
+
             this.views.push(currentView);
         }
-        if (this.views.length == 0) this.onXMLError("No views loaded from XML");
-        if (defaultViewDefined == false) this.onXMLMinorError("Default View not defined");
+        if (this.views.length == 0) this.onXMLError("No Views successfully loaded!");
+        if (!defaultViewExists) this.onXMLMinorError("Default View doesn't exist");
 
-        this.log("Parsed views");
         return null;
     }
-
-
 
 
 
@@ -648,6 +651,54 @@ class MySceneGraph
         this.log("Parsed transformations");
         return null;
     }
+    parseHelper(list, transformationID)
+    {
+        //Helps parse the <components> block.
+        var transfMatrix = mat4.create();
+        for (var j = 0; j < list.length; j++)
+        {
+            switch (list[j].nodeName)
+            {
+                case 'translate':
+                    var coordinates = this.parseCoordinates3D(list[j], "translate transformation for ID " + transformationID);
+                    if (!Array.isArray(coordinates)) return coordinates;
+                    transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
+                   break;
+                   
+                case 'scale':
+                    var coordinates = this.parseCoordinates3D(list[j], "translate transformation for ID " + transformationID);
+                    if (!Array.isArray(coordinates)) return coordinates;
+                    transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
+                   break;
+
+                case 'rotate':
+                    var axis = this.reader.getString(list[j], "axis");
+                    if (axis == null) {
+                        this.onXMLMinorError("Axis unspecified");
+                        break;
+                    }
+
+                    var angle = this.reader.getString(list[j], "angle");
+                    if (angle == null) {
+                        this.onXMLMinorError("Angle unspecified");
+                        break;
+                    }
+                    else if (isNaN(angle)) this.onXMLMinorError("Angle NaN");
+
+                    switch (axis) {
+                        case 'x': axis = [1, 0, 0]; break;
+                        case 'y': axis = [0, 1, 0]; break; 
+                        case 'z': axis = [0, 0, 1]; break; 
+                    }
+
+                    var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
+                    transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, vector);
+                  break;
+            }
+        }
+        return transfMatrix;
+    }
+
 
 
     /**
@@ -807,13 +858,12 @@ class MySceneGraph
         this.log("Parsed primitives");
         return null;
     }
-    //--------------
+    
 
 
 
     
     
-    //------------------
     /**
      * Parses the <components> block.
      * @param {components block element} componentsNode
@@ -826,6 +876,7 @@ class MySceneGraph
         let grandChildren = [];
         let grandgrandChildren = [];
         let componentNodeNames = []; //vector with the node names inside <components> tag
+        console.log(children.length);
 
         for (let i = 0; i < children.length; i++)
         {
@@ -843,7 +894,7 @@ class MySceneGraph
         
         for (let i = 0; i < children.length; i++)
         {
-            let componentID = allComponentIDs[i];                // Get id from the auxiliar array.
+            let componentID = allComponentIDs[i];       // Get id from the auxiliar array.
             if (this.components[componentID] != null)   // Checks for repeated IDs.
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
@@ -851,13 +902,13 @@ class MySceneGraph
             for (let j = 0; j < grandChildren.length; j++) componentNodeNames.push(grandChildren[j].nodeName);
 
             let transformationIndex = componentNodeNames.indexOf("transformation");
-            let materialsIndex = componentNodeNames.indexOf("materials");
-            let textureIndex = componentNodeNames.indexOf("texture");
-            let childrenIndex = componentNodeNames.indexOf("children");
+            let materialsIndex      = componentNodeNames.indexOf("materials");
+            let textureIndex        = componentNodeNames.indexOf("texture");
+            let childrenIndex       = componentNodeNames.indexOf("children");
 
 
 
-            //Transformations section
+            //TRANSFORMATIONS SECTIOB
             let transfMatrix; //build
             grandgrandChildren = grandChildren[transformationIndex].children;
             if (grandgrandChildren.length == 0) transfMatrix = mat4.create();
@@ -870,12 +921,11 @@ class MySceneGraph
                 if (transfMatrix == null) return "no such transformation with ID " + transRefID + " for component ID: " + componentID;
                 if (grandgrandChildren.length > 1) this.onXMLMinorError("Multiple transformations declared for " + componentID);
             }
-            //
             else transfMatrix = this.parseHelper(grandgrandChildren, " of component " + componentID);
 
 
 
-            //Materials section
+            //MATERIALS SECTION
             grandgrandChildren = grandChildren[materialsIndex].children;
             let materialscomp = [];
 
@@ -901,13 +951,13 @@ class MySceneGraph
             }
 
             if (materialscomp.length == 0) this.onXMLError("No material in component " + componentID);
-            for(let m=0; m<materialscomp.length; m++) this.log(materialscomp[m]);
+            for(let m=0; m<materialscomp.length; m++) console.log(materialscomp[m]);
             let materials = { current: 0, materials: materialscomp }; //build
 
 
 
 
-            //Textures section
+            //TEXTURES SECTION
             let textureNode = grandChildren[textureIndex];
             let tex = ""; //tex string
 
@@ -930,7 +980,8 @@ class MySceneGraph
             let texture = {texture: tex, length_s: length_s, length_t: length_t}; //build texture
 
 
-            //Children Section
+
+            //CHILDREN SECTION
             let componentChildren = [];
             let primitiveChildren = [];
 
@@ -965,66 +1016,11 @@ class MySceneGraph
         // for(let m=0; m < materials.length; m++) console.log("<"+m+"> " + materials[m].emission);
         //alert if top root isn't defined or properly read (XML error for example)
         if (this.components[this.idRoot] == null) return "root component ID " + this.idRoot + " not defined";
-}
-
-
-    /**
-     * Helps parse the <components> block.
-     * @param {} list
-     * @param {} transformationsID
-     */
-    parseHelper(list, transformationID)
-    {
-        var transfMatrix = mat4.create();
-        for (var j = 0; j < list.length; j++)
-        {
-            switch (list[j].nodeName)
-            {
-                case 'translate':
-                    var coordinates = this.parseCoordinates3D(list[j], "translate transformation for ID " + transformationID);
-                    if (!Array.isArray(coordinates)) return coordinates;
-                    transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
-                   break;
-                   
-                case 'scale':
-                    var coordinates = this.parseCoordinates3D(list[j], "translate transformation for ID " + transformationID);
-                    if (!Array.isArray(coordinates)) return coordinates;
-                    transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
-                   break;
-
-                case 'rotate':
-                    var axis = this.reader.getString(list[j], "axis");
-                    if (axis == null) {
-                        this.onXMLMinorError("Axis unspecified");
-                        break;
-                    }
-
-                    var angle = this.reader.getString(list[j], "angle");
-                    if (angle == null) {
-                        this.onXMLMinorError("Angle unspecified");
-                        break;
-                    }
-                    else if (isNaN(angle)) this.onXMLMinorError("Angle NaN");
-
-                    switch (axis) {
-                        case 'x': axis = [1, 0, 0]; break;
-                        case 'y': axis = [0, 1, 0]; break; 
-                        case 'z': axis = [0, 0, 1]; break; 
-                    }
-
-                    var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
-                    transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, vector);
-                  break;
-            }
-        }
-        return transfMatrix;
     }
 
 
 
-
-
-
+    // ==========================================================
 
     /**
      * Originally Implemented
@@ -1123,9 +1119,7 @@ class MySceneGraph
         
         var currentTexture = currentnode.texture.texture;
         // var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
-        // this.log(currentTexture);
-        // this.log(currentMaterial);
-        
+
         for(var i = 0; i < ch.length; i++)
         {
             if(currentnode.leaves[ch[i]] != null){
@@ -1151,19 +1145,8 @@ class MySceneGraph
      */
     displayScene()
     {
-        // this.scene.pushMatrix();
-        // this.primitives['sphere'].display()
-        // this.scene.multMatrix(this.transformations['torus1_setup']);;
-        // this.primitives['torus'].display();
-        // this.scene.popMatrix();
-
-        // this.scene.pushMatrix();
-        // this.scene.multMatrix(this.transformations['torus2_setup']);;
-        // this.primitives['torus'].display();
-        // this.scene.popMatrix();
-
         this.scene.pushMatrix();
-        // this.scene.multMatrix(this.transformations['torus3_setup']);;
+        this.textures['rickm1'].bind();
         this.primitives['cylinder'].display();
         this.scene.popMatrix();
     }

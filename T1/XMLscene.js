@@ -100,10 +100,10 @@ class XMLscene extends CGFscene
     
     setDefaultAppearance()
     {
-        this.setAmbient(0/255, 204/255, 255/255, 1.0);
-        this.setDiffuse(100/255, 150/255, 200/255, 1.0);
+        this.setAmbient(0/255, 0/255, 0/255, 1.0);
+        this.setDiffuse(255/255, 255/255, 255/255, 1.0);
         this.setSpecular(255/255, 255/255, 255/255, 1.0);
-        this.setShininess(100.0);
+        this.setShininess(10.0);
     }
 
 

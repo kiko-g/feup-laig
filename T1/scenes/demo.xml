@@ -3,7 +3,7 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0" far="0" angle="0">
-            <from x="30" y="5" z="30" />
+            <from x="30" y="95" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -30,6 +30,7 @@
 
     <textures>
         <texture id="default" file="images/default.jpg" />
+        <texture id="rickm1"  file="images/rm1.jpg" />
         <texture id="vidral"  file="images/vidral.jpg" />
         <texture id="trunk"   file="images/trunk-image.jpg" />
         <texture id="rocks"   file="images/rocks.jpg" />
@@ -38,10 +39,10 @@
 
     <materials>
         <material id="defaultMAT" shininess="10" >
-            <emission r="0.2" g="0.3" b="0.4" a="1" />
-            <ambient  r="0.2" g="0.3" b="0.4" a="1" />
-            <diffuse  r="0.51" g="0.51" b="0.51" a="1" />
-            <specular r="0.51" g="0.51" b="0.51" a="1" />
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="1" />
+            <diffuse  r="0.0" g="0.0" b="0.0" a="1" />
+            <specular r="0.0" g="0.0" b="0.0" a="1" />
         </material>
         <material id="lightblue-gloss" shininess="10">
             <emission r="0.75" g="1" b="1" a="1.0" />
@@ -128,14 +129,11 @@
         <primitive id="sphere">
             <sphere radius="0.8" slices="50" stacks="50"/>
         </primitive>
-        <!-- <primitive id="tinysphere">
-            <sphere radius="0.15" slices="20" stacks="20"/>
-        </primitive> -->
         <primitive id="torus">
             <torus loops="30" slices="60" inner="0.2" outer="3.0"/>
         </primitive>
         <primitive id="cylinder">
-            <cylinder slices="20" stacks="10" base="0.2" top="0.4" height="2" />
+            <cylinder slices="40" stacks="10" base="1" top="1" height="4" />
         </primitive>
     </primitives>
 

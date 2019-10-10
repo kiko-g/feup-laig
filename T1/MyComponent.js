@@ -1,21 +1,19 @@
 /**
- * Represents an intermediate node aka component
  * @constructor
- * @param scene Reference to MyScene object
- * @param nodeID node/component ID
- * @param materials materials
- * @param transfMatrix transformation matrix
- * @param texture texture applied to the component
- * @param componentChildren component children of the node/component
- * @param primitiveChildren primitive children of the node/component (leaves)
- * @param current current selected material (inside materials param)
- * @param materials list of materials (inside materials param)
- * @param texture texture object applied (inside texture param)
- * @param length_t texture paramter "t" scale (inside texture param)
- * @param length_s texture paramter "s" scale (inside texture param)
  */
 class MyComponent extends CGFobject
 {
+    /**
+	 * Represents an intermediate node aka component
+	 * @param {CGFscene} scene main scene
+     * @param nodeID node/component ID
+     * @param materials materials
+     * @param texture texture applied to the component
+     * @param transfMatrix transformation matrix
+     * @param componentChildren component children of the node/component
+     * @param primitiveChildren primitive children of the node/component (leaves)
+	 */
+
     constructor(scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren, loaded) {
         super(scene);
         this.componentID = componentID;
@@ -24,6 +22,6 @@ class MyComponent extends CGFobject
         this.texture = texture; //has texture, length_t and length_s
         this.children = componentChildren;
         this.leaves = primitiveChildren;
-        this.loaded = loaded;
+        // this.loaded = loaded;
     }
 }
