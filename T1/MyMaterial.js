@@ -21,4 +21,9 @@ class MyMaterial {
         appearence.setDiffuse(...this.diffuse);
         appearence.setSpecular(...this.specular);
     }
+
 }
+    class MyMaterialInherit extends MyMaterial
+    {
+        apply(appearence) { /* do Nothing */ }
+    }  

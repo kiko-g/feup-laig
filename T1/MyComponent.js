@@ -16,18 +16,12 @@ class MyComponent extends CGFobject
     constructor(scene, nodeID, materials, transfMatrix, texture, componentChildren, primitiveChildren, length_t, length_s)
     {
         super(scene);
+        this.loaded = true;
         this.nodeID = nodeID;
-        this.materials = materials;
+        this.materials = materials; //has current and materials
         this.transfMatrix = transfMatrix;
-        this.texture = texture;
+        this.texture = texture; //has texture, length_t and length_s
         this.children = componentChildren;
         this.leaves = primitiveChildren;
-        this.length_t = length_t;
-        this.length_s = length_s;
-        // this.loaded = false;
     }
-    
-    // addChild(nodeID){ this.children.push(nodeID) };
-    // setTexture(texture) { this.texture = texture; }
-    // setTransfMatrix(transfMatrix) { this.transfMatrix = transfMatrix; }
 }

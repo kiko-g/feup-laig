@@ -23,11 +23,9 @@ class MySceneGraph
     constructor(filename, scene)
     {
         this.scene = scene;
-        scene.graph = this; // Establish bidirectional references between scene and graph.
-        this.nodes = [];
-        this.idRoot = null;      // The id of the root element.
-        this.loadedOk = null;
-        this.displayOk = false;
+        scene.graph = this;     // Establish bidirectional references between scene and graph.
+        this.nodes = [];        // unused
+        this.idRoot = null;     // The id of the root element.
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -54,7 +52,7 @@ class MySceneGraph
         var error = this.parseXMLFile(rootElement); // Here should go the calls for different functions to parse the various blocks
         if (error != null) { this.onXMLError(error); return; }
         this.loadedOk = true;
-        this.displayOk = false;
+        
         /**
          * As the graph loaded ok, signal the scene so that any
          * additional initialization depending on the graph can take place */
@@ -169,25 +167,6 @@ class MySceneGraph
 
 
     
-    /**
-     * HELPFUL NUMBER VERICATION FUNCTION
-     * USED TO CHECK AND RETURN AN ERROR IF NEED BE
-     * REDUCES SIZE OF CODE BELOW
-     * @param {Block} node parent node
-     * @param {Number} n number
-     * @param {String} name var name
-     * @param {Bool} haveLim decide if var needs limits or not
-     * @param {Number} low lower lim, 0 default
-     * @param {Number} high higher limit, 10000 default
-     */
-    verifNum(node, n, name, haveLim = true, low = 0, high = 10000)
-    {
-        if ((n == null || isNaN(n)) || (haveLim && !(n >= low && n <= high)))
-         return "unable to parse " + name + ", of " + node.nodeName + " block.";
-        
-        return null;
-    }
-    
 
 
     /**
@@ -220,123 +199,104 @@ class MySceneGraph
      */
     parseViews(viewsNode)
     {
-        var error;
-        var def = this.reader.getString(viewsNode, 'default', true);
-        var numViews = 0;
-        var children = viewsNode.children;
-
-        this.views = {};
-        this.views.array = [];
+        let defaultViewID = viewsNode.getAttribute("default");
+        if (defaultViewID == null) this.onXMLMinorError("No default view defined.");
+        
+        this.views = [];
+        let defaultViewDefined = false;
+        let children = viewsNode.children;
 
         for (let i = 0; i < children.length; ++i)
         {
-            var childNode = children[i];
-            if (childNode.nodeName != 'ortho' &&
-                childNode.nodeName != 'perspective') {
-                this.onXMLMinorError('unknown tag <' + childNode.nodeName + '>');
+            let childNode = children[i];
+            let viewtype = childNode.nodeName;
+            if (viewtype != 'ortho' && viewtype != 'perspective') {
+                this.onXMLMinorError('unknown tag <' + viewtype + '>');
                 continue;
             }
 
             //perspective/ortho children
-            var id = this.reader.getString(childNode, 'id', true);
-            if (id == '') return 'invalid view id';
+            let id = childNode.getAttribute("id");
+            if (id == null) this.onXMLMinorError("ID for " + viewtype + " view not specified");
+            if (id == defaultViewID) defaultViewDefined = true;
             
-            var near = this.reader.getFloat(childNode, 'near', true);
-            if ((error = this.verifNum(childNode, near, 'near', false)) != null)
-                return error;
-
-            var far = this.reader.getFloat(childNode, 'far', true);
-            if ((error = this.verifNum(childNode, far, 'far', false)) != null)
-                return error;
+            let near = childNode.getAttribute("near");
+            if (near == null) this.onXMLMinorError("Near attribute for " + viewtype + " view not specified");
+            let far = childNode.getAttribute("far");
+            if (far == null) this.onXMLMinorError("Far attribute for " + viewtype + " view not specified");
 
 
 
             // Reads the names of the nodes to an auxiliary buffer.
             let nodeNames = [];
             var grandChildren = childNode.children;
+            for (let j = 0; j < grandChildren.length; j++) nodeNames.push(grandChildren[j].nodeName);
 
-            for (let j = 0; j < grandChildren.length; j++)
-                nodeNames.push(grandChildren[j].nodeName);
-
-            var fromIndex = nodeNames.indexOf('from');
-            var toIndex = nodeNames.indexOf('to');
-            var from = grandChildren[fromIndex];
-            var to = grandChildren[toIndex]
-
-            var fromx = this.reader.getFloat(from, 'x', true);
-            if ((error = this.verifNum(from, fromx, 'fromx', false)) != null)
-                return error;
-            var fromy = this.reader.getFloat(from, 'y', true);
-            if ((error = this.verifNum(from, fromy, 'fromy', false)) != null)
-                return error;
-            var fromz = this.reader.getFloat(from, 'z', true);
-            if ((error = this.verifNum(from, fromz, 'fromz', false)) != null)
-                return error;
-
-            var tox = this.reader.getFloat(to, 'x', true);
-            if ((error = this.verifNum(to, tox, 'tox', false)) != null) return error;
-            var toy = this.reader.getFloat(to, 'y', true);
-            if ((error = this.verifNum(to, toy, 'toy', false)) != null) return error;
-            var toz = this.reader.getFloat(to, 'z', true);
-            if ((error = this.verifNum(to, toz, 'toz', false)) != null) return error;
-
-
-            if (childNode.nodeName == 'ortho')
-            {
-                var left = this.reader.getFloat(childNode, 'left', true);
-                if ((error = this.verifNum(to, left, 'left', false)) != null)
-                    return error;
-                
-                    var right = this.reader.getFloat(childNode, 'right', true);
-                if ((error = this.verifNum(to, right, 'right', false)) != null)
-                    return error;
-                
-                    var top = this.reader.getFloat(childNode, 'top', true);
-                if ((error = this.verifNum(to, top, 'top', false)) != null)
-                    return error;
-                
-                    var bottom = this.reader.getFloat(childNode, 'bottom', true);
-                if ((error = this.verifNum(to, bottom, 'bottom', false)) != null)
-                    return error;
-
-                this.views.array[id] = {
-                    type: 'ortho',
-                    near: near,
-                    far: far,
-                    left: left,
-                    right: right,
-                    top: top,
-                    bottom: bottom,
-                    from: { x: fromx, y: fromy, z: fromz },
-                    to: { x: tox, y: toy, z: toz }
-                };
-                numViews++;
-            } 
-            else if (childNode.nodeName == 'perspective') {
-                var angle = this.reader.getFloat(childNode, 'angle', false);
-
-                if ((error = this.verifNum(childNode, angle, 'angle', true)) != null)
-                    return error;
-
-                this.views.array[id] = {
-                    type: 'perspective',
-                    near: near,
-                    far: far,
-                    angle: angle * DEGREE_TO_RAD,
-                    from: { x: fromx, y: fromy, z: fromz },
-                    to: { x: tox, y: toy, z: toz }
-                };
-                numViews++;
+            let from, to;
+            let fromx, fromy, fromz;
+            let tox, toy, toz;
+            
+            from = childNode.getElementsByTagName("from");
+            if(from.length == 0) this.onXMLMinorError("FROM element for " + viewtype + " view");
+            else if (from.length > 1) this.onXMLMinorError("More than 1 FROM element for " + viewtype + " view");
+            else {
+                fromx = from[0].getAttribute("x");
+                fromy = from[0].getAttribute("y");
+                fromz = from[0].getAttribute("z");
             }
+
+
+            to = childNode.getElementsByTagName("to");
+            if(to.length == 0) this.onXMLMinorError("FROM element for " + viewtype + " view");
+            if(to.length > 1) this.onXMLMinorError("More than 1 FROM element for " + viewtype + " view");
+            else {
+                tox = to[0].getAttribute("x");
+                toy = to[0].getAttribute("y");
+                toz = to[0].getAttribute("z");
+            }
+
+
+            //create object with currentView to add to our views array
+            let currentView = { 
+                id: id, 
+                near: near,
+                far: far,
+                from: { x: fromx, y: fromy, z: fromz },
+                to: { x: tox, y: toy, z: toz }
+            }
+
+
+            if (viewtype == "perspective") {
+                let angle = childNode.getAttribute("angle");
+                if (angle == null) this.onXMLMinorError("no angle attribute for " + viewtype);
+                currentView.type = "perspective";
+                currentView.angle = angle;
+            }
+            else if (viewtype == "ortho") {
+                let viewTop = childNode.getAttribute("top");
+                let viewBottom = childNode.getAttribute("bottom");
+                let viewLeft = childNode.getAttribute("left");
+                let viewRight = childNode.getAttribute("right");
+
+                let up = childNode.child.getElementsByTagName("up");
+                let upX = up[0].getAttribute("x");
+                let upY = up[0].getAttribute("y");
+                let upZ = up[0].getAttribute("z");
+
+                currentView.type = "ortho";
+                currentView.angle = angle;
+                currentView.top = viewTop;
+                currentView.bottom = viewBottom;
+                currentView.left = viewLeft;
+                currentView.right = viewRight;
+                currentView.up = { x: upX, y: upY, z: upZ };
+            }
+            this.views.push(currentView);
         }
+        if (this.views.length == 0) this.onXMLError("No views loaded from XML");
+        if (defaultViewDefined == false) this.onXMLMinorError("Default View not defined");
 
-        //in case reaches end with no valid view
-        if(numViews == 0) return 'no valid view defined'
-        if (this.views.array[def] == null) return 'no default view defined';
-
-        this.views.default = def;
-        this.log('Parsed views');
-
+        this.log("Parsed views");
         return null;
     }
 
@@ -575,27 +535,28 @@ class MySceneGraph
 
             // get emission for material and check for errors, then parse color into list
             var emission = children[i].getElementsByTagName("emission"); //get rgba
-            if (emission.length == 0) return "no emission provided for materia with ID: " + materialID;
+            if (emission.length == 0) return "no emission specified for materia with ID: " + materialID;
             else emission = this.parseColor(emission[0], "emission in " + materialID + "has an incorrect format");
 
             // get ambient for material and check for errors, then parse color into list
             var ambient = children[i].getElementsByTagName("ambient"); //get rgba
-            if (ambient.length == 0) return "no ambient provided for materia with ID: " + materialID;
+            if (ambient.length == 0) return "no ambient specified for materia with ID: " + materialID;
             else ambient = this.parseColor(ambient[0], "ambient in " + materialID + "has an incorrect format");
             
             // get diffuse for material and check for errors, then parse color into list
             var diffuse = children[i].getElementsByTagName("diffuse"); //get rgba
-            if (diffuse.length == 0) return "no diffuse provided for materia with ID: " + materialID;
+            if (diffuse.length == 0) return "no diffuse specified for materia with ID: " + materialID;
             else diffuse = this.parseColor(diffuse[0], "diffuse in " + materialID + "has an incorrect format");
             
             // get specular for material and check for errors, then parse color into list
             var specular = children[i].getElementsByTagName("specular"); //get rgba
-            if (specular.length == 0) return "no specular provided for materia with ID: " + materialID;
+            if (specular.length == 0) return "no specular specified for materia with ID: " + materialID;
             else specular = this.parseColor(specular[0], "specular in " + materialID + "has an incorrect format");
 
 
             // build final material with all attributes
             var material = new MyMaterial(shininess, emission, ambient, diffuse, specular);
+            // console.log("MATS: "+ material.emission);
             this.materials[materialID] = material;
         }
 
@@ -859,7 +820,6 @@ class MySceneGraph
         this.components = [];
         var children = componentsNode.children;
         var allComponentIDs = [];
-        var materials = [];
         var grandChildren = [];
         var grandgrandChildren = [];
         var componentNodeNames = []; //vector with the node names inside <components> tag
@@ -874,7 +834,6 @@ class MySceneGraph
             var ID = this.reader.getString(children[i], "id"); // Get id of component[i].
             if (ID == null) return "no ID defined for component ID";
             allComponentIDs[i] = ID;
-            console.log(ID + " :" + i + ":");
         }
 
 
@@ -896,7 +855,7 @@ class MySceneGraph
 
 
             //Transformations section
-            var transfMatrix;
+            var transfMatrix; //build
             grandgrandChildren = grandChildren[transformationIndex].children;
             if (grandgrandChildren.length == 0) transfMatrix = mat4.create();
             else if (grandgrandChildren[0].nodeName == "transformationref")
@@ -915,8 +874,31 @@ class MySceneGraph
 
             //Materials section
             grandgrandChildren = grandChildren[materialsIndex].children;
-            for (var j = 0; j < grandgrandChildren.length; j++)
-                materials.push(this.materials[this.reader.getString(grandgrandChildren[j], 'id')]);
+            let materialscomp = [];
+
+            for (let j = 0; j < grandgrandChildren.length; j++)
+            {
+                let material = grandgrandChildren[j];
+                if (material.nodeName != "material") {
+                    this.onXMLMinorError("unknown material <" + material.nodeName + ">");
+                    continue;
+                }
+
+                let matID = this.reader.getString(material, "id");
+                if (matID == null){
+                    this.onXMLMinorError("no ID defined for material in component: " + componentID);
+                    continue;
+                }
+                else if (matID == "inherit") { materialscomp.push(new MyMaterialInherit()); }
+                else if (!this.materials[matID]) {
+                    this.onXMLMinorError("material with ID " + matID + " in component: " + componentID + " doesn't exist");
+                    continue;
+                }
+                else materialscomp.push(this.materials[matID]);
+            }
+
+            if (materialscomp.length == 0) this.onXMLError("No material in component " + componentID);
+            var materials = { current: 0, materials: materialscomp }; //build
 
 
 
@@ -1122,36 +1104,36 @@ class MySceneGraph
     goThroughGraph(componentID, mat, tex)
     {
         var currentnode = this.components[componentID];
-        for(let m=0; m<mat.length; m++) console.log("<"+m+"> " + currentnode.materials[mat[m]])
+        // for(let m=0; m<mat.length; m++) console.log("<"+m+"> " + currentnode.materials[m]);
         var ch = currentnode.children;
-        var MATS;       // = mat;
-        var TEX_ID;     // = tex;
+        var MATS, TEX;
 
-        if (currentnode.texture != "inherit") TEX_ID = currentnode.texture;
-        else TEX_ID = tex;
-        if (currentnode.materials[0] != "inherit") MATS = currentnode.materials;
-        else MATS = mat;
+        if (currentnode.texture.texture != "inherit") TEX = currentnode.texture.texture;
+        else TEX_ID = tex.texture;
+        if (currentnode.materials.materials != "inherit") MATS = currentnode.materials[0];
+        else MATS = mat.materials;
 
         //scene transformations
         this.scene.multMatrix(currentnode.transfMatrix);
 
-        var childID;
-        var currentTexture = currentnode.texture[TEX_ID];
-        var currentMaterial = currentnode.materials[MATS[(this.scene.materialcounter % MATS.length)]]; //
+        
+        var currentTexture = currentnode.texture.texture[TEX];
+        var currentMaterial = currentnode.materials.materials[MATS[this.scene.materialcounter % MATS.length]]; //
         
         for(var i = 0; i < ch.length; i++)
         {
-            this.scene.pushMatrix();
-
-            childID = ch[i];
-            if(currentnode.leaves[childID] != null){
+            if(currentnode.leaves[ch[i]] != null){
                 currentMaterial.apply();
                 currentTexture.bind();
-                currentnode.leaves[child[i]].display();
+                this.scene.pushMatrix();
+                currentnode.leaves[ch[i]].display();
+                this.scene.popMatrix();
             }
-            else this.goThroughGraph(child[i], MATS, TEX); 
-
-            this.scene.popMatrix();
+            else {
+                this.scene.pushMatrix();
+                this.goThroughGraph(ch[i], MATS, TEX); 
+                this.scene.popMatrix();
+            }
         }
     }
 
@@ -1163,7 +1145,10 @@ class MySceneGraph
      */
     displayScene()
     {
+        // this.components[this.idRoot].display(this.scene);
         this.goThroughGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
+        // for(let m=0; m<1; m++) this.log(this.components[this.idRoot]);
+
         
         this.scene.pushMatrix();
         this.primitives['sphere'].display()
@@ -1195,15 +1180,6 @@ class MySceneGraph
     onXMLError(message) { console.error("XML Loading Error: " + message); this.loadedOk = false; }
 
 
-
-    /**
-     * Callback to be executed on any displaying error, showing an error on the console.
-     * @param {string} message
-     */
-    onDisplayError(message) {
-        console.error("Display Error: " + message);
-        this.displayOk = false;
-    }
 
     /**
      * Callback to be executed on any minor error, showing a warning on the console.
