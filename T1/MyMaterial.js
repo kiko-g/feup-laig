@@ -23,7 +23,8 @@ class MyMaterial {
     }
 
 }
-    class MyMaterialInherit extends MyMaterial
-    {
-        apply(appearence) { /* do Nothing */ }
-    }
+
+class MyMaterialInherit extends MyMaterial
+{
+    // apply(appearence) { /* do Nothing */ }
+}

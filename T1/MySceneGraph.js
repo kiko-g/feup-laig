@@ -200,111 +200,106 @@ class MySceneGraph
      */
     parseViews(viewsNode)
     {
-        //get Default View ID for the nodes
         let defaultViewID = viewsNode.getAttribute("default");
         if (defaultViewID == null) this.onXMLMinorError("No default view defined.");
-
+        
         this.views = [];
-        // this.defaultView = defaultViewID;
-
-        let defaultViewExists = false;
-
-        //get all views inside views element
+        let defaultViewDefined = false;
         let children = viewsNode.children;
-        if (children.length == 0) this.onXMLError("No views Provided!");
-        for (let i = 0; i < children.length; i++) {
-            let child = children[i];
-            let name = child.nodeName;
-            //if view has an invalid name throw error and proceed.
-            if (name != "ortho" && name != "perspective") {
-                this.onXMLMinorError("Unexpedted view: " + name);
+
+        for (let i = 0; i < children.length; ++i)
+        {
+            let childNode = children[i];
+            let viewtype = childNode.nodeName;
+            if (viewtype != 'ortho' && viewtype != 'perspective') {
+                this.onXMLMinorError('unknown tag <' + viewtype + '>');
                 continue;
             }
 
-            //get ID and test for errors.
-            let viewId = child.getAttribute("id");
-            if (viewId == null) this.onXMLMinorError("ID for " + name + " view not provided!");
-            if (viewId == defaultViewID) defaultViewExists = true;
+            //perspective/ortho children
+            let id = childNode.getAttribute("id");
+            if (id == null) this.onXMLMinorError("ID for " + viewtype + " view not specified");
+            if (id == defaultViewID) defaultViewDefined = true;
+            
+            let near = childNode.getAttribute("near");
+            if (near == null) this.onXMLMinorError("Near attribute for " + viewtype + " view not specified");
+            let far = childNode.getAttribute("far");
+            if (far == null) this.onXMLMinorError("Far attribute for " + viewtype + " view not specified");
 
-            //get near and far and test for errors.
-            let viewNear = parseFloat(child.getAttribute("near"));
-            if (viewNear == null) this.onXMLMinorError("Near attribute for " + name + " view not provided!");
-            let viewFar = parseFloat(child.getAttribute("far"));
-            if (viewFar == null) this.onXMLMinorError("Far attribute for " + name + " view not provided!");
 
-            //get from array values and test for errors.
-            let fromList = child.getElementsByTagName("from");
-            let fromX;
-            let fromY;
-            let fromZ;
-            if (fromList.length == 0) {
-                this.onXMLMinorError("From element for " + name + " view not provided!");
-            }
-            else if (fromList.length > 1) {
-                this.onXMLMinorError("More than 1 For element for " + name + " view provided!");
-            }
+
+            // Reads the names of the nodes to an auxiliary buffer.
+            let nodeNames = [];
+            var grandChildren = childNode.children;
+            for (let j = 0; j < grandChildren.length; j++) nodeNames.push(grandChildren[j].nodeName);
+
+            let from, to;
+            let fromx, fromy, fromz;
+            let tox, toy, toz;
+            
+            from = childNode.getElementsByTagName("from");
+            if(from.length == 0) this.onXMLMinorError("FROM element for " + viewtype + " view");
+            else if (from.length > 1) this.onXMLMinorError("More than 1 FROM element for " + viewtype + " view");
             else {
-                fromX = parseFloat(fromList[0].getAttribute("x"));
-                fromY = parseFloat(fromList[0].getAttribute("y"));
-                fromZ = parseFloat(fromList[0].getAttribute("z"));
+                fromx = from[0].getAttribute("x");
+                fromy = from[0].getAttribute("y");
+                fromz = from[0].getAttribute("z");
             }
 
-            //get to array values and test for errors.
-            let toList = child.getElementsByTagName("to");
-            let toX;
-            let toY;
-            let toZ;
-            if (toList.length == 0) {
-                this.onXMLMinorError("To element for " + name + " view not provided!");
-            }
-            else if (toList.length > 1) {
-                this.onXMLMinorError("More than 1 To element for " + name + " view provided!");
-            }
+
+            to = childNode.getElementsByTagName("to");
+            if(to.length == 0) this.onXMLMinorError("FROM element for " + viewtype + " view");
+            if(to.length > 1) this.onXMLMinorError("More than 1 FROM element for " + viewtype + " view");
             else {
-                toX = parseFloat(toList[0].getAttribute("x"));
-                toY = parseFloat(toList[0].getAttribute("y"));
-                toZ = parseFloat(toList[0].getAttribute("z"));
+                tox = to[0].getAttribute("x");
+                toy = to[0].getAttribute("y");
+                toz = to[0].getAttribute("z");
             }
+
 
             //create object with currentView to add to our views array
-            let currentView = { id: viewId, near: viewNear, far: viewFar, from: vec3.fromValues(fromX, fromY, fromZ), to: vec3.fromValues(toX, toY, toZ) }
-
-            //complete currentView object with appropriate information depending on the view type
-            if (name = "perspective") {
-                let viewAngle = parseFloat(child.getAttribute("angle"));
-                if (viewAngle == null) this.onXMLMinorError("no angle attribute for " + name + " view provided!");
-                currentView.type = "perspective";
-
-                currentView.angle = viewAngle;
+            let currentView = { 
+                id: id, 
+                near: near,
+                far: far,
+                from: { x: fromx, y: fromy, z: fromz },
+                to: { x: tox, y: toy, z: toz }
             }
-            else if (name = "ortho") {
-                let viewTop = child.getAttribute("top");
-                let viewBottom = child.getAttribute("bottom");
-                let viewLeft = child.getAttribute("left");
-                let viewRight = child.getAttribute("right");
 
-                let upList = child.child.getElementsByTagName("up");
-                let upX = parseFloat(upList[0].getAttribute("x"));
-                let upY = parseFloat(upList[0].getAttribute("y"));
-                let upZ = parseFloat(upList[0].getAttribute("z"));
+
+            if (viewtype == "perspective") {
+                let angle = childNode.getAttribute("angle");
+                if (angle == null) this.onXMLMinorError("no angle attribute for " + viewtype);
+                currentView.type = "perspective";
+                currentView.angle = angle;
+            }
+            else if (viewtype == "ortho") {
+                let viewTop = childNode.getAttribute("top");
+                let viewBottom = childNode.getAttribute("bottom");
+                let viewLeft = childNode.getAttribute("left");
+                let viewRight = childNode.getAttribute("right");
+
+                let up = childNode.child.getElementsByTagName("up");
+                let upX = up[0].getAttribute("x");
+                let upY = up[0].getAttribute("y");
+                let upZ = up[0].getAttribute("z");
 
                 currentView.type = "ortho";
-                currentView.angle = viewAngle;
+                currentView.angle = angle;
                 currentView.top = viewTop;
                 currentView.bottom = viewBottom;
                 currentView.left = viewLeft;
                 currentView.right = viewRight;
-                currentView.up = vec3.fromValues(upX, upY, upZ);
+                currentView.up = { x: upX, y: upY, z: upZ };
             }
-
             this.views.push(currentView);
         }
-        if (this.views.length == 0) this.onXMLError("No Views successfully loaded!");
-        if (!defaultViewExists) this.onXMLMinorError("Default View doesn't exist");
+        if (this.views.length == 0) this.onXMLError("No views loaded from XML");
+        if (defaultViewDefined == false) this.onXMLMinorError("Default View not defined");
 
+        this.log("Parsed views");
         return null;
     }
-
 
 
     /**
@@ -465,7 +460,7 @@ class MySceneGraph
     {
         //For each texture in textures block, check ID and file URL
         var children = texturesNode.children;
-        var numTextures = 0;
+        this.numtextures = 0;
         this.textures = [];
         
         // Any number of textures.
@@ -495,11 +490,12 @@ class MySceneGraph
 
             var texture = new CGFtexture(this.scene, file);
             this.textures[textureID] = texture;
-
-            numTextures++;
+            this.numtextures++;
+            // console.log("<"+i+"> "+textureID);
         }
-
-        if(numTextures == 0) return "No textures were defined.";
+        
+        if(this.numtextures == 0) return "No textures were defined.";
+        this.log("Parsed Textures");
         return null;
     }
 
@@ -533,26 +529,26 @@ class MySceneGraph
 
             // get shininess for material and check for errors
             var shininess = this.reader.getFloat(children[i], "shininess");
-            if (shininess == null) return "no shininess defined for material with ID: " + materialID;
+            if (shininess == null) return "no shininess defined for material w/ ID: " + materialID;
 
             // get emission for material and check for errors, then parse color into list
             var emission = children[i].getElementsByTagName("emission"); //get rgba
-            if (emission.length == 0) return "no emission specified for materia with ID: " + materialID;
+            if (emission.length == 0) return "no emission specified for material w/ ID: " + materialID;
             else emission = this.parseColor(emission[0], "emission in " + materialID + "has an incorrect format");
 
             // get ambient for material and check for errors, then parse color into list
             var ambient = children[i].getElementsByTagName("ambient"); //get rgba
-            if (ambient.length == 0) return "no ambient specified for materia with ID: " + materialID;
+            if (ambient.length == 0) return "no ambient specified for material w/ ID: " + materialID;
             else ambient = this.parseColor(ambient[0], "ambient in " + materialID + "has an incorrect format");
             
             // get diffuse for material and check for errors, then parse color into list
             var diffuse = children[i].getElementsByTagName("diffuse"); //get rgba
-            if (diffuse.length == 0) return "no diffuse specified for materia with ID: " + materialID;
+            if (diffuse.length == 0) return "no diffuse specified for material w/ ID: " + materialID;
             else diffuse = this.parseColor(diffuse[0], "diffuse in " + materialID + "has an incorrect format");
             
             // get specular for material and check for errors, then parse color into list
             var specular = children[i].getElementsByTagName("specular"); //get rgba
-            if (specular.length == 0) return "no specular specified for materia with ID: " + materialID;
+            if (specular.length == 0) return "no specular specified for material w/ ID: " + materialID;
             else specular = this.parseColor(specular[0], "specular in " + materialID + "has an incorrect format");
 
 
@@ -876,7 +872,6 @@ class MySceneGraph
         let grandChildren = [];
         let grandgrandChildren = [];
         let componentNodeNames = []; //vector with the node names inside <components> tag
-        console.log(children.length);
 
         for (let i = 0; i < children.length; i++)
         {
@@ -891,7 +886,6 @@ class MySceneGraph
         }
 
 
-        
         for (let i = 0; i < children.length; i++)
         {
             let componentID = allComponentIDs[i];       // Get id from the auxiliar array.
@@ -918,14 +912,12 @@ class MySceneGraph
                 if (transRefID == null) return "unable to parse transformation id of component ID " + componentID;
 
                 transfMatrix = this.transformations[transRefID];
-                if (transfMatrix == null) return "no such transformation with ID " + transRefID + " for component ID: " + componentID;
+                if (transfMatrix == null) return "no such transformation w/ ID " + transRefID + " for component ID: " + componentID;
                 if (grandgrandChildren.length > 1) this.onXMLMinorError("Multiple transformations declared for " + componentID);
             }
             else transfMatrix = this.parseHelper(grandgrandChildren, " of component " + componentID);
 
 
-
-            //MATERIALS SECTION
             grandgrandChildren = grandChildren[materialsIndex].children;
             let materialscomp = [];
 
@@ -937,21 +929,21 @@ class MySceneGraph
                     continue;
                 }
 
-                let matID = this.reader.getString(material, "id");
-                if (matID == null){
+                let materialID = this.reader.getString(material, "id");
+                if (materialID == null){
                     this.onXMLMinorError("no ID defined for material in component: " + componentID);
                     continue;
                 }
-                else if (matID == "inherit") { materialscomp.push(new MyMaterialInherit()); }
-                else if (!this.materials[matID]) {
-                    this.onXMLMinorError("material with ID " + matID + " in component: " + componentID + " doesn't exist");
+                else if (materialID == "inherit") { materialscomp.push(new MyMaterialInherit()); }
+                else if (!this.materials[materialID]) {
+                    this.onXMLMinorError("material w/ ID " + materialID + " in component: " + componentID + " doesn't exist");
                     continue;
                 }
-                else materialscomp.push(this.materials[matID]);
+                else materialscomp.push(this.materials[materialID]);
             }
 
             if (materialscomp.length == 0) this.onXMLError("No material in component " + componentID);
-            for(let m=0; m<materialscomp.length; m++) console.log(materialscomp[m]);
+            // for(let m=0; m<materialscomp.length; m++) console.log(materialscomp[m]);
             let materials = { current: 0, materials: materialscomp }; //build
 
 
@@ -967,7 +959,7 @@ class MySceneGraph
             else if(texID == "none") { tex = null; }
             else if(this.textures[texID] == null) 
             {
-                this.onXMLError("Texture with ID " + texID + " in component: " + componentID + " doesn't exist");
+                this.onXMLError("Texture w/ ID " + texID + " in component: " + componentID + " doesn't exist");
                 return null;
             }
             else { tex = this.textures[texID]; }
@@ -977,45 +969,45 @@ class MySceneGraph
             if (length_s == null) { this.onXMLMinorError("length_s not specified in texture of component " + componentID); length_s = 1.0; }
             if (length_t == null) { this.onXMLMinorError("length_t not specified in texture of component " + componentID); length_t = 1.0; }
 
-            let texture = {texture: tex, length_s: length_s, length_t: length_t}; //build texture
+            var texture = {texture: tex, length_s: length_s, length_t: length_t}; //build texture
 
 
 
             //CHILDREN SECTION
-            let componentChildren = [];
-            let primitiveChildren = [];
+            // FOCUS ON THIS
+            var componentChildren = [];
+            var primitiveChildren = [];
 
             grandgrandChildren = grandChildren[childrenIndex].children;
+            console.log(grandgrandChildren);
             for (let j = 0; j < grandgrandChildren.length; j++)
             {
                 if (grandgrandChildren[j].nodeName == "componentref")
                 {
-                    let compRef = this.reader.getString(grandgrandChildren[j], 'id'); //read componentref ID (string)
-                    if (compRef == null) return "unable to parse componentref id of component ID: " + componentID;
-                    if (allComponentIDs.indexOf(compRef) == -1) return "no such component with ID " + compRef + " for component ID: " + componentID;
-                    componentChildren.push(compRef);
+                    let componentRef = this.reader.getString(grandgrandChildren[j], 'id'); //read componentref ID
+                    if (componentRef == null) return "unable to parse componentref id of component ID: " + componentID;
+                    if (allComponentIDs.indexOf(componentRef) == -1) return "component w/ ID " + componentRef + " doesn't exist for component ID: " + componentID;
+                    componentChildren.push(componentRef);
                 }
 
                 else if (grandgrandChildren[j].nodeName == "primitiveref")
                 {
-                    let primRef = this.reader.getString(grandgrandChildren[j], 'id');
-                    if (primRef == null) return "unable to parse primitiveref id of component ID " + componentID;
-                    if (this.primitives[primRef] == null) return "no such primitive with ID " + primRef + " for component ID " + componentID;
-                    primitiveChildren.push(primRef);
+                    let primitiveRef = this.reader.getString(grandgrandChildren[j], 'id'); //read primitiveref ID
+                    if (primitiveRef == null) return "unable to parse primitiveref id of component ID " + componentID;
+                    if (this.primitives[primitiveRef] == null) return "primitive w/ ID " + primitiveRef + " doesn't exist for component ID: " + componentID;
+                    primitiveChildren.push(primitiveRef);
                 }
 
                 else this.onXMLMinorError("component children must be componentref or primitiveref");
             }
 
             // ============= BUILD COMPONENT AND IT TO COMPONENT LIST =============
-            // ====================================================================
-            this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren, true);
+            this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren);
             // ====================================================================
         }
 
-        // for(let m=0; m < materials.length; m++) console.log("<"+m+"> " + materials[m].emission);
         //alert if top root isn't defined or properly read (XML error for example)
-        if (this.components[this.idRoot] == null) return "root component ID " + this.idRoot + " not defined";
+        if (this.components[this.idRoot].children == null) return "root component ID '" + this.idRoot + "' not defined";
     }
 
 
@@ -1096,17 +1088,27 @@ class MySceneGraph
         return color;
     }
     
-    
-    
 
-    
-    
-    // ==================================================================================================================================
-    goThroughGraph(componentID, mat, tex)
+
+
+
+    /**
+     * Displays the scene, processing each node, starting in the root node.
+     */
+    displayScene()
     {
+        this.scene.pushMatrix();
+        // console.log(this.components[this.idRoot].children);
+        this.goThroughGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
+        this.textures['rickm1'].bind();
+        this.primitives['cylinder'].display();
+        this.scene.popMatrix();
+    }
+
+    // ==================================================================================================================================
+    goThroughGraph(componentID, mat, tex){
         var currentnode = this.components[componentID];
-        var ch = currentnode.children; //----------------------------
-        for (var m = 0; m < 1; m++) console.log("<" + m + "> " + ch.length);
+        var ch = currentnode.children;
 
         if (currentnode.texture.texture != "inherit") var TEX = currentnode.texture.texture;
         else var TEX = tex.texture;
@@ -1114,6 +1116,7 @@ class MySceneGraph
         else var MATS = mat.materials;
 
         //scene transformations
+        // this.scene.pushMatrix();
         this.scene.multMatrix(currentnode.transfMatrix);
 
         
@@ -1136,22 +1139,6 @@ class MySceneGraph
             }
         }
     }
-
-
-
-
-    /**
-     * Displays the scene, processing each node, starting in the root node.
-     */
-    displayScene()
-    {
-        this.scene.pushMatrix();
-        this.textures['rickm1'].bind();
-        this.primitives['cylinder'].display();
-        this.scene.popMatrix();
-    }
-
-
 
 
     /**

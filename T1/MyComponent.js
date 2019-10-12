@@ -14,7 +14,7 @@ class MyComponent extends CGFobject
      * @param primitiveChildren primitive children of the node/component (leaves)
 	 */
 
-    constructor(scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren, loaded) {
+    constructor(scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren) {
         super(scene);
         this.componentID = componentID;
         this.materials = materials; //has current and materials

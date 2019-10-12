@@ -1,5 +1,5 @@
 <lxs>
-    <scene root="ROOT NODE" axis_length="5"/>
+    <scene root="ROOT NODE" axis_length="10"/>
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0" far="0" angle="0">
@@ -133,7 +133,7 @@
             <torus loops="30" slices="60" inner="0.2" outer="3.0"/>
         </primitive>
         <primitive id="cylinder">
-            <cylinder slices="40" stacks="10" base="1" top="1" height="4" />
+            <cylinder slices="40" stacks="10" base="2" top="2" height="8" />
         </primitive>
     </primitives>
 
@@ -148,7 +148,7 @@
             <materials>
                 <material id="metalMAT" />
             </materials>
-            <texture id="vidral" length_s="1" length_t="1"/>
+            <texture id="vidral" length_s="2" length_t="2"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -161,7 +161,7 @@
             <materials>
                 <material id="lightblue-gloss" />
             </materials>
-            <texture id="vidral" length_s="1" length_t="1"/>
+            <texture id="vidral" length_s="2" length_t="2"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -174,7 +174,7 @@
             <materials>
                 <material id="lightblue-gloss" />
             </materials>
-            <texture id="vidral" length_s="1" length_t="1"/>
+            <texture id="vidral" length_s="2" length_t="2"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -188,7 +188,7 @@
                 <material id="lightblue-gloss" />
             </materials>
 
-            <texture id="vidral" length_s="1" length_t="1"/>
+            <texture id="vidral" length_s="2" length_t="2"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -201,7 +201,7 @@
             <materials>
                 <material id="metalMAT" />
             </materials>
-            <texture id="vidral" length_s="1" length_t="1" />
+            <texture id="vidral" length_s="2" length_t="2" />
             <children>
                 <componentref id="center-sph" />
                 <componentref id="torus1" />
@@ -218,7 +218,7 @@
             <materials>
                 <material id="metalMAT" />
             </materials>
-            <texture id="vidral" length_s="1" length_t="1" />
+            <texture id="vidral" length_s="2" length_t="2" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
