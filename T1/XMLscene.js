@@ -21,11 +21,13 @@ class XMLscene extends CGFscene
     init(application)
     {
         super.init(application);
+        
         this.sceneInited = false;
         this.displayAxis = true;
-        this.displayNormals = true;
-
-        this.initCameras();
+        this.displayNormals = false;
+        //fov (radians), near, far, position, target 
+        this.camera = new CGFcamera(30*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(15, 25, 15), vec3.fromValues(0, 0, 0));
+        this.interface.setActiveCamera(this.camera);
         this.enableTextures(true);
 
         this.gl.clearDepth(100.0);
@@ -34,14 +36,35 @@ class XMLscene extends CGFscene
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(10);
-        
+        this.appearance = new CGFappearance(this);
+        this.setUpdatePeriod(50);
     }
 
     // Initializes the scene cameras.
     initCameras()
     {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        let V;
+        //In case something goes wrong keep default camera @ init(application)
+        if (this.graph.views.length == 0) return; 
+
+        //Use camera with default ID if it exists
+        if (this.graph.defaultViewDefined){
+            for (let i = 0; i < this.graph.views.length; i++) {
+                let view = this.graph.views[i];
+                if (view.id = this.graph.defaultViewID) {
+                    V = view;
+                    break;
+                }
+            }
+        }
+        else return;
+
+        if (V == null) return;
+        else if (V.type == "perspective") this.camera = new CGFcamera(V.angle, V.near, V.far, V.from, V.to);
+        else if (V.type = "ortho") 
+            this.camera = new CGFcameraOrtho(V.left, V.right, V.bottom, V.top, V.near, V.far, V.from, V.to, V.up);
+        
+        this.interface.setActiveCamera(this.camera);
     }
     
     
@@ -82,6 +105,13 @@ class XMLscene extends CGFscene
         }
     }
 
+    setDefaultAppearance()
+    {
+        this.setAmbient(0/255, 0/255, 0/255, 1.0);
+        this.setDiffuse(255/255, 255/255, 255/255, 1.0);
+        this.setSpecular(255/255, 255/255, 255/255, 1.0);
+        this.setShininess(10.0);
+    }
     
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
@@ -92,26 +122,16 @@ class XMLscene extends CGFscene
         
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
+        
         this.initLights();
+        this.initCameras();
         
         this.sceneInited = true;
     }
-    
-    
-    setDefaultAppearance()
-    {
-        this.setAmbient(0/255, 0/255, 0/255, 1.0);
-        this.setDiffuse(255/255, 255/255, 255/255, 1.0);
-        this.setSpecular(255/255, 255/255, 255/255, 1.0);
-        this.setShininess(10.0);
-    }
 
 
 
-    /**
-     *  Displays the scene.
-     */
-
+    // Displays the scene.
     display()
     {
         // ---- BEGIN Background, camera and axis setup
@@ -119,30 +139,29 @@ class XMLscene extends CGFscene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-        // Initialize Model-View matrix as identity (no transformation
-        this.updateProjectionMatrix();
-        this.loadIdentity();
-
-        // Apply transformations corresponding to the camera position relative to the origin
-        this.applyViewMatrix();
+        this.updateProjectionMatrix();  
+        this.loadIdentity();            // Initialize Model-View matrix as identity (no transformation)
+        this.applyViewMatrix();         // Apply transformations corresponding to the camera position relative to the origin
 
         this.pushMatrix();
         if(this.displayAxis) this.axis.display();
-        // if(this.displayNormals) this.graph.primitives['torus'].enableNormalViz();
-
+        
         for (let i = 0; i < this.lights.length; i++)
         {
-            // this.lights[i].update();
-            this.lights[0].setPosition(20, 20, 20);
-            this.lights[0].setVisible(true);
+            this.lights[i].setVisible(true);
             this.lights[i].enable();
         }
-
-        if (this.sceneInited)
-        {
-            this.setDefaultAppearance();
+        
+        if (this.sceneInited){
+            this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (MySceneGraph function).
         }
+        if(this.displayNormals){
+            // this.graph.primitives['cylinder'].enableNormalViz();
+            // this.graph.primitives['rectangle'].enableNormalViz();
+            // this.graph.primitives['sphere'].enableNormalViz();
+            // this.graph.primitives['torus'].enableNormalViz();
+        } 
 
         this.popMatrix();
         // ---- END Background, camera and axis setup

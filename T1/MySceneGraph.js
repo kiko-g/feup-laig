@@ -71,8 +71,8 @@ class MySceneGraph
         if (rootElement.nodeName != "lxs") return "root tag <lxs> missing";
                 
         // Reads the names of the nodes to an auxiliary buffer.
-        var nodes = rootElement.children;
         var nodeNames = [];
+        var nodes = rootElement.children;
         for (var i = 0; i < nodes.length; i++)
             nodeNames.push(nodes[i].nodeName);
 
@@ -161,7 +161,7 @@ class MySceneGraph
             //Parse components block
         }
 
-        this.log("=== All blocks parsed ===");
+        this.log("ALL BLOCKS PARSED");
     }
 
 
@@ -200,11 +200,11 @@ class MySceneGraph
      */
     parseViews(viewsNode)
     {
-        let defaultViewID = viewsNode.getAttribute("default");
-        if (defaultViewID == null) this.onXMLMinorError("No default view defined.");
+        this.defaultViewID = viewsNode.getAttribute("default");
+        if (this.defaultViewID == null) this.onXMLMinorError("No default view defined.");
         
         this.views = [];
-        let defaultViewDefined = false;
+        this.defaultViewDefined = false;
         let children = viewsNode.children;
 
         for (let i = 0; i < children.length; ++i)
@@ -217,21 +217,21 @@ class MySceneGraph
             }
 
             //perspective/ortho children
-            let id = childNode.getAttribute("id");
+            var id = childNode.getAttribute("id");
             if (id == null) this.onXMLMinorError("ID for " + viewtype + " view not specified");
-            if (id == defaultViewID) defaultViewDefined = true;
+            if (id == this.defaultViewID) this.defaultViewDefined = true;
             
-            let near = childNode.getAttribute("near");
+            let near = this.reader.getFloat(children[i], "near");
             if (near == null) this.onXMLMinorError("Near attribute for " + viewtype + " view not specified");
-            let far = childNode.getAttribute("far");
+            let far = this.reader.getFloat(children[i], "far");
             if (far == null) this.onXMLMinorError("Far attribute for " + viewtype + " view not specified");
 
 
-
             // Reads the names of the nodes to an auxiliary buffer.
-            let nodeNames = [];
+            let gcNodeNames = [];
             var grandChildren = childNode.children;
-            for (let j = 0; j < grandChildren.length; j++) nodeNames.push(grandChildren[j].nodeName);
+            for (let j = 0; j < grandChildren.length; j++)
+                gcNodeNames.push(grandChildren[j].nodeName);
 
             let from, to;
             let fromx, fromy, fromz;
@@ -257,45 +257,45 @@ class MySceneGraph
             }
 
 
-            //create object with currentView to add to our views array
-            let currentView = { 
+            //create structure w/ attributes common to ortho and pespective
+            let currentView = {
                 id: id, 
                 near: near,
                 far: far,
-                from: { x: fromx, y: fromy, z: fromz },
-                to: { x: tox, y: toy, z: toz }
+                from: vec3.fromValues(fromx, fromy, fromz), //this way we can pass from/to to CGFcamera()
+                to: vec3.fromValues(tox, toy, toz),
             }
 
-
+            //add exclusive attributes for each view type
             if (viewtype == "perspective") {
-                let angle = childNode.getAttribute("angle");
+                let angle = this.reader.getFloat(children[i], "angle");
                 if (angle == null) this.onXMLMinorError("no angle attribute for " + viewtype);
                 currentView.type = "perspective";
                 currentView.angle = angle;
             }
+
             else if (viewtype == "ortho") {
-                let viewTop = childNode.getAttribute("top");
-                let viewBottom = childNode.getAttribute("bottom");
-                let viewLeft = childNode.getAttribute("left");
-                let viewRight = childNode.getAttribute("right");
+                let leftv = childNode.getAttribute("left");
+                let rightv = childNode.getAttribute("right");
+                let topv = childNode.getAttribute("top");
+                let bottomv = childNode.getAttribute("bottom");
 
                 let up = childNode.child.getElementsByTagName("up");
-                let upX = up[0].getAttribute("x");
-                let upY = up[0].getAttribute("y");
-                let upZ = up[0].getAttribute("z");
+                let upx = up[0].getAttribute("x");
+                let upy = up[0].getAttribute("y");
+                let upz = up[0].getAttribute("z");
 
                 currentView.type = "ortho";
-                currentView.angle = angle;
-                currentView.top = viewTop;
-                currentView.bottom = viewBottom;
-                currentView.left = viewLeft;
-                currentView.right = viewRight;
-                currentView.up = { x: upX, y: upY, z: upZ };
+                currentView.left = leftv;
+                currentView.right = rightv;
+                currentView.top = topv;
+                currentView.bottom = bottomv;
+                currentView.up = vec3.fromValues(upx, upy, upz); //this way we can pass this to CGFcamera
             }
             this.views.push(currentView);
         }
         if (this.views.length == 0) this.onXMLError("No views loaded from XML");
-        if (defaultViewDefined == false) this.onXMLMinorError("Default View not defined");
+        if (this.defaultViewDefined == false) this.onXMLMinorError("Default View not defined");
 
         this.log("Parsed views");
         return null;
@@ -329,7 +329,7 @@ class MySceneGraph
         if (!Array.isArray(color)) return color;
         else this.background = color;
 
-        this.log("Parsed ambient");
+        this.log("Parsed globals (ambient)");
 
         return null;
     }
@@ -554,9 +554,9 @@ class MySceneGraph
 
             // build final material with all attributes
             var material = new MyMaterial(shininess, emission, ambient, diffuse, specular);
-            // console.log("MATS: "+ material.emission);
             this.materials[materialID] = material;
         }
+        // console.log(this.materials);
 
         this.log("Parsed materials");
         return null;
@@ -888,8 +888,8 @@ class MySceneGraph
 
         for (let i = 0; i < children.length; i++)
         {
-            let componentID = allComponentIDs[i];       // Get id from the auxiliar array.
-            if (this.components[componentID] != null)   // Checks for repeated IDs.
+            let componentID = allComponentIDs[i];       // Get current id from previous ids vector
+            if (this.components[componentID] != null)   // Checks repeated ids
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
             grandChildren = children[i].children;
@@ -966,8 +966,8 @@ class MySceneGraph
 
             let length_s = this.reader.getFloat(textureNode, "length_s");
             let length_t = this.reader.getFloat(textureNode, "length_t");
-            if (length_s == null) { this.onXMLMinorError("length_s not specified in texture of component " + componentID); length_s = 1.0; }
-            if (length_t == null) { this.onXMLMinorError("length_t not specified in texture of component " + componentID); length_t = 1.0; }
+            if (length_s == null || length_s == undefined) { this.onXMLMinorError("length_s not specified in texture of component " + componentID); length_s = 1.0; }
+            if (length_t == null || length_t == undefined) { this.onXMLMinorError("length_t not specified in texture of component " + componentID); length_t = 1.0; }
 
             var texture = {texture: tex, length_s: length_s, length_t: length_t}; //build texture
 
@@ -979,12 +979,12 @@ class MySceneGraph
             var primitiveChildren = [];
 
             grandgrandChildren = grandChildren[childrenIndex].children;
-            console.log(grandgrandChildren);
+            // console.log(grandgrandChildren[0]);
             for (let j = 0; j < grandgrandChildren.length; j++)
             {
                 if (grandgrandChildren[j].nodeName == "componentref")
                 {
-                    let componentRef = this.reader.getString(grandgrandChildren[j], 'id'); //read componentref ID
+                    let componentRef = this.reader.getString(grandgrandChildren[j], 'id'); //read componentref id
                     if (componentRef == null) return "unable to parse componentref id of component ID: " + componentID;
                     if (allComponentIDs.indexOf(componentRef) == -1) return "component w/ ID " + componentRef + " doesn't exist for component ID: " + componentID;
                     componentChildren.push(componentRef);
@@ -1006,6 +1006,8 @@ class MySceneGraph
             // ====================================================================
         }
 
+        console.log(this.components);
+        // console.log(this.components[""].children); //PROBLEM
         //alert if top root isn't defined or properly read (XML error for example)
         if (this.components[this.idRoot].children == null) return "root component ID '" + this.idRoot + "' not defined";
     }
@@ -1098,8 +1100,7 @@ class MySceneGraph
     displayScene()
     {
         this.scene.pushMatrix();
-        // console.log(this.components[this.idRoot].children);
-        this.goThroughGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
+        // this.goThroughGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
         this.textures['rickm1'].bind();
         this.primitives['cylinder'].display();
         this.scene.popMatrix();
@@ -1163,5 +1164,5 @@ class MySceneGraph
      * Callback to be executed on any message.
      * @param {string} message
      */
-    log(message) { console.log("   " + message); }
+    log(message) { console.log("========== " + message + " =========="); }
 }

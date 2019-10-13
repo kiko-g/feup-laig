@@ -1,16 +1,20 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="10"/>
 
-    <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0" far="0" angle="0">
-            <from x="30" y="95" z="30" />
+    <views default="CAM1">
+        <perspective id="CAM1" near="0.1" far="500" angle="20">
+            <from x="15" y="15" z="10" />
             <to x="0" y="0" z="0" />
+        </perspective>    
+        <perspective id="CAM2" near="0.1" far="10" angle="0">
+            <from x="2" y="-20" z="1" />
+            <to x="90" y="3" z="0" />    
         </perspective>
     </views>
 
     <globals>
         <ambient    r="0.2" g="0.2"  b="0.2"  a="1.0" />
-        <background r="0.0" g="0.09" b="0.13" a="1.0" />
+        <background r="0.1" g="0.19" b="0.30" a="1.0" />
     </globals>
 
     <lights>
@@ -133,7 +137,7 @@
             <torus loops="30" slices="60" inner="0.2" outer="3.0"/>
         </primitive>
         <primitive id="cylinder">
-            <cylinder slices="40" stacks="10" base="2" top="2" height="8" />
+            <cylinder slices="30" stacks="20" base="2" top="2" height="8" />
         </primitive>
     </primitives>
 
