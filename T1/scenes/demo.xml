@@ -3,13 +3,13 @@
 
     <views default="CAM1">
         <perspective id="CAM1" near="0.1" far="500" angle="20">
-            <from x="15" y="15" z="10" />
+            <from x="10" y="10" z="10" />
             <to x="0" y="0" z="0" />
         </perspective>    
-        <perspective id="CAM2" near="0.1" far="10" angle="0">
+        <!-- <perspective id="CAM2" near="0.1" far="10" angle="0">
             <from x="2" y="-20" z="1" />
             <to x="90" y="3" z="0" />    
-        </perspective>
+        </perspective> -->
     </views>
 
     <globals>
@@ -217,14 +217,14 @@
         <component id="ROOT NODE">
             <transformation>
                 <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
+                <scale x="9" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="metalMAT" />
             </materials>
             <texture id="vidral" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <componentref id="RN-LOGO" />
             </children>
         </component>
         

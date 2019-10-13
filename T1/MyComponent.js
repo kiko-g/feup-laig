@@ -8,10 +8,10 @@ class MyComponent extends CGFobject
 	 * @param {CGFscene} scene main scene
      * @param nodeID node/component ID
      * @param materials materials
-     * @param texture texture applied to the component
      * @param transfMatrix transformation matrix
-     * @param componentChildren component children of the node/component
-     * @param primitiveChildren primitive children of the node/component (leaves)
+     * @param texture texture applied to the component
+     * @param children component children of the node/component
+     * @param leaves primitive children of the node/component (leaves)
 	 */
 
     constructor(scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren) {

@@ -26,7 +26,7 @@ class XMLscene extends CGFscene
         this.displayAxis = true;
         this.displayNormals = false;
         //fov (radians), near, far, position, target 
-        this.camera = new CGFcamera(30*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(15, 25, 15), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(30*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(0, 0, 0), vec3.fromValues(0, 0, 0));
         this.interface.setActiveCamera(this.camera);
         this.enableTextures(true);
 
@@ -44,23 +44,18 @@ class XMLscene extends CGFscene
     initCameras()
     {
         let V;
-        //In case something goes wrong keep default camera @ init(application)
-        if (this.graph.views.length == 0) return; 
-
         //Use camera with default ID if it exists
         if (this.graph.defaultViewDefined){
-            for (let i = 0; i < this.graph.views.length; i++) {
+            for (let i = 0; i < this.graph.views.length; i++){
                 let view = this.graph.views[i];
-                if (view.id = this.graph.defaultViewID) {
-                    V = view;
-                    break;
-                }
+                if (view.id = this.graph.defaultViewID) { V = view; break; }
             }
         }
         else return;
 
         if (V == null) return;
-        else if (V.type == "perspective") this.camera = new CGFcamera(V.angle, V.near, V.far, V.from, V.to);
+        else if (V.type == "perspective") 
+            this.camera = new CGFcamera(V.angle, V.near, V.far, V.from, V.to);
         else if (V.type = "ortho") 
             this.camera = new CGFcameraOrtho(V.left, V.right, V.bottom, V.top, V.near, V.far, V.from, V.to, V.up);
         
