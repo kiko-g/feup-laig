@@ -29,53 +29,56 @@ class MySphere extends CGFobject
 
     initBuffers()
     {
-        this.vertices = [];
-        this.indices = [];
-        this.normals = [];
-        this.texCoords = [];
+        this.vertices   = [];
+        this.indices    = [];
+        this.normals    = [];
+        this.texCoords  = [];
         
-        var sliceStep = (2*Math.PI) / this.slices;    //theta slice
-        var stackStep = Math.PI / this.stacks;        //fi stack
+        let sliceStep = 2*Math.PI/this.slices;
+        let stackStep = Math.PI/this.stacks;
+        let x, y, z, nx, ny, nz, sliceAngle=0, stackAngle=0;
 
-        for(var i = 0; i <= 2*this.stacks; i++)
+        for (let i = 0; i <= this.stacks; i++)
         {
-            for (var j = 0; j <= this.slices; j++)
+            sliceAngle = 0;
+            stackAngle = stackStep*i;
+            for (let j = 0; j <= this.slices; j++) 
             {
-                var stackAngle = i * stackStep;     // starting from 0 to pi
-                var sliceAngle = j * sliceStep;     // starting from 0 to 2pi
-                var x = this.radius * Math.cos(stackAngle) * Math.cos(sliceAngle);	    // (r * cos(fi)) * cos(theta)
-                var y = this.radius * Math.cos(stackAngle) * Math.sin(sliceAngle);      // (r * cos(fi)) * sin(theta)
-                var z = this.radius * Math.sin(stackAngle);	                            // (r * sin(fi))
+                sliceAngle = sliceStep*j;
+                x = this.radius * Math.cos(sliceAngle) * Math.sin(stackAngle);
+                y = this.radius * Math.sin(sliceAngle) * Math.sin(stackAngle);
+                z = this.radius * Math.cos(stackAngle);
                 this.vertices.push(x, y, z);
                 
-                var nx = x / this.radius;
-                var ny = y / this.radius;
-                var nz = z / this.radius;
+                nx = x/this.radius;
+                ny = y/this.radius;
+                nz = z/this.radius;
                 this.normals.push(nx, ny, nz);
-               
-                var s = j / this.slices;
-                var t = i / this.stacks;
-                this.texCoords.push(s, 1-t);
+                this.texCoords.push(j/this.slices, i/this.stacks);
             }
         }
 
 
-        var k = 0;
-        for(var i = 0; i < 2*this.stacks; i++)
+        let a, b, c, d, k = 0;
+        for (let i = 0; i < this.stacks; i++)
         {
-            for(var j = 0; j <= this.slices; j++)
+            for (let j = 0; j <= this.slices; j++)
             {
-                if(j != this.slices)
+                if (j != this.slices)
                 {
-                    this.indices.push(k, k+1, k+this.slices+1);
-                    this.indices.push(k+this.slices+1, k+1, k+this.slices+2);
+                    a = k;
+                    b = k + this.slices + 1;
+                    c = a + 1;
+                    d = b + 1;
+                    this.indices.push(a, b, c);
+                    this.indices.push(b, d, c);
                 }
                 k++;
             }
         }
 
-		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+        this.primitiveType = this.scene.gl.TRIANGLES;
+        this.initGLBuffers();
 	};
 
     display()
@@ -95,8 +98,8 @@ class MySphere extends CGFobject
 	 */
     updateTexCoords(coords)
     {
-    		this.texCoords = [...coords];
-    		this.updateTexCoordsGLBuffers();
+    	this.texCoords = [...coords];
+    	this.updateTexCoordsGLBuffers();
 	}
 }
 

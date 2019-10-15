@@ -866,13 +866,13 @@ class MySceneGraph
      */
     parseComponents(componentsNode) 
     {
-        this.components = [];
-        this.allComponentIDs = [];
-        let children = componentsNode.children;
+        this.components = [];                   //will have all components (MyComponent objects)
+        this.allComponentIDs = [];              //will have all component IDs under "<components>"
+        let children = componentsNode.children; //children has all components
         let grandChildren = [];
-        let grandgrandChildren = [];
-        let componentNodeNames = []; //vector with the node names inside <components> tag
-
+        var grandgrandChildren = [];
+        let componentNodeNames = []; //vector with the node names inside each <component>
+        
         for (let i = 0; i < children.length; i++)
         {
             if (children[i].nodeName != "component") { 
@@ -975,8 +975,8 @@ class MySceneGraph
 
             //CHILDREN SECTION
             // FOCUS ON THIS
-            let componentChildren = [];
-            let primitiveChildren = [];
+            var componentChildren = []; //string names of component children
+            var primitiveChildren = []; //string names of component children
 
             grandgrandChildren = grandChildren[childrenIndex].children;
             for (let j = 0; j < grandgrandChildren.length; j++) 
@@ -986,7 +986,7 @@ class MySceneGraph
                     let componentref = this.reader.getString(grandgrandChildren[j], 'id');
                     if (componentref == null) return "unable to parse componentref id of component ID " + componentID;
                     if (this.allComponentIDs.indexOf(componentref) == -1)
-                        return "no such component with ID " + componentref + " for component ID " + componentID;
+                        return "no such component with componentref id for component ID " + componentID;
                     componentChildren.push(componentref);
                 }
                 else if (grandgrandChildren[j].nodeName == "primitiveref") {
@@ -997,6 +997,7 @@ class MySceneGraph
                     if (this.primitives[primitiveref] == null) {
                         return "no such primitive with ID " + primitiveref + " for component ID " + componentID;
                     }
+                    // console.log(primitiveref);
                     primitiveChildren.push(primitiveref);
                 }
                 else this.onXMLMinorError("component children must be componentref or primitiveref");
@@ -1006,8 +1007,9 @@ class MySceneGraph
             this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren);
             // ====================================================================
         }
-
-        //alert if top root isn't defined or properly read (XML error for example)
+        
+        console.log(this.components["center-sph"].texture.texture);
+        // //alert if top root isn't defined or properly read (XML error for example)
         if (this.components[this.idRoot] == null) return "root component ID '" + this.idRoot + "' not defined";
     }
 
@@ -1099,9 +1101,9 @@ class MySceneGraph
     displayScene()
     {
         this.scene.pushMatrix();
+        this.textures['sphtex'].bind();
+        this.primitives['sphere'].display();
         // this.traverseGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
-        // this.textures['rickm1'].bind();
-        // this.primitives['cylinder'].display();
         this.scene.popMatrix();
     }
 
@@ -1109,8 +1111,9 @@ class MySceneGraph
     traverseGraph(componentID, mat, tex)
     {
         var currentnode = this.components[componentID];
+        // console.log(currentnode);
         var ch = currentnode.children;
-        console.log(currentnode.leaves);
+        // console.log(currentnode.leaves);
         if (currentnode.texture.texture != "inherit") var TEX = currentnode.texture.texture;
         else var TEX = tex.texture;
         if (currentnode.materials.materials != "inherit") var MATS = currentnode.materials;
@@ -1122,12 +1125,12 @@ class MySceneGraph
 
         
         var currentTexture = currentnode.texture.texture;
-        // var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
+        var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
 
         for(var i = 0; i < ch.length; i++)
         {
             if(currentnode.leaves[ch[i]] != null){
-                // currentMaterial.apply();
+                currentMaterial.apply();
                 currentTexture.bind();
                 this.scene.pushMatrix();
                 currentnode.leaves[ch[i]].display();

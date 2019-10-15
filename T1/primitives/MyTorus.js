@@ -44,7 +44,7 @@ class MyTorus extends CGFobject
                                    Math.cos(j * theta) * this.inner);
                 
                 this.normals.push(Math.sin(j * theta) * Math.sin(phiPile), Math.sin(j*theta) * Math.cos(phiPile), Math.cos(j * theta));
-                this.texCoords.push(i / this.slices, j / this.loops);
+                this.texCoords.push(i / this.loops, j / this.slices);
 			}
 			phiPile += phi;
 		}
