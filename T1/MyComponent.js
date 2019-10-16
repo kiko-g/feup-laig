@@ -6,7 +6,7 @@ class MyComponent extends CGFobject
     /**
 	 * Represents an intermediate node aka component
 	 * @param {CGFscene} scene main scene
-     * @param nodeID node/component ID
+     * @param componentID node/component ID
      * @param materials materials
      * @param transfMatrix transformation matrix
      * @param texture texture applied to the component
@@ -20,8 +20,9 @@ class MyComponent extends CGFobject
         this.materials = materials; //has current and materials
         this.transfMatrix = transfMatrix;
         this.texture = texture; //has texture, length_t and length_s
-        this.children = componentChildren;
+        this.compchildren = componentChildren;
         this.leaves = primitiveChildren;
+        // this.isPrimitive = isPrimitive;
         // this.loaded = loaded;
     }
 }

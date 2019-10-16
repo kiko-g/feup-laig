@@ -57,15 +57,48 @@ class MyRectangle extends CGFobject
         t
         */
 
-		this.texCoords = [
-			0, 1,
-			1, 1,
+        var deltax = this.x2-this.x1;
+        var deltay = this.y2-this.y1;
+
+		this.defaultTexCoords = [
+			0, deltay,
+            deltax, deltay,
 			0, 0,
-			1, 0
-		]
+            deltax, 0
+        ]
+        
+        this.texCoords = [];
+        for(var coord in this.defaultTexCoords)
+        {
+            this.texCoords.push(this.defaultTexCoords[coord]);
+        }
+
 		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+        this.initGLBuffers();
+        if (this.scene.displayNormals) this.enableNormalViz();
+        if (!this.scene.displayNormals) this.normalViz = false;
 	}
+
+    display(length_s, length_t) 
+    {
+        this.updateTexScale(length_s, length_t);
+        super.display();
+    }
+
+
+    updateTexScale(length_s, length_t)
+    {
+        this.texCoords = [];
+        var s, t;
+        for(let i=0; i<this.defaultTexCoords.length; i+=2)
+        {
+            s = this.defaultTexCoords[i]/length_s;
+            t = this.defaultTexCoords[i+1]/length_t;
+            this.texCoords.push(s, t);
+        }
+        this.updateTexCoordsGLBuffers();
+    }
+
 
 	/**
 	 * Updates the list of texture coordinates of the rectangle

@@ -13,18 +13,12 @@ class MyMaterial {
         this.specular = specular;
     }
 
-    apply(appearence) {
+    apply(appearance) {
         //use ... because of vector
-        appearence.setShininess(this.shininess); //one number
-        appearence.setEmission(...this.emission);
-        appearence.setAmbient(...this.ambient);
-        appearence.setDiffuse(...this.diffuse);
-        appearence.setSpecular(...this.specular);
+        appearance.setShininess(this.shininess); //one number
+        appearance.setEmission(...this.emission);
+        appearance.setAmbient(...this.ambient);
+        appearance.setDiffuse(...this.diffuse);
+        appearance.setSpecular(...this.specular);
     }
-
-}
-
-class MyMaterialInherit extends MyMaterial
-{
-    // apply(appearence) { /* do Nothing */ }
 }

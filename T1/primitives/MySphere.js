@@ -79,28 +79,11 @@ class MySphere extends CGFobject
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
-	};
-
-    display()
-    {
-		this.scene.pushMatrix();
-		this.drawElements(this.scene.gl.TRIANGLES);
-		this.scene.popMatrix();
-    }
-
-
-
-   
-	/**
-	 * Updates the list of texture coordinates of the rectangle
-	 * @method updateTexCoords
-	 * @param {Array} coords - Array of texture coordinates
-	 */
-    updateTexCoords(coords)
-    {
-    	this.texCoords = [...coords];
-    	this.updateTexCoordsGLBuffers();
-	}
+        if (this.scene.displayNormals) this.enableNormalViz();
+        if (!this.scene.displayNormals) this.normalViz = false;
+    };
+    
+    display(length_s, length_t) { super.display(); }
 }
 
 

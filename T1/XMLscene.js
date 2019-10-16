@@ -24,7 +24,17 @@ class XMLscene extends CGFscene
         
         this.sceneInited = false;
         this.displayAxis = true;
-        this.displayNormals = false;
+        this.displayNormals = true;
+        this.light0 = false;
+        this.light1 = false;
+        this.light2 = false;
+        this.light3 = false;
+        this.light4 = false;
+        this.light5 = false;
+        this.light6 = false;
+        this.light7 = false;
+
+
         //fov (radians), near, far, position, target 
         this.camera = new CGFcamera(30*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(0, 0, 0), vec3.fromValues(0, 0, 0));
         this.interface.setActiveCamera(this.camera);
@@ -139,24 +149,48 @@ class XMLscene extends CGFscene
         this.applyViewMatrix();         // Apply transformations corresponding to the camera position relative to the origin
 
         this.pushMatrix();
-        if(this.displayAxis) this.axis.display();
         
         for (let i = 0; i < this.lights.length; i++)
         {
             this.lights[i].setVisible(true);
-            this.lights[i].enable();
+            // this.lights[i].enable();
         }
         
         if (this.sceneInited){
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (MySceneGraph function).
+            if(this.displayAxis) this.axis.display();
+
+            if (this.displayNormals) {
+                this.graph.primitives['cylinder'].enableNormalViz();
+                this.graph.primitives['sphere'].enableNormalViz();
+                this.graph.primitives['torus'].enableNormalViz();
+                this.graph.primitives['rectangle'].enableNormalViz();
+            }
+            else {
+                this.graph.primitives['cylinder'].disableNormalViz();
+                this.graph.primitives['rectangle'].disableNormalViz();
+                this.graph.primitives['sphere'].disableNormalViz();
+                this.graph.primitives['torus'].disableNormalViz();
+            }
         }
-        if(this.displayNormals){
-            // this.graph.primitives['cylinder'].enableNormalViz();
-            // this.graph.primitives['rectangle'].enableNormalViz();
-            // this.graph.primitives['sphere'].enableNormalViz();
-            // this.graph.primitives['torus'].enableNormalViz();
-        } 
+
+        if(!this.light0) this.lights[0].disable()
+        else this.lights[0].enable();
+        if (!this.light1) this.lights[1].disable()
+        else this.lights[1].enable();
+        if (!this.light2) this.lights[2].disable()
+        else this.lights[2].enable();
+        if (!this.light3) this.lights[3].disable()
+        else this.lights[3].enable();
+        if (!this.light4) this.lights[4].disable()
+        else this.lights[4].enable();
+        if (!this.light5) this.lights[5].disable()
+        else this.lights[5].enable();
+        if (!this.light6) this.lights[6].disable()
+        else this.lights[6].enable();
+        if (!this.light7) this.lights[7].disable()
+        else this.lights[7].enable();
 
         this.popMatrix();
         // ---- END Background, camera and axis setup

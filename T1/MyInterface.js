@@ -25,8 +25,14 @@ class MyInterface extends CGFinterface {
         settings_dropdown.add(this.scene, 'displayNormals').name('Display Normals');
 
         lights_dropdown.open();
-        // lights_dropdown.add(this.scene, 'displayLights').name('Display Light 0');
-        // add a group of controls (and open/expand by defult)
+        lights_dropdown.add(this.scene, 'light0').name('Light 0');
+        lights_dropdown.add(this.scene, 'light1').name('Light 1');
+        lights_dropdown.add(this.scene, 'light2').name('Light 2');
+        lights_dropdown.add(this.scene, 'light3').name('Light 3');
+        lights_dropdown.add(this.scene, 'light4').name('Light 4');
+        lights_dropdown.add(this.scene, 'light5').name('Light 5');
+        lights_dropdown.add(this.scene, 'light6').name('Light 6');
+        lights_dropdown.add(this.scene, 'light7').name('Light 7');
 
         this.initKeys();
 

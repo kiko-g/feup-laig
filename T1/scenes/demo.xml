@@ -14,7 +14,7 @@
 
     <globals>
         <ambient    r="0.2" g="0.2"  b="0.2"  a="1.0" />
-        <background r="0.1" g="0.19" b="0.30" a="1.0" />
+        <background r="0.1" g="0.19" b="0.30" a="1.0" />        
     </globals>
 
     <lights>
@@ -135,7 +135,7 @@
             <sphere radius="4" slices="30" stacks="30"/>
         </primitive>
         <primitive id="torus">
-            <torus loops="30" slices="60" inner="3.0" outer="10.0"/> 
+            <torus loops="50" slices="50" inner="3.0" outer="10.0"/> 
             <!-- 0.2, 3.0 -->
         </primitive>
         <primitive id="cylinder">

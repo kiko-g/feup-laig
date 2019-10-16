@@ -90,7 +90,8 @@ class MyCylinder extends CGFobject {
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
-        // if (this.scene.displayNormals) this.enableNormalViz();
-        // if (!this.scene.displayNormals) this.normalViz = false;
-    };
-};
+        if (this.scene.displayNormals) this.enableNormalViz();
+        if (!this.scene.displayNormals) this.normalViz = false;
+    }
+    display(length_s, length_t) { super.display(); }
+}
