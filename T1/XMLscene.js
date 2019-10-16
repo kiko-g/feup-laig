@@ -24,7 +24,7 @@ class XMLscene extends CGFscene
         
         this.sceneInited = false;
         this.displayAxis = true;
-        this.displayNormals = true;
+        this.displayNormals = false;
         this.light0 = true;
         this.light1 = true;
         this.light2 = true;

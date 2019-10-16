@@ -135,8 +135,7 @@
             <sphere radius="1" slices="30" stacks="30"/>
         </primitive>
         <primitive id="torus">
-            <torus loops="30" slices="30" inner="0.2" outer="3.0"/> 
-            <!-- 0.2, 3.0 -->
+            <torus loops="30" slices="30" inner="0.2" outer="3.0"/>
         </primitive>
         <primitive id="cylinder">
             <cylinder slices="30" stacks="20" base="1" top="1" height="4" />
@@ -148,8 +147,6 @@
     <components>
         <component id="center-sph">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="metalMAT" />
@@ -203,12 +200,13 @@
 
         <component id="RN-LOGO">
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <!-- <translate x="-5" y="0" z="0" />
+                <scale x="2" y="2" z="2" /> -->
             </transformation>
             <materials>
                 <material id="metalMAT" />
             </materials>
-            <texture id="vidral" length_s="2" length_t="2" />
+            <texture id="leaves" length_s="2" length_t="2" />
             <children>
                 <componentref id="center-sph" />
                 <componentref id="torus1" />
@@ -219,13 +217,12 @@
 
         <component id="ROOT NODE">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="9" y="1" z="1" />
+                <!-- <translate x="2" y="-4" z="2" /> -->
             </transformation>
             <materials>
                 <material id="metalMAT" />
             </materials>
-            <texture id="vidral" length_s="1" length_t="1" />
+            <texture id="rickm1" length_s="1" length_t="1" />
             <children>
                 <componentref id="RN-LOGO" />
             </children>

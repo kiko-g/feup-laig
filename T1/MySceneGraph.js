@@ -1118,8 +1118,8 @@ class MySceneGraph
         var ls, lt, TEX;
         if (currentnode.texture.texture != "inherit") {
             TEX = currentnode.texture;
-            ls = TEX.length_s;
-            lt = TEX.length_t;
+            // ls = TEX.length_s;
+            // lt = TEX.length_t;
         }
         if (currentnode.texture.texture != "none") {
             TEX = null;
@@ -1136,6 +1136,7 @@ class MySceneGraph
 
         var currentTexture = currentnode.texture.texture;
         var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
+        this.scene.multMatrix(currentnode.transfMatrix);
 
         for (var i = 0; i < lvs.length; i++)
         {
@@ -1143,7 +1144,6 @@ class MySceneGraph
             currentMaterial.apply();
             currentTexture.bind();
             this.scene.pushMatrix();
-            this.scene.multMatrix(currentnode.transfMatrix);
             lvs[i].display(ls, lt);
             this.scene.popMatrix();
         }
@@ -1151,6 +1151,7 @@ class MySceneGraph
         for(var i=0; i<chn.length; i++)
         {
             this.scene.pushMatrix();
+            this.scene.multMatrix(currentnode.transfMatrix);
             this.traverseGraph(chn[i], MATS, TEX);
             this.scene.popMatrix();
         }
