@@ -154,7 +154,7 @@
             <materials>
                 <material id="metalMAT" />
             </materials>
-            <texture id="vidral" length_s="2" length_t="2"/>
+            <texture id="vidral" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -225,7 +225,7 @@
             <materials>
                 <material id="metalMAT" />
             </materials>
-            <texture id="vidral" length_s="2" length_t="2" />
+            <texture id="vidral" length_s="1" length_t="1" />
             <children>
                 <componentref id="RN-LOGO" />
             </children>

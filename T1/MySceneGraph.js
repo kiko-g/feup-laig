@@ -934,7 +934,7 @@ class MySceneGraph
                     this.onXMLMinorError("no ID defined for material in component: " + componentID);
                     continue;
                 }
-                else if (materialID == "inherit") { materialscomp.push(new MyMaterialInherit()); }
+                else if (materialID == "inherit") {  }
                 else if (!this.materials[materialID]) {
                     this.onXMLMinorError("material w/ ID " + materialID + " in component: " + componentID + " doesn't exist");
                     continue;
@@ -999,6 +999,7 @@ class MySceneGraph
                     }
                     // console.log(primitiveref);
                     primitiveChildren.push(primitiveref);
+                    // console.log(primitiveChildren);
                 }
                 else this.onXMLMinorError("component children must be componentref or primitiveref");
             }
@@ -1007,8 +1008,9 @@ class MySceneGraph
             this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren);
             // ====================================================================
         }
+        console.log(this.components["center-sph"].leaves);
         
-        console.log(this.components["center-sph"].texture.texture);
+        // console.log(this.components["RN-LOGO"].leaves);
         // //alert if top root isn't defined or properly read (XML error for example)
         if (this.components[this.idRoot] == null) return "root component ID '" + this.idRoot + "' not defined";
     }
@@ -1100,46 +1102,52 @@ class MySceneGraph
      */
     displayScene()
     {
-        this.scene.pushMatrix();
-        this.textures['sphtex'].bind();
-        this.primitives['sphere'].display();
-        // this.traverseGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
-        this.scene.popMatrix();
+        // this.scene.pushMatrix();
+        // this.textures['sphtex'].bind();
+        // this.primitives['sphere'].display();
+        this.traverseGraph(this.idRoot, this.components[this.idRoot].materials, this.components[this.idRoot].texture);
+        // this.scene.popMatrix();
     }
 
     // ==================================================================================================================================
     traverseGraph(componentID, mat, tex)
     {
         var currentnode = this.components[componentID];
-        // console.log(currentnode);
         var ch = currentnode.children;
-        // console.log(currentnode.leaves);
-        if (currentnode.texture.texture != "inherit") var TEX = currentnode.texture.texture;
-        else var TEX = tex.texture;
+        if (currentnode.texture.texture != "inherit") var TEX = currentnode.texture;
+        else var TEX = tex;
         if (currentnode.materials.materials != "inherit") var MATS = currentnode.materials;
         else var MATS = mat.materials;
 
+        // console.log(TEX);
         //scene transformations
         // this.scene.pushMatrix();
-        this.scene.multMatrix(currentnode.transfMatrix);
-
-        
+        // var tamanho = currentnode.leaves.length;
         var currentTexture = currentnode.texture.texture;
         var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
 
-        for(var i = 0; i < ch.length; i++)
+        // console.log(currentnode.leaves.length);
+        // console.log(currentnode.leaves.length);
+        console.log(currentnode.leaves[0]);
+        if (currentnode.leaves.length > 0)
         {
-            if(currentnode.leaves[ch[i]] != null){
-                currentMaterial.apply();
-                currentTexture.bind();
-                this.scene.pushMatrix();
-                currentnode.leaves[ch[i]].display();
-                this.scene.popMatrix();
-            }
-            else {
-                this.scene.pushMatrix();
-                this.traverseGraph(ch[i], MATS, TEX); 
-                this.scene.popMatrix();
+            for (let i = 0; i < ch.length; i++)
+            {
+                console.log(9);
+                if (currentnode.leaves[i] != null) {
+                    // console.log(currentnode.leaves[0]);
+                    currentMaterial.apply();
+                    currentTexture.bind();
+                    this.scene.pushMatrix();
+                    this.scene.multMatrix(currentnode.transfMatrix);
+                    this.primitives[currentnode.leaves[i]].display();
+                    this.scene.popMatrix();
+                }
+                else {
+                    this.scene.pushMatrix();
+                    this.traverseGraph(ch[i], MATS, TEX);
+                    this.scene.popMatrix();
+                }
             }
         }
     }
