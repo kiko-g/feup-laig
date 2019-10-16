@@ -555,11 +555,11 @@ class MySceneGraph
 
             // build final material with all attributes
             var material = new MyMaterial(shininess, emission, ambient, diffuse, specular);
-            var mat = new CGFappearance();
+            var mat = new CGFappearance(this.scene);
             material.apply(mat);
             this.materials[materialID] = mat;
+            console.log(mat);
         }
-        // console.log(this.materials);
 
         this.log("Parsed materials");
         return null;
@@ -736,7 +736,6 @@ class MySceneGraph
 
             // Specifications for the current primitive.
             var primitiveType = grandChildren[0].nodeName;
-            // console.log("OLA "+grandChildren[0].nodeName);
 
             // Retrieves the primitive coordinates.
             if (primitiveType == "rectangle")
@@ -936,9 +935,8 @@ class MySceneGraph
                     this.onXMLMinorError("no ID defined for material in component: " + componentID);
                     continue;
                 }
-                else if (materialID == "inherit") {
-                    
-                }
+                else if (materialID == "inherit") materialscomp.push("inherit");
+
                 else if (!this.materials[materialID]) {
                     this.onXMLMinorError("material w/ ID " + materialID + " in component: " + componentID + " doesn't exist");
                     continue;
@@ -947,7 +945,6 @@ class MySceneGraph
             }
 
             if (materialscomp.length == 0) this.onXMLError("No material in component " + componentID);
-            // for(var m=0; m<materialscomp.length; m++) console.log(materialscomp[m]);
             var materials = { current: 0, materials: materialscomp }; //build
 
 
@@ -955,8 +952,8 @@ class MySceneGraph
 
             //TEXTURES SECTION
             var textureNode = grandChildren[textureIndex];
-            var tex = ""; //tex string
-            var length_s=null, length_t=null;
+            var tex; //tex string
+            var length_s = null, length_t = null;
             
             var texID = this.reader.getString(textureNode, "id");
             if(texID == null) { this.onXMLError("No texture ID in component " + componentID); return null; }
@@ -969,11 +966,11 @@ class MySceneGraph
             }
             else 
             { 
-                tex = this.textures[texID]; 
-                var length_s = this.reader.getFloat(textureNode, "length_s");
-                var length_t = this.reader.getFloat(textureNode, "length_t");
-                if (length_s == null || length_s == undefined) { this.onXMLMinorError("length_s not specified in texture of component " + componentID); length_s = 1.0; }
-                if (length_t == null || length_t == undefined) { this.onXMLMinorError("length_t not specified in texture of component " + componentID); length_t = 1.0; }
+                tex = this.textures[texID];
+                length_s = this.reader.getFloat(textureNode, "length_s");
+                length_t = this.reader.getFloat(textureNode, "length_t");
+                if (length_s == null || length_s == undefined) { this.onXMLMinorError("length_s not specified in " + componentID); length_s = 1.0; }
+                if (length_t == null || length_t == undefined) { this.onXMLMinorError("length_t not specified in " + componentID); length_t = 1.0; }
             }
 
             var texture = {texture: tex, length_s: length_s, length_t: length_t}; //build texture
@@ -1004,7 +1001,6 @@ class MySceneGraph
                     if (this.primitives[primitiveref] == null) {
                         return "no such primitive with ID " + primitiveref + " for component ID " + componentID;
                     }
-                    // console.log(primitiveref);
                     primitiveChildren.push(this.primitives[primitiveref]);
                 }
                 else this.onXMLMinorError("component children must be componentref or primitiveref");
@@ -1014,9 +1010,7 @@ class MySceneGraph
             this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren);
             // ====================================================================
         }
-        console.log(this.components);
         
-        // console.log(this.components["RN-LOGO"].leaves);
         // //alert if top root isn't defined or properly read (XML error for example)
         if (this.components[this.idRoot] == null) return "root component ID '" + this.idRoot + "' not defined";
     }
@@ -1121,24 +1115,37 @@ class MySceneGraph
         var currentnode = component;
         var chn = currentnode.compchildren;
         var lvs = currentnode.leaves;
-        if (currentnode.texture.texture != "inherit") var TEX = currentnode.texture;
-        if (currentnode.texture.texture != "none") var TEX = null;
-        else var TEX = tex;
+        var ls, lt, TEX;
+        if (currentnode.texture.texture != "inherit") {
+            TEX = currentnode.texture;
+            ls = TEX.length_s;
+            lt = TEX.length_t;
+        }
+        if (currentnode.texture.texture != "none") {
+            TEX = null;
+            ls = null;
+            lt = null;
+        }
+        else {
+            TEX = tex;
+            ls = tex.length_s;
+            lt = tex.length_t;
+        }
         if (currentnode.materials.materials != "inherit") var MATS = currentnode.materials;
         else var MATS = mat.materials;
 
         var currentTexture = currentnode.texture.texture;
         var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
-        console.log(currentnode.leaves.length);
 
         for (var i = 0; i < lvs.length; i++)
         {
+            // console.log(currentMaterial);
             currentMaterial.apply();
-            // currentTexture.bind();
-            // this.scene.pushMatrix();
-            // this.scene.multMatrix(currentnode.transfMatrix);
-            // lvs[i].display(TEX.length_s, TEX.length_t);
-            // this.scene.popMatrix();
+            currentTexture.bind();
+            this.scene.pushMatrix();
+            this.scene.multMatrix(currentnode.transfMatrix);
+            lvs[i].display(ls, lt);
+            this.scene.popMatrix();
         }
 
         for(var i=0; i<chn.length; i++)

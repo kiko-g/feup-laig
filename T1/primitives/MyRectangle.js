@@ -81,7 +81,8 @@ class MyRectangle extends CGFobject
 
     display(length_s, length_t) 
     {
-        this.updateTexScale(length_s, length_t);
+        if (length_s != null && length_t != null)
+            this.updateTexScale(length_s, length_t);
         super.display();
     }
 

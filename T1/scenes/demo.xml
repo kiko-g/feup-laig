@@ -132,10 +132,10 @@
             <rectangle x1="0" y1="0" x2="2" y2="2" />
         </primitive>
         <primitive id="sphere">
-            <sphere radius="4" slices="30" stacks="30"/>
+            <sphere radius="1" slices="30" stacks="30"/>
         </primitive>
         <primitive id="torus">
-            <torus loops="50" slices="50" inner="3.0" outer="10.0"/> 
+            <torus loops="30" slices="30" inner="0.2" outer="3.0"/> 
             <!-- 0.2, 3.0 -->
         </primitive>
         <primitive id="cylinder">

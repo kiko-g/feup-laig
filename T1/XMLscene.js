@@ -25,14 +25,14 @@ class XMLscene extends CGFscene
         this.sceneInited = false;
         this.displayAxis = true;
         this.displayNormals = true;
-        this.light0 = false;
-        this.light1 = false;
-        this.light2 = false;
-        this.light3 = false;
-        this.light4 = false;
-        this.light5 = false;
-        this.light6 = false;
-        this.light7 = false;
+        this.light0 = true;
+        this.light1 = true;
+        this.light2 = true;
+        this.light3 = true;
+        this.light4 = true;
+        this.light5 = true;
+        this.light6 = true;
+        this.light7 = true;
 
 
         //fov (radians), near, far, position, target 
@@ -117,6 +117,7 @@ class XMLscene extends CGFscene
         this.setSpecular(255/255, 255/255, 255/255, 1.0);
         this.setShininess(10.0);
     }
+
     
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
@@ -124,7 +125,6 @@ class XMLscene extends CGFscene
     onGraphLoaded()
     {
         this.axis = new CGFaxis(this, this.graph.referenceLength);
-        
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
         
@@ -153,10 +153,11 @@ class XMLscene extends CGFscene
         for (let i = 0; i < this.lights.length; i++)
         {
             this.lights[i].setVisible(true);
-            // this.lights[i].enable();
+            this.lights[i].enable();
         }
         
-        if (this.sceneInited){
+        if (this.sceneInited)
+        {
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (MySceneGraph function).
             if(this.displayAxis) this.axis.display();
