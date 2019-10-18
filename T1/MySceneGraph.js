@@ -292,9 +292,8 @@ class MySceneGraph
                 currentView.bottom = bottomv;
                 currentView.up = vec3.fromValues(upx, upy, upz); //this way we can pass this to CGFcamera
             }
-            this.views.push(currentView);
+            this.views[id] = currentView;
         }
-        if (this.views.length == 0) this.onXMLError("No views loaded from XML");
         if (this.defaultViewDefined == false) this.onXMLMinorError("Default View not defined");
 
         this.log("Parsed views");

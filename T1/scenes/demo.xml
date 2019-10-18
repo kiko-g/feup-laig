@@ -1,16 +1,16 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
-    <views default="CAM2">
-        <perspective id="CAM1" near="0.1" far="100" angle="20">
-            <from x="1" y="13" z="1" />
+    <views default="CAM3">
+        <perspective id="CAM1" near="0.1" far="500" angle="20">
+            <from x="0" y="9" z="1" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="CAM2" near="0.1" far="100" angle="1">
-            <from x="8" y="8" z="8" />
+        <perspective id="CAM2" near="0.1" far="500" angle="20">
+            <from x="8" y="15" z="8" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="CAM3" near="0.1" far="100" angle="10">
-            <from x="15" y="15" z="15" />
+        <perspective id="CAM3" near="0.1" far="500" angle="20">
+            <from x="10" y="20" z="10" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -35,8 +35,8 @@
         </omni>
         <omni id="L2" enabled="1">
             <location x="20.0" y="40.0" z="20.0" w="1.0" />
-            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient  r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="1.0" a="1.0" />
         </omni>
     </lights>

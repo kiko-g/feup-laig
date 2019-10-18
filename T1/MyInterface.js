@@ -9,12 +9,9 @@ class MyInterface extends CGFinterface
         super.init(application);
 
         this.gui = new dat.GUI();
-        this.settings = this.gui.addFolder("General");
-        this.settings.open();
-        this.lights = this.gui.addFolder("Lighting");
-        this.lights.open();
-        this.camera = this.gui.addFolder("Camera");
-        this.camera.open();
+        this.settings = this.gui.addFolder("General");  this.settings.open();
+        this.lights = this.gui.addFolder("Lighting");   this.lights.open();
+        this.camera = this.gui.addFolder("Camera");     this.camera.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'displayNormals').name("Normals");
@@ -29,7 +26,7 @@ class MyInterface extends CGFinterface
     }
 
     switchViews(){
-        this.camera.add(this.scene, "viewIndex", this.scene.allViewsInd).onChange(this.scene.onViewChanged.bind(this.scene)).name("Selected View");
+        this.camera.add(this.scene, "selected", this.scene.viewNames).onChange(this.scene.onViewChanged.bind(this.scene)).name("SelectedView");
     }
     
     initKeys()
