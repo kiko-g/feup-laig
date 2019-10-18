@@ -15,8 +15,8 @@
 
 
     <globals>
-        <ambient    r="0.2" g="0.2"  b="0.2"  a="1.0" />
-        <background r="0.1" g="0.19" b="0.30" a="1.0" />        
+        <ambient    r="0.0" g="0.0"  b="0.0"  a="1.0" />
+        <background r="0.8" g="1.0"  b="1.0"  a="1.0" />
     </globals>
 
 
@@ -42,7 +42,7 @@
     <textures>
         <texture id="default"       file="images/default.jpg" />
         <texture id="rickm1"        file="images/rm1.jpg" />
-        <texture id="hex"           file="images/spheretex.jpg" />
+        <texture id="hex"           file="images/cyltex.jpg" />
         <texture id="legion"        file="images/legion.png" />
         <texture id="vidral"        file="images/vidral.jpg" />
         <texture id="trunk"         file="images/trunk-image.jpg" />
@@ -52,6 +52,7 @@
         <texture id="space"         file="images/space.jpg" />
         <texture id="desk"          file="images/desk.jpg" />
         <texture id="floor"         file="images/floor.jpg" />
+        <texture id="digital"       file="images/digital.png" />
     </textures>
 
 
@@ -64,14 +65,14 @@
             <diffuse  r="1.0" g="1.0" b="1.0" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
-        <material id="lightbluegloss" shininess="5">
-            <emission r="0.4" g="0.8" b="0.9" a="1.0" />
-            <ambient  r="0.4" g="0.8" b="0.9" a="1.0" />
-            <diffuse  r="0.4" g="0.8" b="0.9" a="1.0" />
-            <specular r="0.4" g="0.8" b="0.9" a="1.0" />
+        <material id="cyangloss" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.1" g="1" b="1" a="1.0" />
+            <diffuse  r="0.1" g="1" b="1" a="1.0" />
+            <specular r="0.1" g="1" b="1" a="1.0" />
         </material>
-        <material id="strongred-gloss" shininess="10" >
-            <emission r="0.0" g="0.0" b="0.0" a="0" />
+        <material id="strongred" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
             <ambient  r="1.0" g="1.0" b="1.0" a="1" />
             <diffuse  r="0.0" g="0.0" b="0.0" a="0" />
             <specular r="0.0" g="0.0" b="0.0" a="1" />
@@ -104,18 +105,15 @@
         </transformation>
 
 
-        <!-- TORUS 1 TRANSF -->
         <transformation id="torus1_setup">
             <scale x="1" y="1" z="1" />
             <rotate axis="x" angle="-90"/>
         </transformation>
-        <!-- TORUS 2 TRANSF -->
         <transformation id="torus2_setup">
             <scale x="1" y="1" z="0.9" />
             <rotate axis="y" angle="90"/>
             <rotate axis="x" angle="-30"/>
         </transformation>
-        <!-- TORUS 3 TRANSF -->
         <transformation id="torus3_setup">
             <scale x="1" y="1" z="0.9" />
             <rotate axis="y" angle="90"/>
@@ -128,7 +126,7 @@
 
     <primitives>
         <primitive id="rectangle">
-            <rectangle x1="0" y1="0" x2="2" y2="2" />
+            <rectangle x1="0" y1="0" x2="4" y2="4" />
         </primitive>
         <primitive id="sphere">
             <sphere radius="1" slices="30" stacks="30"/>
@@ -147,10 +145,9 @@
     <components>
         <component id="center-sph">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="lightbluegloss" />
+                <material id="cyangloss" />
             </materials>
             <texture id="space" length_s="1" length_t="1"/>
             <children>
@@ -162,7 +159,7 @@
                 <transformationref id="torus1_setup" />
             </transformation>
             <materials>
-                <material id="lightbluegloss" />
+                <material id="cyangloss" />
             </materials>
             <texture id="legion" length_s="1" length_t="1"/>
             <children>
@@ -174,7 +171,7 @@
                 <transformationref id="torus2_setup" />
             </transformation>
             <materials>
-                <material id="lightbluegloss" />
+                <material id="cyangloss" />
             </materials>
             <texture id="legion" length_s="1" length_t="1"/>
             <children>
@@ -186,7 +183,7 @@
                 <transformationref id="torus3_setup" />
             </transformation>
             <materials>
-                <material id="lightbluegloss" />
+                <material id="cyangloss" />
             </materials>
             <texture id="legion" length_s="1" length_t="1"/>
             <children>
@@ -201,13 +198,14 @@
                 <scale x="0.2" y="0.2" z="2" />
             </transformation>
             <materials>
-                <material id="lightbluegloss" />
+                <material id="cyangloss" />
             </materials>
             <texture id="none" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
         </component>
+
 
         <component id="RN-LOGO">
             <transformation>
@@ -229,14 +227,14 @@
 
         <component id="floor">
             <transformation>
-                <translate x="-10" y="0" z="10" />
+                <translate x="-20" y="0" z="20" />
                 <scale x="10" y="10" z="10" />
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
-                <material id="defaultMAT" />
+                <material id="inherit" />
             </materials>
-            <texture id="default" length_s="2" length_t="2" />
+            <texture id="inherit" length_s="4" length_t="4" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -245,14 +243,13 @@
 
         <component id="ROOT NODE">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="defaultMAT" />
             </materials>
-            <texture id="rickm1" length_s="1" length_t="1" />
+            <texture id="digital" length_s="1" length_t="1" />
             <children>
-                <componentref id="RN-LOGO" />
+                <!-- <componentref id="RN-LOGO" /> -->
                 <componentref id="floor" />
             </children>
         </component>

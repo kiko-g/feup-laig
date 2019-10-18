@@ -41,10 +41,6 @@ class MyRectangle extends CGFobject
 			0, 0, 1,
 			0, 0, 1,
             0, 0, 1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
 		];
 		
 		/*
@@ -57,14 +53,14 @@ class MyRectangle extends CGFobject
         t
         */
 
-        var deltax = this.x2-this.x1;
-        var deltay = this.y2-this.y1;
+        var dx = this.x2-this.x1;
+        var dy = this.y2-this.y1;
 
 		this.defaultTexCoords = [
-            0, 1,
-            1, 1,
-			0, 0,
-            1, 0,
+             0, dy,
+            dx, dy,
+			 0,  0,
+            dx,  0,
         ]
         
         this.texCoords = [];
@@ -81,22 +77,23 @@ class MyRectangle extends CGFobject
 
     display(length_s, length_t) 
     {
-        if (length_s != null && length_t != null)
+        if ((length_s != null) && (length_t != null))
             this.updateTexScale(length_s, length_t);
         super.display();
     }
-
-
+    
+    
     updateTexScale(length_s, length_t)
     {
         this.texCoords = [];
         var s, t;
-        for(let i=0; i<this.defaultTexCoords.length; i+=2)
+        for(var i=0; i<this.defaultTexCoords.length; i+=2)
         {
             s = this.defaultTexCoords[i]/length_s;
             t = this.defaultTexCoords[i+1]/length_t;
             this.texCoords.push(s, t);
         }
+        // this.defaultTexCoords = this.texCoords;
         this.updateTexCoordsGLBuffers();
     }
 

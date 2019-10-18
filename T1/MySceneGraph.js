@@ -492,7 +492,6 @@ class MySceneGraph
             var texture = new CGFtexture(this.scene, file);
             this.textures[textureID] = texture;
             this.numtextures++;
-            // console.log("<"+i+"> "+textureID);
         }
         
         if(this.numtextures == 0) return "No textures were defined.";
@@ -558,7 +557,6 @@ class MySceneGraph
             var mat = new CGFappearance(this.scene);
             material.apply(mat);
             this.materials[materialID] = mat;
-            console.log(mat);
         }
 
         this.log("Parsed materials");
@@ -944,7 +942,11 @@ class MySceneGraph
                 else materialscomp.push(this.materials[materialID]);
             }
 
-            if (materialscomp.length == 0) this.onXMLError("No material in component " + componentID);
+            //never let any component not have a material
+            if (materialscomp.length == 0){
+                this.onXMLError("No material correctly defined for '"+componentID+"' component. Applying default material to this component.");
+                materialscomp = this.materials["defaultMAT"];
+            } 
             var materials = { current: 0, materials: materialscomp }; //build
 
 
@@ -1113,15 +1115,15 @@ class MySceneGraph
     traverseGraph(component, mat, tex)
     {
         var currentnode = component;
-        var chn = currentnode.compchildren;
-        var lvs = currentnode.leaves;
+        var children = currentnode.compchildren;
+        var leaves = currentnode.leaves;
         var ls, lt, TEX;
-        if (currentnode.texture.texture != "inherit") {
-            TEX = currentnode.texture;
+        if (currentnode.texture.texture == "inherit") {
+            currentnode.texture.texture = tex.texture;
             // ls = TEX.length_s;
             // lt = TEX.length_t;
         }
-        if (currentnode.texture.texture != "none") {
+        else if (currentnode.texture.texture == "none") {
             TEX = null;
             ls = null;
             lt = null;
@@ -1132,27 +1134,31 @@ class MySceneGraph
             lt = tex.length_t;
         }
         if (currentnode.materials.materials != "inherit") var MATS = currentnode.materials;
-        else var MATS = mat.materials;
+        else{
+            currentnode.materials.materials = mat.materials;
+            var MATS = mat.materials;
+        }
 
         var currentTexture = currentnode.texture.texture;
         var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
         this.scene.multMatrix(currentnode.transfMatrix);
 
-        for (var i = 0; i < lvs.length; i++)
+        for (var i = 0; i < leaves.length; i++)
         {
-            // console.log(currentMaterial);
             currentMaterial.apply();
-            if(currentTexture!=null) currentTexture.bind();
+            if(currentTexture != null) currentTexture.bind();
             this.scene.pushMatrix();
-            lvs[i].display(ls, lt);
+            currentMaterial.setTexture(currentTexture);
+            currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
+            leaves[i].display(ls, lt);
             this.scene.popMatrix();
         }
 
-        for(var i=0; i<chn.length; i++)
+        for(var i=0; i<children.length; i++)
         {
             this.scene.pushMatrix();
             this.scene.multMatrix(currentnode.transfMatrix);
-            this.traverseGraph(chn[i], MATS, TEX);
+            this.traverseGraph(children[i], MATS, TEX);
             this.scene.popMatrix();
         }
     }
