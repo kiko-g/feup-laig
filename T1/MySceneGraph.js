@@ -440,10 +440,8 @@ class MySceneGraph
             numLights++;
         }
 
-        if (numLights == 0)
-            return "at least one light must be defined";
-        else if (numLights > 8)
-            this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
+        if (numLights == 0) return "at least one light must be defined";
+        else if (numLights > 8) this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
 
         this.log("Parsed lights");
         return null;
@@ -452,8 +450,6 @@ class MySceneGraph
 
 
     /**
-     * Probably done.
-     * length_t and length_s
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
      */

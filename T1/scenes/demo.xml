@@ -1,13 +1,17 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
-    <views default="CAM1">
-        <perspective id="CAM1" near="0.1" far="500" angle="20">
+    <views default="CAM2">
+        <perspective id="CAM1" near="0.1" far="100" angle="20">
             <from x="1" y="13" z="1" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="CAM2" near="0.1" far="10" angle="0">
-            <from x="2" y="-20" z="1" />
-            <to x="90" y="3" z="0" />
+        <perspective id="CAM2" near="0.1" far="100" angle="1">
+            <from x="8" y="8" z="8" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        <perspective id="CAM3" near="0.1" far="100" angle="10">
+            <from x="15" y="15" z="15" />
+            <to x="0" y="0" z="0" />
         </perspective>
     </views>
 
@@ -105,18 +109,18 @@
         <transformation id="ring2_setup">
             <scale x="1" y="1" z="0.95" />
             <rotate axis="y" angle="90"/>
-            <rotate axis="x" angle="-30"/>
+            <rotate axis="x" angle="-35"/>
         </transformation>
         <transformation id="ring3_setup">
             <scale x="1" y="1" z="0.9" />
             <rotate axis="y" angle="90"/>
-            <rotate axis="x" angle="30"/>
+            <rotate axis="x" angle="35"/>
         </transformation>
         <transformation id="tinysphere1_setup">
-            <translate x="-1.01" y="1.7" z="0" />
+            <translate x="-1.15" y="1.6" z="0" />
         </transformation>
         <transformation id="tinysphere2_setup">
-            <translate x="-0.8" y="-1.4" z="1" />
+            <translate x="-0.9" y="-1.3" z="1" />
         </transformation>
         <transformation id="tinysphere3_setup">
             <translate x="1.01" y="0" z="-1.71" />
@@ -257,8 +261,8 @@
 
         <component id="ATOM">
             <transformation>
-                <translate x="0" y="5.24" z="0" />
-                <scale x="0.8" y="0.8" z="0.8" />
+                <translate x="0" y="3" z="0" />
+                <scale x="0.8" y="0.78" z="0.8" />
             </transformation>
             <materials>
                 <material id="whiteMAT" />
@@ -305,23 +309,3 @@
         </component>
     </components>
 </lxs>
-
-
-
-
-
-
-
-        <!-- SQUEEZE TRANSFS -->
-        <!-- <transformation id="squeeze_x">
-            <scale x="0.1" y="1" z="1" />
-        </transformation>
-        <transformation id="squeeze_y">
-            <scale x="1" y="0.1" z="1" />
-        </transformation>
-        <transformation id="squeeze_z">
-            <scale x="1" y="1" z="0.1" />
-        </transformation>
-        <transformation id="squeeze_all">
-            <scale x="0.1" y="0.1" z="0.1" />
-        </transformation> -->
