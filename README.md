@@ -6,6 +6,7 @@
 
 #### Description:
 > **2019/2020** - 3rd Year, 1st Semester (FEUP MIEIC)
+>
 > **Course** Laboratório de Aplicações com Interface Gráfico [LAIG Page (2019/20)](https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=436446) | *Graphical Interfaces and Applications Laboratory*
 
 > ###### Basic Project Description
