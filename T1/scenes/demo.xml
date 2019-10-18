@@ -1,8 +1,8 @@
 <lxs>
-    <scene root="ROOT NODE" axis_length="10"/>
+    <scene root="ROOT NODE" axis_length="5"/>
     <views default="CAM1">
         <perspective id="CAM1" near="0.1" far="500" angle="20">
-            <from x="20" y="30" z="20" />
+            <from x="1" y="13" z="1" />
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="CAM2" near="0.1" far="10" angle="0">
@@ -16,7 +16,8 @@
 
     <globals>
         <ambient    r="0.1" g="0.1"  b="0.1"  a="1.0" />
-        <background r="0.8" g="1.0"  b="1.0"  a="1.0" />
+        <background r="0.53" g="0.81"  b="0.92"  a="1.0" />
+        <!-- skycolor r="0.53" g="0.81"  b="0.92" -->
     </globals>
 
 
@@ -42,17 +43,18 @@
     <textures>
         <texture id="default"       file="images/default.jpg" />
         <texture id="rickm1"        file="images/rm1.jpg" />
-        <texture id="hex"           file="images/cyltex.jpg" />
-        <texture id="legion"        file="images/legion.png" />
+        <texture id="hex"           file="images/hex.jpg" />
         <texture id="vidral"        file="images/vidral.jpg" />
         <texture id="trunk"         file="images/trunk-image.jpg" />
         <texture id="rocks"         file="images/rocks.jpg" />
         <texture id="leaves"        file="images/leaves.jpg" />
         <texture id="lightning"     file="images/lightning.png" />
-        <texture id="space"         file="images/space.jpg" />
+        <texture id="darkm"         file="images/darkmatter.png" />
+        <texture id="matter"        file="images/spherematter.png" />
         <texture id="desk"          file="images/desk.jpg" />
         <texture id="floor"         file="images/floor.jpg" />
         <texture id="digital"       file="images/digital.png" />
+        <texture id="ring"          file="images/ring.jpg" />
     </textures>
 
 
@@ -77,11 +79,17 @@
             <diffuse  r="0.0" g="0.0" b="0.0" a="0" />
             <specular r="0.0" g="0.0" b="0.0" a="1" />
         </material>
-        <material id="metalMAT" shininess="10">
+        <material id="whiteMAT" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1" />
-            <ambient  r="0.2" g="0.2" b="0.2" a="1" />
-            <diffuse  r="0.51" g="0.51" b="0.51" a="1" />
-            <specular r="0.51" g="0.51" b="0.51" a="0.51" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>
+        <material id="metal" shininess="10">
+            <emission r="0.75" g="0.75" b="0.75" a="1" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="1" />
+            <diffuse  r="0.0" g="0.0" b="0.0" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
     </materials>
 
@@ -90,35 +98,29 @@
 
 
     <transformations>
-        <!-- SQUEEZE TRANSFS -->
-        <transformation id="squeeze_x">
-            <scale x="0.1" y="1" z="1" />
-        </transformation>
-        <transformation id="squeeze_y">
-            <scale x="1" y="0.1" z="1" />
-        </transformation>
-        <transformation id="squeeze_z">
-            <scale x="1" y="1" z="0.1" />
-        </transformation>
-        <transformation id="squeeze_all">
-            <scale x="0.1" y="0.1" z="0.1" />
-        </transformation>
-
-
-        <transformation id="torus1_setup">
+        <transformation id="ring1_setup">
             <scale x="1" y="1" z="1" />
             <rotate axis="x" angle="-90"/>
         </transformation>
-        <transformation id="torus2_setup">
-            <scale x="1" y="1" z="0.9" />
+        <transformation id="ring2_setup">
+            <scale x="1" y="1" z="0.95" />
             <rotate axis="y" angle="90"/>
             <rotate axis="x" angle="-30"/>
         </transformation>
-        <transformation id="torus3_setup">
+        <transformation id="ring3_setup">
             <scale x="1" y="1" z="0.9" />
             <rotate axis="y" angle="90"/>
             <rotate axis="x" angle="30"/>
         </transformation>
+        <transformation id="tinysphere1_setup">
+            <translate x="-1.01" y="1.7" z="0" />
+        </transformation>
+        <transformation id="tinysphere2_setup">
+            <translate x="-0.8" y="-1.4" z="1" />
+        </transformation>
+        <transformation id="tinysphere3_setup">
+            <translate x="1.01" y="0" z="-1.71" />
+        </transformation>        
     </transformations>
 
 
@@ -131,9 +133,15 @@
         <primitive id="sphere">
             <sphere radius="1" slices="30" stacks="30"/>
         </primitive>
+        <primitive id="tinysphere">
+            <sphere radius="0.2" slices="20" stacks="20"/>
+        </primitive>                
         <primitive id="torus">
-            <torus loops="50" slices="50" inner="0.2" outer="3.0"/>
+            <torus loops="50" slices="50" inner="0.3" outer="3.0"/>
         </primitive>
+        <primitive id="ring">
+            <torus loops="50" slices="50" inner="0.08" outer="2.0"/>
+        </primitive>        
         <primitive id="cylinder">
             <cylinder slices="30" stacks="20" base="1" top="1" height="4" />
         </primitive>
@@ -143,53 +151,93 @@
 
 
     <components>
-        <component id="center-sph">
+        <component id="center_sph">
             <transformation>
+                <scale x="0.75" y="0.75" z="0.75"/>
             </transformation>
             <materials>
-                <material id="cyangloss" />
+                <material id="defaultMAT" />
             </materials>
-            <texture id="space" length_s="1" length_t="1"/>
+            <texture id="matter" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="torus1">
+
+        <component id="ring1">
             <transformation>
-                <transformationref id="torus1_setup" />
+                <transformationref id="ring1_setup" />
             </transformation>
             <materials>
-                <material id="cyangloss" />
+                <material id="metal" />
             </materials>
-            <texture id="legion" length_s="1" length_t="1"/>
+            <texture id="none" length_s="1" length_t="1"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="ring" />
             </children>
         </component>
-        <component id="torus2">
+        <component id="ring2">
             <transformation>
-                <transformationref id="torus2_setup" />
+                <transformationref id="ring2_setup" />
             </transformation>
             <materials>
-                <material id="cyangloss" />
+                <material id="metal" />
             </materials>
-            <texture id="legion" length_s="1" length_t="1"/>
+            <texture id="none" length_s="1" length_t="1"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="ring" />
             </children>
         </component>
-        <component id="torus3">
+        <component id="ring3">
             <transformation>
-                <transformationref id="torus3_setup" />
+                <transformationref id="ring3_setup" />
             </transformation>
             <materials>
-                <material id="cyangloss" />
+                <material id="metal" />
             </materials>
-            <texture id="legion" length_s="1" length_t="1"/>
+            <texture id="none" length_s="1" length_t="1"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="ring" />
             </children>
         </component>
+        <component id="tinysphere1">
+            <transformation>
+                <transformationref id="tinysphere1_setup" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+            <texture id="darkm" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="tinysphere" />
+            </children>
+        </component>
+        
+        <component id="tinysphere2">
+            <transformation>
+                <transformationref id="tinysphere2_setup" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+            <texture id="darkm" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="tinysphere" />
+            </children>
+        </component>
+        <component id="tinysphere3">
+            <transformation>
+                <transformationref id="tinysphere3_setup" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+            <texture id="darkm" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="tinysphere" />
+            </children>
+        </component>                
+
 
 
         <component id="holder">
@@ -207,28 +255,30 @@
         </component>
 
 
-        <component id="RN-LOGO">
+        <component id="ATOM">
             <transformation>
                 <translate x="0" y="5.24" z="0" />
-                <scale x="1.2" y="1.2" z="1.2" />
+                <scale x="0.8" y="0.8" z="0.8" />
             </transformation>
             <materials>
-                <material id="metalMAT" />
+                <material id="whiteMAT" />
             </materials>
             <texture id="default" length_s="1" length_t="1" />
             <children>
-                <componentref id="center-sph" />
-                <componentref id="torus1" />
-                <componentref id="torus2" />
-                <componentref id="torus3" />
-                <!-- <componentref id="holder" /> -->
+                <componentref id="center_sph" />
+                <componentref id="ring1" />
+                <componentref id="ring2" />
+                <componentref id="ring3" />
+                <componentref id="tinysphere1" />
+                <componentref id="tinysphere2" />
+                <componentref id="tinysphere3" />
             </children>
         </component>
 
         <component id="floor">
             <transformation>
-                <translate x="-20" y="0" z="20" />
-                <scale x="10" y="10" z="10" />
+                <translate x="-10" y="0" z="10" />
+                <scale x="5" y="5" z="5" />
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
@@ -247,11 +297,31 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-            <texture id="digital" length_s="1" length_t="1" />
+            <texture id="floor" length_s="0.5" length_t="0.5" />
             <children>
-                <!-- <componentref id="RN-LOGO" /> -->
+                <componentref id="ATOM" />
                 <componentref id="floor" />
             </children>
         </component>
     </components>
 </lxs>
+
+
+
+
+
+
+
+        <!-- SQUEEZE TRANSFS -->
+        <!-- <transformation id="squeeze_x">
+            <scale x="0.1" y="1" z="1" />
+        </transformation>
+        <transformation id="squeeze_y">
+            <scale x="1" y="0.1" z="1" />
+        </transformation>
+        <transformation id="squeeze_z">
+            <scale x="1" y="1" z="0.1" />
+        </transformation>
+        <transformation id="squeeze_all">
+            <scale x="0.1" y="0.1" z="0.1" />
+        </transformation> -->

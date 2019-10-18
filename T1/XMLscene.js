@@ -164,15 +164,19 @@ class XMLscene extends CGFscene
 
             if (this.displayNormals) {
                 this.graph.primitives['cylinder'].enableNormalViz();
-                this.graph.primitives['sphere'].enableNormalViz();
-                this.graph.primitives['torus'].enableNormalViz();
                 this.graph.primitives['rectangle'].enableNormalViz();
+                this.graph.primitives['sphere'].enableNormalViz();
+                this.graph.primitives['tinysphere'].enableNormalViz();
+                this.graph.primitives['torus'].enableNormalViz();
+                this.graph.primitives['ring'].enableNormalViz();
             }
             else {
                 this.graph.primitives['cylinder'].disableNormalViz();
                 this.graph.primitives['rectangle'].disableNormalViz();
                 this.graph.primitives['sphere'].disableNormalViz();
+                this.graph.primitives['tinysphere'].disableNormalViz();
                 this.graph.primitives['torus'].disableNormalViz();
+                this.graph.primitives['ring'].disableNormalViz();
             }
         }
 

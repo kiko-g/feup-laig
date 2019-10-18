@@ -786,7 +786,7 @@ class MySceneGraph
             }
 
 
-            else if (primitiveType == 'torus')
+            else if (primitiveType == 'torus' || primitiveType == 'ring')
             {
                 //radius   
                 var inner = this.reader.getFloat(grandChildren[0], 'inner');
