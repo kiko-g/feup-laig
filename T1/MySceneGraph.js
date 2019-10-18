@@ -1142,7 +1142,7 @@ class MySceneGraph
         {
             // console.log(currentMaterial);
             currentMaterial.apply();
-            currentTexture.bind();
+            if(currentTexture!=null) currentTexture.bind();
             this.scene.pushMatrix();
             lvs[i].display(ls, lt);
             this.scene.popMatrix();

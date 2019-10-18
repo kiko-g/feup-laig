@@ -61,10 +61,10 @@ class MyRectangle extends CGFobject
         var deltay = this.y2-this.y1;
 
 		this.defaultTexCoords = [
-			0, deltay,
-            deltax, deltay,
+            0, 1,
+            1, 1,
 			0, 0,
-            deltax, 0
+            1, 0,
         ]
         
         this.texCoords = [];
