@@ -76,9 +76,9 @@ class XMLscene extends CGFscene
     onViewChanged()
     {
         let curV = this.graph.views[this.selected];
-        if(curV == null) return null;
+
+        if(curV.type == "ortho") this.camera=new CGFcameraOrtho(curV.left, curV.right, curV.bottom, curV.top, curV.near, curV.far, curV.from, curV.to, curV.up);
         else if(curV.type == "perspective") this.camera = new CGFcamera(DEGREE_TO_RAD*curV.angle, curV.near, curV.far, curV.from, curV.to);
-        else if(curV.type == "ortho") this.camera = new CGFcameraOrtho(curV.left, curV.right, curV.bottom, curV.top, curV.near, curV.far, curV.from, curV.to, curV.up);
           
         this.interface.setActiveCamera(this.camera);
     }
