@@ -7,7 +7,7 @@
         </perspective>
         <perspective id="CAM2" near="0.1" far="10" angle="0">
             <from x="2" y="-20" z="1" />
-            <to x="90" y="3" z="0" />    
+            <to x="90" y="3" z="0" />
         </perspective>
     </views>
 
@@ -221,7 +221,7 @@
                 <componentref id="torus1" />
                 <componentref id="torus2" />
                 <componentref id="torus3" />
-                <!-- <componentref id="holder" />  -->
+                <!-- <componentref id="holder" /> -->
             </children>
         </component>
 
@@ -253,6 +253,5 @@
                 <componentref id="floor" />
             </children>
         </component>
-        
     </components>
 </lxs>
