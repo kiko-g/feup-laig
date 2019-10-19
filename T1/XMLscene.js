@@ -41,23 +41,19 @@ class XMLscene extends CGFscene
     // Use camera with default ID if it exists
     initCameras()
     {
-        let V;
         this.viewNames = [];
-
-        if(this.graph.defaultViewDefined)
-        {
+        if(this.graph.defaultViewDefined){
             for (let key in this.graph.views)
             {
                 this.viewNames.push(key);
                 this.view = this.graph.views[key];
                 
                 if (this.view.id == this.graph.defaultViewID){ 
-                    V = this.view;
+                    var V = this.view;
                     this.selected = this.view.id;
                 }
             }
-        }
-        else return;
+        } else return;
 
 
         if (V == null) return;
@@ -69,17 +65,13 @@ class XMLscene extends CGFscene
         this.interface.setActiveCamera(this.camera);
     }
     
-
-    
-    
-    
     onViewChanged()
     {
         let curV = this.graph.views[this.selected];
 
         if(curV.type == "ortho") this.camera=new CGFcameraOrtho(curV.left, curV.right, curV.bottom, curV.top, curV.near, curV.far, curV.from, curV.to, curV.up);
         else if(curV.type == "perspective") this.camera = new CGFcamera(DEGREE_TO_RAD*curV.angle, curV.near, curV.far, curV.from, curV.to);
-          
+        
         this.interface.setActiveCamera(this.camera);
     }
     
@@ -88,12 +80,10 @@ class XMLscene extends CGFscene
     initLights()
     {
         var i = 0;  // Lights index.
-
         // Reads the lights from the scene graph.
         for (let key in this.graph.lights)
         {
             if (i >= 8) break; // Only eight lights allowed by WebGL.
-
             if (this.graph.lights.hasOwnProperty(key))
             {
                 var light = this.graph.lights[key];
@@ -119,6 +109,9 @@ class XMLscene extends CGFscene
         }
     }
     
+
+
+
     setDefaultAppearance()
     {
         this.setAmbient(0/255, 0/255, 0/255, 1.0);
@@ -155,6 +148,7 @@ class XMLscene extends CGFscene
         this.updateProjectionMatrix();  
         this.loadIdentity();            // Initialize Model-View matrix as identity (no transformation)
         this.applyViewMatrix();         // Apply transformations corresponding to the camera position relative to the origin
+        console.log(this.camera);
 
         this.pushMatrix();
         

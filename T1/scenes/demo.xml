@@ -1,16 +1,16 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
-    <views default="CAM3">
-        <perspective id="CAM1" near="0.1" far="500" angle="20">
-            <from x="0" y="9" z="1" />
+    <views default="FAR">
+        <perspective id="FAR" near="0.1" far="500" angle="20">
+            <from x="30" y="20" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="CAM2" near="0.1" far="500" angle="20">
             <from x="8" y="15" z="8" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="CAM3" near="0.1" far="500" angle="20">
-            <from x="10" y="20" z="10" />
+        <perspective id="VERY FAR" near="0.1" far="500" angle="20">
+            <from x="50" y="20" z="50" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -138,7 +138,7 @@
             <sphere radius="1" slices="30" stacks="30"/>
         </primitive>
         <primitive id="tinysphere">
-            <sphere radius="0.2" slices="20" stacks="20"/>
+            <sphere radius="0.22" slices="20" stacks="20"/>
         </primitive>                
         <primitive id="torus">
             <torus loops="50" slices="50" inner="0.3" outer="3.0"/>
@@ -243,7 +243,6 @@
         </component>                
 
 
-
         <component id="holder">
             <transformation>
                 <rotate axis="x" angle="90"/>
@@ -263,6 +262,7 @@
             <transformation>
                 <translate x="0" y="3" z="0" />
                 <scale x="0.8" y="0.78" z="0.8" />
+                <rotate axis="y" angle="100"/>
             </transformation>
             <materials>
                 <material id="whiteMAT" />
@@ -278,6 +278,7 @@
                 <componentref id="tinysphere3" />
             </children>
         </component>
+
 
         <component id="floor">
             <transformation>
