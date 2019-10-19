@@ -9,7 +9,6 @@ var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
-var aa = 0;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -1117,8 +1116,6 @@ class MySceneGraph
     
     traverseGraph(component, parentMat, parentTex)
     {
-        aa++;
-
         var currentnode = component;
         var children = currentnode.compchildren;
         var leaves = currentnode.leaves;
