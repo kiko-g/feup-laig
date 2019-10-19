@@ -39,6 +39,12 @@
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="1.0" a="1.0" />
         </omni>
+        <omni id="L3" enabled="1">
+            <location x="5.0" y="20.0" z="-8.0" w="1.0" />
+            <ambient  r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="1.0" a="1.0" />
+        </omni>
     </lights>
 
 
@@ -58,7 +64,7 @@
         <texture id="desk"          file="images/desk.jpg" />
         <texture id="floor"         file="images/floor.jpg" />
         <texture id="digital"       file="images/digital.png" />
-        <texture id="ring"          file="images/ring.jpg" />
+        <texture id="sky"           file="images/sky.jpg" />
     </textures>
 
 
@@ -154,7 +160,7 @@
 
 
 
-    <components>
+<components>
         <component id="center_sph">
             <transformation>
                 <scale x="0.75" y="0.75" z="0.75"/>
@@ -167,7 +173,6 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
-
         <component id="ring1">
             <transformation>
                 <transformationref id="ring1_setup" />
@@ -216,7 +221,6 @@
                 <primitiveref id="tinysphere" />
             </children>
         </component>
-        
         <component id="tinysphere2">
             <transformation>
                 <transformationref id="tinysphere2_setup" />
@@ -242,27 +246,112 @@
             </children>
         </component>                
 
-
+        <!--  -->
         <component id="holder">
             <transformation>
+                <scale x="0.1" y="1.2" z="0.1" />
                 <rotate axis="x" angle="90"/>
-                <scale x="0.2" y="0.2" z="2" />
             </transformation>
             <materials>
                 <material id="cyangloss" />
             </materials>
-            <texture id="none" length_s="1" length_t="1"/>
+            <texture id="hex" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
         </component>
+        <!--  -->
+
+        <component id="rect1">
+            <transformation>
+                <translate x="-10" y="0" z="-10"/>
+                <scale x="5" y="5" z="5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="4" length_t="4"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rect2">
+            <transformation>
+                <translate x="-10" y="0" z="10"/>
+                <scale x="5" y="5" z="5"/>
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="4" length_t="4"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rect3">
+            <transformation>
+                <translate x="10" y="0" z="-10"/>
+                <scale x="5" y="5" z="5"/>
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="4" length_t="4"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rect4">
+            <transformation>
+                <translate x="-10" y="20" z="-10"/>
+                <scale x="5" y="5" z="5"/>
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="4" length_t="4"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="rect5">
+            <transformation>
+                <translate x="10" y="0" z="10"/>
+                <scale x="5" y="5" z="5"/>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="0.5" length_t="0.5"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="floor">
+            <transformation>
+                <translate x="-10" y="0" z="10" />
+                <scale x="5" y="5" z="5" />
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="floor" length_s="2" length_t="2" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
 
 
         <component id="ATOM">
             <transformation>
-                <translate x="0" y="3" z="0" />
-                <scale x="0.8" y="0.78" z="0.8" />
-                <rotate axis="y" angle="100"/>
+                <scale x="0.5" y="0.5" z="0.5" />
+                <translate x="-8" y="2" z="8" />
             </transformation>
             <materials>
                 <material id="whiteMAT" />
@@ -276,24 +365,29 @@
                 <componentref id="tinysphere1" />
                 <componentref id="tinysphere2" />
                 <componentref id="tinysphere3" />
+                <componentref id="holder" />
             </children>
         </component>
 
 
-        <component id="floor">
+        <component id="CUBEMAP">
             <transformation>
-                <translate x="-10" y="0" z="10" />
-                <scale x="5" y="5" z="5" />
-                <rotate axis="x" angle="-90"/>
+                <scale x="1" y="0.95" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="whiteMAT" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="4" />
+            <texture id="default" length_s="0.5" length_t="0.5" />
             <children>
-                <primitiveref id="rectangle" />
+                <componentref id="rect1" />
+                <componentref id="rect2" />
+                <componentref id="rect3" />
+                <componentref id="rect4" />
+                <componentref id="rect5" />
+                <componentref id="floor" />
             </children>
         </component>
+
     
 
         <component id="ROOT NODE">
@@ -302,11 +396,11 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-            <texture id="floor" length_s="0.5" length_t="0.5" />
+            <texture id="sky" length_s="4" length_t="4" />
             <children>
                 <componentref id="ATOM" />
-                <componentref id="floor" />
+                <componentref id="CUBEMAP" />
             </children>
         </component>
-    </components>
+</components>
 </lxs>

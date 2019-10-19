@@ -21,6 +21,7 @@ class XMLscene extends CGFscene
         super.init(application);
         this.sceneInited = false;
         this.displayAxis = true;
+        this.viewLightBoxes = false;
         this.cylNormals = false;
         this.sphNormals = false;
         this.rectNormals = false;
@@ -123,7 +124,8 @@ class XMLscene extends CGFscene
             var light = this.graph.lights[key];
             if (light[0]) this.lights[i].enable();
             else this.lights[i].disable();
-            this.lights[i].setVisible(false);
+            if(!this.viewLightBoxes) this.lights[i].setVisible(false);
+            else this.lights[i].setVisible(true);
             this.lights[i].update();
             i++;
         }
@@ -172,12 +174,13 @@ class XMLscene extends CGFscene
             this.lights[i].enable();
         }
         
+        this.toggleLights();
+
         if (this.sceneInited){
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)
             
             if(this.displayAxis) this.axis.display();
-            this.toggleLights();
             this.manageNormals();
         }
 

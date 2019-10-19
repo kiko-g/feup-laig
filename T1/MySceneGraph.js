@@ -1107,31 +1107,30 @@ class MySceneGraph
     }
 
     // ==================================================================================================================================
-    traverseGraph(component, mat, tex)
+    traverseGraph(component, parentMat, parentTex)
     {
         var currentnode = component;
         var children = currentnode.compchildren;
         var leaves = currentnode.leaves;
-        var ls, lt, TEX;
-        if (currentnode.texture.texture == "inherit") {
-            currentnode.texture.texture = tex.texture;
-            // ls = TEX.length_s;
-            // lt = TEX.length_t;
-        }
-        else if (currentnode.texture.texture == "none") {
+        var ls, lt, TEX, MATS;
+        if (currentnode.texture.texture == "none"){
             TEX = null;
             ls = null;
-            lt = null;
+            lt = null; 
         }
+
+        else if (currentnode.texture.texture == "inherit") currentnode.texture.texture = parentTex.texture;
         else {
-            TEX = tex;
-            ls = tex.length_s;
-            lt = tex.length_t;
+            TEX = parentTex;
+            ls = parentTex.length_s;
+            lt = parentTex.length_t;
         }
-        if (currentnode.materials.materials != "inherit") var MATS = currentnode.materials;
+
+
+        if (currentnode.materials.materials != "inherit") MATS = currentnode.materials;
         else{
-            currentnode.materials.materials = mat.materials;
-            var MATS = mat.materials;
+            currentnode.materials.materials = parentMat.materials;
+            MATS = parentMat.materials;
         }
 
         var currentTexture = currentnode.texture.texture;

@@ -15,6 +15,7 @@ class MyInterface extends CGFinterface
         this.camera = this.gui.addFolder("Camera");     this.camera.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
+        this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
         this.settings.add(this.scene, 'displayAllNormals').name("All Normals");
         this.normals.add(this.scene, 'sphNormals').name("Sphere");
         this.normals.add(this.scene, 'torNormals').name("Torus");
