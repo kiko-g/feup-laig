@@ -9,7 +9,6 @@ var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
-var aa = 0;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -951,11 +950,15 @@ class MySceneGraph
             //TEXTURES SECTION
             var textureNode = grandChildren[textureIndex];
             var tex; //tex string
-            var length_s = null, length_t = null;
+            var ls = null, lt = null;
             
             var texID = this.reader.getString(textureNode, "id");
             if(texID == null) { this.onXMLError("No texture ID in component " + componentID); return null; }
-            else if(texID == "inherit") { tex = "inherit"; }
+            else if (texID == "inherit"){
+                tex = "inherit";
+                ls = this.reader.getFloat(textureNode, "length_s");
+                lt = this.reader.getFloat(textureNode, "length_t");
+            }
             else if(texID == "none") { tex = null; }
             else if(this.textures[texID] == null){
                 this.onXMLError("Texture w/ ID " + texID + " in component: " + componentID + " doesn't exist");
@@ -964,15 +967,17 @@ class MySceneGraph
             else 
             { 
                 tex = this.textures[texID];
-                length_s = this.reader.getFloat(textureNode, "length_s");
-                length_t = this.reader.getFloat(textureNode, "length_t");
-                console.log(texID, length_s, length_t);
-                if (length_s == null || length_s == undefined) { this.onXMLMinorError("length_s not specified in " + componentID); length_s = 1.0; }
-                if (length_t == null || length_t == undefined) { this.onXMLMinorError("length_t not specified in " + componentID); length_t = 1.0; }
+                ls = this.reader.getFloat(textureNode, "length_s");
+                lt = this.reader.getFloat(textureNode, "length_t");
+                
+                if (ls == null || ls == undefined) { this.onXMLMinorError("length_s not specified in " + componentID); ls = 1.0; }
+                if (lt == null || lt == undefined) { this.onXMLMinorError("length_t not specified in " + componentID); lt = 1.0; }
             }
-
-            var texture = {texture: tex, length_s: length_s, length_t: length_t}; //build texture
-
+            
+            //build texture
+            var texture = {texture: tex, ls: ls, lt: lt}; 
+            console.log(texture, texID);
+            
             //CHILDREN SECTION
             // FOCUS ON THIS
             var componentChildren = []; //string names of component children
@@ -1111,8 +1116,6 @@ class MySceneGraph
     
     traverseGraph(component, parentMat, parentTex)
     {
-        aa++;
-
         var currentnode = component;
         var children = currentnode.compchildren;
         var leaves = currentnode.leaves;
@@ -1126,13 +1129,13 @@ class MySceneGraph
         else if (currentnode.texture.texture == "inherit"){
             TEX = parentTex;
             currentnode.texture.texture = parentTex.texture;
-            ls = parentTex.length_s;
-            lt = parentTex.length_t;
+            ls = currentnode.texture.ls; //dont inherit ls (rule)
+            lt = currentnode.texture.lt; //dont inherit ls (rule)
         }
         else {
             TEX = currentnode.texture;
-            ls = currentnode.texture.length_s;
-            lt = currentnode.texture.length_t;
+            ls = currentnode.texture.ls;
+            lt = currentnode.texture.lt;
         }
 
 

@@ -93,5 +93,5 @@ class MyTorus extends CGFobject
     }
 
 
-    display(length_s, length_t) { super.display(); }
+    display(ls, lt) { super.display(); }
 }

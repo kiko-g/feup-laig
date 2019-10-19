@@ -654,12 +654,11 @@
 
         <component id="CUBEMAP">
             <transformation>
-                <scale x="1.1" y="1.0" z="1.1" />
             </transformation>
             <materials>
                 <material id="whiteMAT" />
             </materials>
-                <texture id="sky" length_s="4" length_t="4" />
+                <texture id="sky" length_s="1" length_t="1" />
             <children>
                 <componentref id="rect1" />
                 <componentref id="rect2" />
