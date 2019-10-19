@@ -955,7 +955,11 @@ class MySceneGraph
             
             var texID = this.reader.getString(textureNode, "id");
             if(texID == null) { this.onXMLError("No texture ID in component " + componentID); return null; }
-            else if (texID == "inherit") { tex = "inherit"; ls = this.reader.getFloat(textureNode, "length_s"); lt = this.reader.getFloat(textureNode, "length_t");}
+            else if (texID == "inherit"){
+                tex = "inherit";
+                ls = this.reader.getFloat(textureNode, "length_s");
+                lt = this.reader.getFloat(textureNode, "length_t");
+            }
             else if(texID == "none") { tex = null; }
             else if(this.textures[texID] == null){
                 this.onXMLError("Texture w/ ID " + texID + " in component: " + componentID + " doesn't exist");
@@ -1128,8 +1132,8 @@ class MySceneGraph
         else if (currentnode.texture.texture == "inherit"){
             TEX = parentTex;
             currentnode.texture.texture = parentTex.texture;
-            ls = parentTex.ls;
-            lt = parentTex.lt;
+            ls = currentnode.texture.ls; //dont inherit ls (rule)
+            lt = currentnode.texture.lt; //dont inherit ls (rule)
         }
         else {
             TEX = currentnode.texture;
