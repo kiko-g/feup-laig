@@ -75,22 +75,22 @@ class MyRectangle extends CGFobject
         if (!this.scene.displayNormals) this.normalViz = false;
 	}
 
-    display(length_s, length_t) 
+    display(ls, lt) 
     {
-        if ((length_s != null) && (length_t != null))
-            this.updateTexScale(length_s, length_t);
+        if ((ls != null) && (lt != null))
+            this.updateTexScale(ls, lt);
         super.display();
     }
     
     
-    updateTexScale(length_s, length_t)
+    updateTexScale(ls, lt)
     {
         this.texCoords = [];
         var s, t;
         for(var i=0; i<this.defaultTexCoords.length; i+=2)
         {
-            s = this.defaultTexCoords[i]/length_s;
-            t = this.defaultTexCoords[i+1]/length_t;
+            s = this.defaultTexCoords[i]/ls;
+            t = this.defaultTexCoords[i+1]/lt;
             this.texCoords.push(s, t);
         }
         // this.defaultTexCoords = this.texCoords;

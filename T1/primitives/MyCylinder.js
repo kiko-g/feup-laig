@@ -93,5 +93,5 @@ class MyCylinder extends CGFobject {
         if (this.scene.displayNormals) this.enableNormalViz();
         if (!this.scene.displayNormals) this.normalViz = false;
     }
-    display(length_s, length_t) { super.display(); }
+    display(ls, lt) { super.display(); }
 }
