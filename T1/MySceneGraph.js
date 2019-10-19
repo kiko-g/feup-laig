@@ -955,7 +955,7 @@ class MySceneGraph
             
             var texID = this.reader.getString(textureNode, "id");
             if(texID == null) { this.onXMLError("No texture ID in component " + componentID); return null; }
-            else if(texID == "inherit") { tex = "inherit"; ls=4.0; lt=4.0}
+            else if (texID == "inherit") { tex = "inherit"; ls = this.reader.getFloat(textureNode, "length_s"); lt = this.reader.getFloat(textureNode, "length_t");}
             else if(texID == "none") { tex = null; }
             else if(this.textures[texID] == null){
                 this.onXMLError("Texture w/ ID " + texID + " in component: " + componentID + " doesn't exist");
