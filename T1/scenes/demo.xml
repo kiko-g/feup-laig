@@ -1,16 +1,16 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
     <views default="VERY FAR">
+        <perspective id="VERY FAR" near="0.1" far="500" angle="20">
+            <from x="50" y="50" z="50" />
+            <to x="0" y="0" z="0" />
+        </perspective>
         <perspective id="FAR" near="0.1" far="500" angle="20">
             <from x="30" y="20" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="CAM2" near="0.1" far="500" angle="20">
             <from x="8" y="15" z="8" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-        <perspective id="VERY FAR" near="0.1" far="500" angle="20">
-            <from x="50" y="50" z="50" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -65,6 +65,14 @@
         <texture id="floor"         file="images/floor.jpg" />
         <texture id="digital"       file="images/digital.png" />
         <texture id="sky"           file="images/sky.jpg" />
+        <texture id="yellow"        file="images/yellow.jpg" />
+        <texture id="pencil_wood"   file="images/pencil_tip.jpg" />
+        <texture id="carbon"        file="images/carbon.jpg" />
+        <texture id="white_plas"    file="images/white_plast.jpg" />
+        <texture id="rubber"        file="images/rubber.png" />
+        <texture id="laig"          file="images/LAIG _3.png" />
+        <texture id="water"          file="images/water.jpg" />
+        <texture id="pages"          file="images/pages.png" />
     </textures>
 
 
@@ -154,6 +162,12 @@
         </primitive>        
         <primitive id="cylinder">
             <cylinder slices="30" stacks="20" base="1" top="1" height="4" />
+        </primitive>
+        <primitive id="cylinder2">
+            <cylinder slices="6" stacks="6" base="0.5" top="0.5" height="6" />
+        </primitive>
+        <primitive id="cone">
+            <cylinder slices="6" stacks="6" base="0.5" top="0.01" height="2" />
         </primitive>
     </primitives>
 
@@ -263,6 +277,7 @@
         <!--  -->
 
 
+
         <component id="floor">
             <transformation>
                 <translate x="-10" y="0" z="10" />
@@ -346,13 +361,279 @@
                 <primitiveref id="rectangle" />
             </children>
         </component>
+         <component id="carbon_tip">
+            <transformation>
+                <scale x="0.5" y="0.5" z="0.5" />
+                <translate x="0" y="-1" z="16.1" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="whiteMAT" />
+            </materials>
+                <texture id="carbon" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="cone" />
+            </children>
+        </component>
+        <component id="tip">
+            <transformation>
+                <translate x="0" y="-0.5" z="8" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="whiteMAT" />
+            </materials>
+                <texture id="pencil_wood" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="cone" />
+                <componentref id="carbon_tip" />
+            </children>
+        </component>
+        <component id="metal">
+            <transformation>
+                <translate x="0" y="-0.5" z="-0.23" />
+                <scale x="0.15" y="0.15" z="0.8" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="white_plas" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+        <component id="rubber_top">
+            <transformation>
+                <translate x="0" y="1" z="5.5" />
+                <scale x="2.2" y="2.1" z="2.2" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="rubber" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="rubber">
+            <transformation>
+                <translate x="0" y="-0.5" z="-1" />
+                <scale x="0.45" y="0.45" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="rubber" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+                <componentref id="rubber_top" />
+            </children>
+        </component>
+        <component id="body">
+            <transformation>
+                <translate x="0" y="-0.5" z="0" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="yellow" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder2" />
+            </children>
+        </component>
+
+        <!-- mug-->
+        <component id="holder2">
+            <transformation>
+                <translate x="0" y="1.7" z="-1" />
+                <scale x="1.3" y="0.5" z="0.7" />
+                <rotate axis="y" angle="270" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="white_plas" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+        <component id="main_cyl">
+            <transformation>
+                <scale x="1.6" y="1" z="1.6" />
+                <translate x="0" y="4" z="0" />
+                <rotate axis="y" angle="135" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="laig" length_s="2" length_t="2" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="water">
+            <transformation>
+                <translate x="0" y="3.3" z="0" />
+                <scale x="1.55" y="0.1" z="1.55" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="water" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <!-- book -->
+        <component id="cover0">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="cover1">
+            <transformation>
+                <translate x="4" y="0" z="0" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="back0">
+            <transformation>
+                <translate x="4" y="0" z="-0.5" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="back1">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="pages1">
+            <transformation>
+                <scale x="0.95" y="0.95" z="0.12" />
+                <translate x="4" y="0.1" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="pages" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="pages2">
+            <transformation>
+                <translate x="4" y="0.1" z="0" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.95" y="0.95" z="0.12" />
+                <translate x="4" y="0.1" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="pages" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="pages3">
+            <transformation>
+                <translate x="4" y="4" z="0" />
+                <rotate axis="z" angle="180" />
+                <translate x="4" y="0.1" z="0" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.95" y="0.95" z="0.12" />
+                <translate x="4" y="0.1" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="pages" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+        <component id="side">
+            <transformation>
+                <translate x="0" y="4" z="-0.22" />
+                <scale x="0.2" y="1" z="0.3" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="book_top">
+            <transformation>
+                <translate x="0" y="4" z="-0.22" />
+                <scale x="0.2" y="0.05" z="0.3" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="book_bottom">
+            <transformation>
+                <translate x="0" y="0" z="-0.22" />
+                <scale x="0.2" y="0.05" z="0.3" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
 
 
 
         <component id="ATOM">
             <transformation>
-                <scale x="0.5" y="0.5" z="0.5" />
-                <translate x="-8" y="2" z="8" />
+                <scale x="0.8" y="0.8" z="0.8" />
+                <translate x="4" y="2" z="-3" />
             </transformation>
             <materials>
                 <material id="whiteMAT" />
@@ -389,6 +670,62 @@
             </children>
         </component>
 
+        <component id="pencil">
+            <transformation>
+                <translate x="-2" y="0.5" z="1" />
+                <rotate axis="y" angle="30" />
+            </transformation>
+            <materials>
+                <material id="whiteMAT" />
+            </materials>
+                <texture id="yellow" length_s="4" length_t="4" />
+            <children>
+                <componentref id="body" />
+                <componentref id="tip" />
+                <componentref id="metal" />
+                <componentref id="rubber" />
+            </children>
+        </component>
+
+        <component id="mug">
+            <transformation>
+                <translate x="-2" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="laig" length_s="1" length_t="1" />
+            <children>
+                <componentref id="main_cyl" />
+                <componentref id="holder2" />
+                <componentref id="water" />
+            </children>
+        </component>
+
+        <component id="book">
+            <transformation>
+                <scale x="1.1" y="1.4" z="1.4" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="default" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cover0" />
+                <componentref id="cover1" />
+                <componentref id="back0" />
+                <componentref id="back1" />
+                <componentref id="pages1" />
+                <componentref id="pages2" />
+                <componentref id="pages3" />
+                <componentref id="side" />
+                <componentref id="book_top" />
+                <componentref id="book_bottom" />
+            </children>
+        </component>
+
+       
+
     
 
         <component id="ROOT NODE">
@@ -399,8 +736,11 @@
             </materials>
             <texture id="default" length_s="1" length_t="1" />
             <children>
-                <!-- <componentref id="ATOM" /> -->
+                <componentref id="ATOM" />
                 <componentref id="CUBEMAP" />
+                <componentref id="pencil" />
+                <componentref id="mug" />
+                <componentref id="book" />
             </children>
         </component>
 </components>

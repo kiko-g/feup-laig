@@ -82,7 +82,9 @@ class MyCylinder extends CGFobject {
                     d = b + 1;
 
                     this.indices.push(c, b, a);
+                    this.indices.push(a, b, c);
                     this.indices.push(c, d, b);
+                    this.indices.push(b, d, c);
                 }
                 k++;
             }

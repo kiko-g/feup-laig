@@ -809,7 +809,7 @@ class MySceneGraph
             }
 
 
-            else if (primitiveType == 'cylinder')
+            else if (primitiveType == 'cylinder' ||primitiveType == 'cylinder2' || primitiveType == 'cone')
             {
                 //slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');
