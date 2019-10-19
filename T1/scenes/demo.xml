@@ -1,6 +1,6 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
-    <views default="FAR">
+    <views default="VERY FAR">
         <perspective id="FAR" near="0.1" far="500" angle="20">
             <from x="30" y="20" z="30" />
             <to x="0" y="0" z="0" />
@@ -10,7 +10,7 @@
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="VERY FAR" near="0.1" far="500" angle="20">
-            <from x="50" y="20" z="50" />
+            <from x="50" y="50" z="50" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -262,6 +262,21 @@
         </component>
         <!--  -->
 
+
+        <component id="floor">
+            <transformation>
+                <translate x="-10" y="0" z="10" />
+                <scale x="5" y="5" z="5" />
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="floor" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
         <component id="rect1">
             <transformation>
                 <translate x="-10" y="0" z="-10"/>
@@ -270,7 +285,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="4"/>
+                <texture id="inherit" length_s="4" length_t="4"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -284,7 +299,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="4"/>
+                <texture id="inherit" length_s="4" length_t="4"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -298,7 +313,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="4"/>
+                <texture id="inherit" length_s="4" length_t="4"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -312,7 +327,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="4"/>
+                <texture id="inherit" length_s="4" length_t="4"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -326,21 +341,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="0.5" length_t="0.5"/>
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-        </component>
-        <component id="floor">
-            <transformation>
-                <translate x="-10" y="0" z="10" />
-                <scale x="5" y="5" z="5" />
-                <rotate axis="x" angle="-90"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="floor" length_s="2" length_t="2" />
+                <texture id="inherit" length_s="4" length_t="4"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -372,12 +373,12 @@
 
         <component id="CUBEMAP">
             <transformation>
-                <scale x="1" y="0.95" z="1" />
+                <scale x="1.1" y="1.0" z="1.1" />
             </transformation>
             <materials>
                 <material id="whiteMAT" />
             </materials>
-            <texture id="default" length_s="0.5" length_t="0.5" />
+                <texture id="sky" length_s="4" length_t="4" />
             <children>
                 <componentref id="rect1" />
                 <componentref id="rect2" />
@@ -396,9 +397,9 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-            <texture id="sky" length_s="4" length_t="4" />
+            <texture id="default" length_s="1" length_t="1" />
             <children>
-                <componentref id="ATOM" />
+                <!-- <componentref id="ATOM" /> -->
                 <componentref id="CUBEMAP" />
             </children>
         </component>
