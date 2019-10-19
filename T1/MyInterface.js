@@ -9,17 +9,24 @@ class MyInterface extends CGFinterface
         super.init(application);
 
         this.gui = new dat.GUI();
-        this.settings = this.gui.addFolder("General");  this.settings.open();
+        this.settings = this.gui.addFolder("General");
+        this.normals = this.gui.addFolder("Normals");
         this.lights = this.gui.addFolder("Lighting");   this.lights.open();
         this.camera = this.gui.addFolder("Camera");     this.camera.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
-        this.settings.add(this.scene, 'displayNormals').name("Normals");
+        this.settings.add(this.scene, 'displayAllNormals').name("All Normals");
+        this.normals.add(this.scene, 'sphNormals').name("Sphere");
+        this.normals.add(this.scene, 'torNormals').name("Torus");
+        this.normals.add(this.scene, 'cylNormals').name("Cylinder");
+        this.normals.add(this.scene, 'ringNormals').name("Ring");
+        this.normals.add(this.scene, 'rectNormals').name("Rectangle");
+        this.normals.add(this.scene, 'tinysphNormals').name("Tiny Sphere");
 
         this.initKeys();
         return true;
     }
-
+    
     switchLights(){
         for(let key in this.scene.graph.lights)
             this.lights.add(this.scene.graph.lights[key], 0).name(key);

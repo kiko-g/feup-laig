@@ -21,7 +21,13 @@ class XMLscene extends CGFscene
         super.init(application);
         this.sceneInited = false;
         this.displayAxis = true;
-        this.displayNormals = false;
+        this.cylNormals = false;
+        this.sphNormals = false;
+        this.rectNormals = false;
+        this.torNormals = false;
+        this.tinysphNormals = false;
+        this.ringNormals = false;
+        this.displayAllNormals = false;
 
         //fov (radians), near, far, position, target 
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
@@ -109,7 +115,19 @@ class XMLscene extends CGFscene
         }
     }
     
-
+    toggleLights() {
+        var i = 0;
+        for (let key in this.graph.lights)
+        {
+            //there are two different arrays of lights
+            var light = this.graph.lights[key];
+            if (light[0]) this.lights[i].enable();
+            else this.lights[i].disable();
+            this.lights[i].setVisible(false);
+            this.lights[i].update();
+            i++;
+        }
+    }
 
 
     setDefaultAppearance()
@@ -138,7 +156,6 @@ class XMLscene extends CGFscene
     }
 
 
-
     // Displays the scene
     display()
     {
@@ -148,41 +165,61 @@ class XMLscene extends CGFscene
         this.updateProjectionMatrix();  
         this.loadIdentity();            // Initialize Model-View matrix as identity (no transformation)
         this.applyViewMatrix();         // Apply transformations corresponding to the camera position relative to the origin
-        console.log(this.camera);
-
         this.pushMatrix();
         
-        for (let i = 0; i < this.lights.length; i++)
-        {
+        for (let i = 0; i < this.lights.length; i++){
             this.lights[i].setVisible(true);
             this.lights[i].enable();
         }
         
-        if (this.sceneInited)
-        {
+        if (this.sceneInited){
             this.setDefaultAppearance();    // Draw Axis
-            this.graph.displayScene();      // Displays the scene (MySceneGraph function).
+            this.graph.displayScene();      // Displays the scene (xml)
+            
             if(this.displayAxis) this.axis.display();
-
-            if (this.displayNormals) {
-                this.graph.primitives['cylinder'].enableNormalViz();
-                this.graph.primitives['rectangle'].enableNormalViz();
-                this.graph.primitives['sphere'].enableNormalViz();
-                this.graph.primitives['tinysphere'].enableNormalViz();
-                this.graph.primitives['torus'].enableNormalViz();
-                this.graph.primitives['ring'].enableNormalViz();
-            }
-            else {
-                this.graph.primitives['cylinder'].disableNormalViz();
-                this.graph.primitives['rectangle'].disableNormalViz();
-                this.graph.primitives['sphere'].disableNormalViz();
-                this.graph.primitives['tinysphere'].disableNormalViz();
-                this.graph.primitives['torus'].disableNormalViz();
-                this.graph.primitives['ring'].disableNormalViz();
-            }
+            this.toggleLights();
+            this.manageNormals();
         }
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+
+    manageNormals() {
+        if (this.displayAllNormals) {
+            this.graph.primitives['cylinder'].enableNormalViz();
+            this.graph.primitives['rectangle'].enableNormalViz();
+            this.graph.primitives['sphere'].enableNormalViz();
+            this.graph.primitives['tinysphere'].enableNormalViz();
+            this.graph.primitives['torus'].enableNormalViz();
+            this.graph.primitives['ring'].enableNormalViz();
+        }
+        else {
+            this.graph.primitives['cylinder'].disableNormalViz();
+            this.graph.primitives['rectangle'].disableNormalViz();
+            this.graph.primitives['sphere'].disableNormalViz();
+            this.graph.primitives['tinysphere'].disableNormalViz();
+            this.graph.primitives['torus'].disableNormalViz();
+            this.graph.primitives['ring'].disableNormalViz();
+        }
+
+        if (this.cylNormals || this.displayAllNormals) this.graph.primitives['cylinder'].enableNormalViz();
+        else this.graph.primitives['cylinder'].disableNormalViz();
+
+        if (this.sphNormals || this.displayAllNormals) this.graph.primitives['sphere'].enableNormalViz();
+        else this.graph.primitives['sphere'].disableNormalViz();
+
+        if (this.rectNormals || this.displayAllNormals) this.graph.primitives['rectangle'].enableNormalViz();
+        else this.graph.primitives['rectangle'].disableNormalViz();
+
+        if (this.tinysphNormals || this.displayAllNormals) this.graph.primitives['tinysphere'].enableNormalViz();
+        else this.graph.primitives['tinysphere'].disableNormalViz();
+
+        if (this.torNormals || this.displayAllNormals) this.graph.primitives['torus'].enableNormalViz();
+        else this.graph.primitives['torus'].disableNormalViz();
+
+        if (this.ringNormals || this.displayAllNormals) this.graph.primitives['ring'].enableNormalViz();
+        else this.graph.primitives['ring'].disableNormalViz();
     }
 }
