@@ -27,12 +27,12 @@ class MyInterface extends CGFinterface
         return true;
     }
     
-    switchLights(){
+    lightsInterface(){
         for(let key in this.scene.graph.lights)
             this.lights.add(this.scene.graph.lights[key], 0).name(key);
     }
 
-    switchViews(){
+    viewsInterface(){
         this.camera.add(this.scene, "selected", this.scene.viewNames).onChange(this.scene.onViewChanged.bind(this.scene)).name("SelectedView");
     }
     
