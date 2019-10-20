@@ -26,8 +26,6 @@ class XMLscene extends CGFscene
         this.sphNormals = false;
         this.rectNormals = false;
         this.torNormals = false;
-        this.tinysphNormals = false;
-        this.ringNormals = false;
         this.allNormals = false;
 
         //fov (radians), near, far, position, target 

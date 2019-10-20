@@ -10,9 +10,10 @@ class MyInterface extends CGFinterface
 
         this.gui = new dat.GUI();
         this.settings = this.gui.addFolder("General");
-        this.normals = this.gui.addFolder("Normals");
+        this.normals = this.gui.addFolder("Regular Object Normals");
         this.lights = this.gui.addFolder("Lighting");
         this.camera = this.gui.addFolder("Camera");
+        this.lights.open();
         this.camera.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
@@ -21,9 +22,7 @@ class MyInterface extends CGFinterface
         this.normals.add(this.scene, 'sphNormals').name("Sphere");
         this.normals.add(this.scene, 'torNormals').name("Torus");
         this.normals.add(this.scene, 'cylNormals').name("Cylinder");
-        this.normals.add(this.scene, 'ringNormals').name("Ring");
         this.normals.add(this.scene, 'rectNormals').name("Rectangle");
-        this.normals.add(this.scene, 'tinysphNormals').name("Tiny Sphere");
 
         this.initKeys();
         return true;
