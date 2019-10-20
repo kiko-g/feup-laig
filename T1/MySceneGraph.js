@@ -1178,7 +1178,10 @@ class MySceneGraph
         }
 
 
-        if (currentnode.materials.materials != "inherit") MATS = currentnode.materials;
+        if (currentnode.materials.materials != "inherit"){
+            // currentnode.materials.
+            MATS = currentnode.materials;
+        }
         else{
             currentnode.materials.materials = parentMat.materials;
             MATS = parentMat.materials;
@@ -1186,6 +1189,7 @@ class MySceneGraph
 
         var currentTexture = currentnode.texture.texture;
         var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
+
         currentMaterial.setTexture(currentTexture);
         currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
         currentMaterial.apply();
