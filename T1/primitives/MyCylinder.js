@@ -29,10 +29,12 @@ class MyCylinder extends CGFobject {
 	 */
     initBuffers() {
         var theta = 2 * Math.PI / this.slices;
-        var radius = Math.min(this.top, this.base); //current radius
+        //current radius
+        if(this.top != this.base) var radius = this.top - this.base;
+        else var radius = this.top
         var stackPile = 0;                          //works as a "current height"
-        var slicePile;                          //works as a "current thehta"
-        var dif = Math.abs(this.base-this.top); //difference between base and top radius
+        var slicePile;                              //works as a "current thehta"
+        var dif = this.base-this.top;               //difference between base and top radius
         var slope = dif/this.height;
 
         this.vertices = [];
@@ -45,7 +47,7 @@ class MyCylinder extends CGFobject {
             for (var j = 0; j <= this.slices; j++) {
                 this.vertices.push(Math.cos(slicePile) * radius, Math.sin(slicePile) * radius, stackPile);
                 this.normals.push(Math.cos(slicePile), Math.sin(slicePile), slope);
-                this.texCoords.push(j / this.slices, i / this.stacks);
+                this.texCoords.push(1.0 - j / this.stacks, i / this.slices);
                 slicePile = (j+1)*theta;
             }
             radius += dif / this.stacks;
