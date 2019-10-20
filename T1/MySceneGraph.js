@@ -797,13 +797,16 @@ class MySceneGraph
                 if (!(z3 != null && !isNaN(z3))) return "unable to parse z3 of the primitive coordinates for ID = " + primitiveId;      
                     
                     
-                let v1 = [], v2 = [], v3 = []; v1.push(x1, x2, x3); v2.push(y1, y2, y3); v3.push(z1, z2, z3);
+                let v1 = [], v2 = [], v3 = [];
+                v1.push(x1, x2, x3);
+                v2.push(y1, y2, y3);
+                v3.push(z1, z2, z3);
                 var tri = new MyTriangle(this.scene, primitiveId, v1, v2, v3);
                 this.primitives[primitiveId] = tri;
             }
 
 
-            else if (primitiveType == 'sphere' || primitiveType == 'tinysphere')
+            else if (primitiveType == 'sphere')
             {
                 //radius   
                 var radius = this.reader.getFloat(grandChildren[0], 'radius');
@@ -852,7 +855,7 @@ class MySceneGraph
             }
 
 
-            else if(primitiveType == 'cylinder' || primitiveType == 'cylinder2' || primitiveType == 'cone')
+            else if (primitiveType == 'cylinder' || primitiveType == 'cylinder2' || primitiveType == 'cone')
             {
                 //slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');

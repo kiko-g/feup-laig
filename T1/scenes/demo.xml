@@ -96,6 +96,7 @@
         <texture id="rubber"        file="images/rubber.png" />
         <texture id="laig"          file="images/LAIG _3.png" />
         <texture id="pages"         file="images/pages.png" />
+        <texture id="portugal"      file="images/portugal.png" />
     </textures>
 
 
@@ -126,7 +127,7 @@
             <diffuse  r="0.1" g="1" b="1" a="1.0" />
             <specular r="0.1" g="1" b="1" a="1.0" />
         </material>
-        <material id="strongred" shininess="10" >
+        <material id="greyMAT" shininess="10" >
             <emission r="0.0" g="0.0" b="0.0" a="1" />
             <ambient  r="1.0" g="1.0" b="1.0" a="1" />
             <diffuse  r="0.0" g="0.0" b="0.0" a="0" />
@@ -204,9 +205,9 @@
         <primitive id="cylinder">
             <cylinder slices="30" stacks="20" base="1" top="1" height="4" />
         </primitive>
-        <!-- <primitive id="triangle">
-            <triangle x1="0" x2="0" x3="0" y1="2" y2="0" y3="0" z1="4" z2="0" z3="2" />
-        </primitive> -->
+        <primitive id="triangle">
+            <triangle x1="0" x2="0" x3="0" y1="0" y2="0" y3="2" z1="3" z2="0" z3="1" />
+        </primitive>
         <primitive id="cylinder2">
             <cylinder slices="6" stacks="6" base="0.5" top="0.5" height="6" />
         </primitive>
@@ -485,6 +486,7 @@
                 <material id="greenMAT" />
                 <material id="cyangloss" />
                 <material id="whiteMAT" />
+                <material id="greyMAT" />
             </materials>
                 <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -717,6 +719,36 @@
         </component>
 
 
+        <!-- FLAG -->
+        <component id="pole">
+            <transformation>
+                <translate x="-8" y="8" z="8" />
+                <scale x="0.05" y="2" z="0.05" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="none" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="flagPT">
+            <transformation>
+                <translate x="-8" y="6.8" z="8" />
+                <scale x="0.4" y="0.3" z="0.45" />
+                <rotate axis="y" angle="90" />
+
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="inherit" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
 
 
         <component id="ATOM1">
@@ -803,6 +835,24 @@
 
 
 
+        <component id="FLAG">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="whiteMAT" />
+                <material id="greyMAT" />
+            </materials>
+                <texture id="portugal" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pole" />
+                <componentref id="flagPT" />
+            </children>
+        </component>
+
+
+
+
         <component id="MUG">
             <transformation>
                 <translate x="-2" y="0" z="-5" />
@@ -812,7 +862,7 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-                <texture id="laig" length_s="1" length_t="1" />
+                <texture id="portugal" length_s="1" length_t="1" />
             <children>
                 <componentref id="main_cyl" />
                 <componentref id="holder2" />
@@ -891,6 +941,8 @@
                 <componentref id="MUG" />
                 <componentref id="BOOK1" />
                 <componentref id="BOOK2" />
+                <componentref id="FLAG" />
+                <!-- <componentref id="COMPUTER" /> -->
             </children>
         </component>
 </components>

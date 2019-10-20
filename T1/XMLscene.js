@@ -27,8 +27,7 @@ class XMLscene extends CGFscene
         this.rectNormals = false;
         this.torNormals = false;
         this.allNormals = false;
-        // this.tinysphNormals = false;
-        // this.ringNormals = false;
+        this.triangNormals = false;
         this.MPress = false;
 
         //fov (radians), near, far, position, target 
@@ -215,40 +214,23 @@ class XMLscene extends CGFscene
         }
     }
 
+    
     manageNormals() {
-        if (this.allNormals) {
-            this.graph.primitives['cylinder'].enableNormalViz();
-            this.graph.primitives['rectangle'].enableNormalViz();
-            this.graph.primitives['sphere'].enableNormalViz();
-            this.graph.primitives['tinysphere'].enableNormalViz();
-            this.graph.primitives['torus'].enableNormalViz();
-            this.graph.primitives['ring'].enableNormalViz();
-        }
-        else {
-            this.graph.primitives['cylinder'].disableNormalViz();
-            this.graph.primitives['rectangle'].disableNormalViz();
-            this.graph.primitives['sphere'].disableNormalViz();
-            this.graph.primitives['tinysphere'].disableNormalViz();
-            this.graph.primitives['torus'].disableNormalViz();
-            this.graph.primitives['ring'].disableNormalViz();
-        }
+        if (this.allNormals) for(var key in this.graph.primitives[key])
+            this.graph.primitives[key].enableNormalViz();
+
+        else for (var key in this.graph.primitives[key])
+            this.graph.primitives[key].disableNormalViz();
 
         if (this.cylNormals || this.allNormals) this.graph.primitives['cylinder'].enableNormalViz();
         else this.graph.primitives['cylinder'].disableNormalViz();
-
         if (this.sphNormals || this.allNormals) this.graph.primitives['sphere'].enableNormalViz();
         else this.graph.primitives['sphere'].disableNormalViz();
-
         if (this.rectNormals || this.allNormals) this.graph.primitives['rectangle'].enableNormalViz();
         else this.graph.primitives['rectangle'].disableNormalViz();
-
-        // if (this.tinysphNormals || this.allNormals) this.graph.primitives['tinysphere'].enableNormalViz();
-        // else this.graph.primitives['tinysphere'].disableNormalViz();
-
         if (this.torNormals || this.allNormals) this.graph.primitives['torus'].enableNormalViz();
         else this.graph.primitives['torus'].disableNormalViz();
-
-        // if (this.ringNormals || this.allNormals) this.graph.primitives['ring'].enableNormalViz();
-        // else this.graph.primitives['ring'].disableNormalViz();
+        if (this.triangNormals || this.allNormals) this.graph.primitives['triangle'].enableNormalViz();
+        else this.graph.primitives['triangle'].disableNormalViz();
     }
 }

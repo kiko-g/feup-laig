@@ -18,11 +18,12 @@ class MyInterface extends CGFinterface
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
-        this.settings.add(this.scene, 'allNormals').name("All Normals");
+        this.normals.add(this.scene, 'allNormals').name("ALL (5)");
         this.normals.add(this.scene, 'sphNormals').name("Sphere");
         this.normals.add(this.scene, 'torNormals').name("Torus");
         this.normals.add(this.scene, 'cylNormals').name("Cylinder");
         this.normals.add(this.scene, 'rectNormals').name("Rectangle");
+        this.normals.add(this.scene, 'triangNormals').name("Triangle");
 
         this.initKeys();
         return true;
