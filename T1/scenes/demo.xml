@@ -50,7 +50,7 @@
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </omni>
-        <spot id="SPOT 1" enabled="1" angle="15" exponent="1">
+        <spot id="SPOT 1" enabled="0" angle="15" exponent="1">
             <location x="9" y="5" z="-9" w="1.0" />
             <target x="-9" y="5" z="-9" w="1.0"/>
             <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
@@ -263,8 +263,12 @@
         </transformation>
         <transformation id="penciltip_setup">
             <translate x="0" y="-0.5" z="8" />
-            <rotate axis="x" angle="180" />   
+            <rotate axis="x" angle="180" />
         </transformation>
+        <transformation id="pencil_setup">
+            <translate x="-3" y="0.5" z="0" />
+            <rotate axis="y" angle="25" />        
+        </transformation>            
     </transformations>
 
 
@@ -307,6 +311,7 @@
 
 
 <components>
+        <!-- SINGLE ATOM -->
         <component id="center_sph">
             <transformation>
                 <transformationref id="centersph_setup" />
@@ -563,6 +568,7 @@
                 <primitiveref id="rectangle" />
             </children>
         </component>
+
 
         <!-- PENCIL -->
          <component id="carbon_tip">
@@ -1074,7 +1080,11 @@
                 <translate x="-2" y="1.2" z="-6" />
             </transformation>
             <materials>
+                <material id="greyMAT" />
                 <material id="whiteMAT" />
+                <material id="greyMAT" />
+                <material id="whiteMAT" />
+                <material id="greyMAT" />                
             </materials>
                 <texture id="none" length_s="4" length_t="4" />
             <children>
@@ -1283,8 +1293,6 @@
         
 
         <!--  -->
-        <!--  -->
-        <!--  -->
         <component id="CUBEMAP">
             <transformation>
             </transformation>
@@ -1305,8 +1313,7 @@
 
         <component id="PENCIL">
             <transformation>
-                <translate x="-2" y="0.5" z="1" />
-                <rotate axis="y" angle="30" />
+                <transformationref id="pencil_setup" />
             </transformation>
             <materials>
                 <material id="defaultMAT" />
@@ -1327,7 +1334,7 @@
             </transformation>
             <materials>
                 <material id="greyMAT" />
-                <material id="whiteMAT" />>
+                <material id="whiteMAT" />
             </materials>
                 <texture id="portugal" length_s="1" length_t="1" />
             <children>
