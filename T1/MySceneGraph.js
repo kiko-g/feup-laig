@@ -1140,6 +1140,11 @@ class MySceneGraph
     }
     
 
+    cycleMaterial(component){
+        component.materials.current++;
+        component.materials.current = (component.materials.current % component.materials.materials.length);
+    }
+
 
 
 
@@ -1179,7 +1184,6 @@ class MySceneGraph
 
 
         if (currentnode.materials.materials != "inherit"){
-            // currentnode.materials.
             MATS = currentnode.materials;
         }
         else{

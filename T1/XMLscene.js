@@ -27,6 +27,9 @@ class XMLscene extends CGFscene
         this.rectNormals = false;
         this.torNormals = false;
         this.allNormals = false;
+        // this.tinysphNormals = false;
+        // this.ringNormals = false;
+        this.MPress = false;
 
         //fov (radians), near, far, position, target 
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
@@ -40,7 +43,7 @@ class XMLscene extends CGFscene
 
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(50);
+        this.setUpdatePeriod(100);
     }
 
     // Use camera with default ID if it exists
@@ -176,9 +179,22 @@ class XMLscene extends CGFscene
         this.toggleLights();
 
         if (this.sceneInited){
+            
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)
-            
+
+            this.updateMAT();
+            if(this.interface.isKeyPressed('KeyM') && !this.MPress)
+            {
+                this.MPress = true;
+                for (let key in this.graph.components)
+                    this.graph.cycleMaterial(this.graph.components[key]);
+            }
+            else if(!this.interface.isKeyPressed('KeyM')){
+                this.MPress = false;
+            }
+
+
             if(this.displayAxis) this.axis.display();
             this.manageNormals();
         }
@@ -187,6 +203,17 @@ class XMLscene extends CGFscene
         // ---- END Background, camera and axis setup
     }
 
+
+    updateMAT(){
+        if (this.interface.isKeyPressed('KeyM') && !this.MPress) {
+            this.MPress = true;
+            for (let key in this.graph.components)
+                this.graph.cycleMaterial(this.graph.components[key]);
+        }
+        else if (!this.interface.isKeyPressed('KeyM')) {
+            this.MPress = false;
+        }
+    }
 
     manageNormals() {
         if (this.allNormals) {
@@ -215,13 +242,13 @@ class XMLscene extends CGFscene
         if (this.rectNormals || this.allNormals) this.graph.primitives['rectangle'].enableNormalViz();
         else this.graph.primitives['rectangle'].disableNormalViz();
 
-        if (this.tinysphNormals || this.allNormals) this.graph.primitives['tinysphere'].enableNormalViz();
-        else this.graph.primitives['tinysphere'].disableNormalViz();
+        // if (this.tinysphNormals || this.allNormals) this.graph.primitives['tinysphere'].enableNormalViz();
+        // else this.graph.primitives['tinysphere'].disableNormalViz();
 
         if (this.torNormals || this.allNormals) this.graph.primitives['torus'].enableNormalViz();
         else this.graph.primitives['torus'].disableNormalViz();
 
-        if (this.ringNormals || this.allNormals) this.graph.primitives['ring'].enableNormalViz();
-        else this.graph.primitives['ring'].disableNormalViz();
+        // if (this.ringNormals || this.allNormals) this.graph.primitives['ring'].enableNormalViz();
+        // else this.graph.primitives['ring'].disableNormalViz();
     }
 }

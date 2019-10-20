@@ -114,6 +114,12 @@
             <diffuse  r="0.8" g="0.8" b="0.0" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
+        <material id="greenMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.2" g="0.8" b="0.2" a="1" />
+            <diffuse  r="0.8" g="0.8" b="0.0" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>        
         <material id="cyangloss" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1" />
             <ambient  r="0.1" g="1" b="1" a="1.0" />
