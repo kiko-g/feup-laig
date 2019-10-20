@@ -20,8 +20,8 @@ class XMLscene extends CGFscene
     {
         super.init(application);
         this.sceneInited = false;
-        this.displayAxis = true;
-        this.viewLightBoxes = true;
+        this.displayAxis = false;
+        this.viewLightBoxes = false;
         this.cylNormals = false;
         this.sphNormals = false;
         this.rectNormals = false;
@@ -126,7 +126,7 @@ class XMLscene extends CGFscene
             else this.lights[i].disable();
             if(!this.viewLightBoxes) this.lights[i].setVisible(false);
             else this.lights[i].setVisible(true);
-            this.lights[i].setLinearAttenuation(0.15);
+            this.lights[i].setLinearAttenuation(0.2);
             this.lights[i].update();
             i++;
         }

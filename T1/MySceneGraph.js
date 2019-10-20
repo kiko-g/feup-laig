@@ -612,18 +612,11 @@ class MySceneGraph
 
                     case 'rotate':
                         var axis = this.reader.getString(grandChildren[j], "axis");
-                        if(axis == null){
-                            this.onXMLMinorError("Axis unspecified");
-                            break;
-                        }
+                        if (axis == undefined || axis == null) { this.onXMLMinorError("Incorrect axis specification"); break; }
                         
                         var angle = this.reader.getString(grandChildren[j], "angle");
-                        if(angle == null){
-                            this.onXMLMinorError("Angle unspecified");
-                            break;
-                        }
-
-                        else if(isNaN(angle)) this.onXMLMinorError("Angle NaN");
+                        if (angle == undefined || angle == null) { this.onXMLMinorError("Incorrect angle specification"); break; }
+                        if (isNaN(angle)) { this.onXMLMinorError("Angle NaN"); break; }
 
                         switch(axis){
                             case 'x': axis = [1,0,0]; break;
@@ -642,7 +635,7 @@ class MySceneGraph
         this.log("Parsed transformations");
         return null;
     }
-    parseHelper(list, transformationID)
+    parseTransfHelper(list, transformationID)
     {
         //Helps parse the <components> block.
         var transfMatrix = mat4.create();
@@ -664,17 +657,11 @@ class MySceneGraph
 
                 case 'rotate':
                     var axis = this.reader.getString(list[j], "axis");
-                    if (axis == null) {
-                        this.onXMLMinorError("Axis unspecified");
-                        break;
-                    }
+                    if (axis == undefined || axis == null) { this.onXMLMinorError("Incorrect axis specification"); break; }
 
                     var angle = this.reader.getString(list[j], "angle");
-                    if (angle == null) {
-                        this.onXMLMinorError("Angle unspecified");
-                        break;
-                    }
-                    else if (isNaN(angle)) this.onXMLMinorError("Angle NaN");
+                    if(angle == undefined || angle) this.onXMLMinorError("Incorrect angle specification");
+                    if (isNaN(angle)){ this.onXMLMinorError("Angle NaN"); break; }
 
                     switch (axis) {
                         case 'x': axis = [1, 0, 0]; break;
@@ -682,8 +669,8 @@ class MySceneGraph
                         case 'z': axis = [0, 0, 1]; break; 
                     }
 
-                    var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
-                    transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, vector);
+                    var v = vec3.fromValues(axis[0], axis[1], axis[2]);
+                    transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, v);
                   break;
             }
         }
@@ -956,7 +943,7 @@ class MySceneGraph
                 if (transfMatrix == null) return "no such transformation w/ ID " + transRefID + " for component ID: " + componentID;
                 if (grandgrandChildren.length > 1) this.onXMLMinorError("Multiple transformations declared for " + componentID);
             }
-            else transfMatrix = this.parseHelper(grandgrandChildren, " of component " + componentID);
+            else transfMatrix = this.parseTransfHelper(grandgrandChildren, " of component " + componentID);
 
             //MATERIALS SECTION
             grandgrandChildren = grandChildren[materialsIndex].children;

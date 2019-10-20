@@ -1,10 +1,12 @@
 /**
  * MyTriangle
+ * @brief builds a Triangle object
  * @constructor
- * @param scene - Reference to MyScene object
  */
-class MyTriangle extends CGFobject {
-    constructor(scene, id, P1, P2, P3) {
+class MyTriangle extends CGFobject
+{
+    constructor(scene, id, P1, P2, P3)
+    {
         super(scene);
         this.id = id;
         //Point coords
@@ -27,14 +29,15 @@ class MyTriangle extends CGFobject {
         this.indices.push(5, 4, 3);
 
         let vec1, vec2, normal, revnormal;
-        vec1 = [this.P3[0] - this.P1[0], this.P3[1] - this.P1[1], this.P3[2] - this.P1[2]];
-        vec2 = [this.P2[0] - this.P1[0], this.P2[1] - this.P1[1], this.P2[2] - this.P1[2]];
+        vec1 = [this.P3[0]-this.P1[0], this.P3[1]-this.P1[1], this.P3[2]-this.P1[2]];
+        vec2 = [this.P2[0]-this.P1[0], this.P2[1]-this.P1[1], this.P2[2]-this.P1[2]];
         normal = this.crossproduct(vec1, vec2);
         revnormal = [-normal[0], -normal[1], -normal[2]];
 
         this.normals.push(...revnormal, ...revnormal, ...revnormal);
         this.normals.push(...normal, ...normal, ...normal);
 
+        
         /**
          * MATH    ------> JS
          * 
@@ -51,14 +54,14 @@ class MyTriangle extends CGFobject {
         var sin_alpha = Math.sqrt(1 - cos_alpha * cos_alpha);
 
 
-        //3*2 points = 6 lines of tex coords
+        //3*2 points = 6 pairs of tex coords
         this.defaultTexCoords.push(
             0, 0,
             a, 0,
-            c * cos_alpha, c * sin_alpha,
+            c*cos_alpha, c*sin_alpha,
             0, 0,
             a, 0,
-            c * cos_alpha, c * sin_alpha,
+            c*cos_alpha, c*sin_alpha,
         );
 
         this.texCoords = [];

@@ -13,7 +13,7 @@ class MyInterface extends CGFinterface
         this.normals = this.gui.addFolder("Regular Object Normals");
         this.lights = this.gui.addFolder("Lighting");
         this.camera = this.gui.addFolder("Camera");
-        this.lights.open();
+        this.settings.open();
         this.camera.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");

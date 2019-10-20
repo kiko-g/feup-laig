@@ -1,12 +1,11 @@
 /**
- * MySemiSphere
+ * MyTorus
+ * @brief builds a Torus object
  * @constructor
  */
 class MyTorus extends CGFobject
 {
     /**
-    * Builds a MySphere object.
-    *
     * @param {CGFscene} scene scene
     * @param {Number} slices number of slices | torus sectors | "edge count"
     * @param {Number} loops number of "loops" | A 2D Section of the torus has #loops sides
