@@ -615,7 +615,7 @@ class MySceneGraph
                         if (axis == undefined || axis == null) { this.onXMLMinorError("Incorrect axis specification"); break; }
                         
                         var angle = this.reader.getString(grandChildren[j], "angle");
-                        if (angle == undefined || angle == null) { this.onXMLMinorError("Incorrect angle specification"); break; }
+                        if (angle == null) { this.onXMLMinorError("Incorrect angle specification"); break; }
                         if (isNaN(angle)) { this.onXMLMinorError("Angle NaN"); break; }
 
                         switch(axis){
@@ -660,7 +660,7 @@ class MySceneGraph
                     if (axis == undefined || axis == null) { this.onXMLMinorError("Incorrect axis specification"); break; }
 
                     var angle = this.reader.getString(list[j], "angle");
-                    if(angle == undefined || angle) this.onXMLMinorError("Incorrect angle specification");
+                    if(angle == undefined || angle == null) this.onXMLMinorError("Incorrect angle specification");
                     if (isNaN(angle)){ this.onXMLMinorError("Angle NaN"); break; }
 
                     switch (axis) {
@@ -1178,7 +1178,7 @@ class MySceneGraph
         }
         else{
             currentnode.materials.materials = parentMat.materials;
-            MATS = parentMat.materials;
+            MATS = parentMat;
         }
 
         var currentTexture = currentnode.texture.texture;
@@ -1202,6 +1202,7 @@ class MySceneGraph
         {
             this.scene.pushMatrix();
             this.scene.multMatrix(currentnode.transfMatrix);
+            if(MATS=="inherit") console.log("figa");
             this.traverseGraph(children[key], MATS, TEX);
             this.scene.popMatrix();
         }

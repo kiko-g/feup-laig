@@ -50,21 +50,21 @@
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </omni>
-        <spot id="SPOT 1" enabled="1" angle="15" exponent="20">
+        <spot id="SPOT 1" enabled="1" angle="15" exponent="1">
             <location x="9" y="5" z="-9" w="1.0" />
             <target x="-9" y="5" z="-9" w="1.0"/>
-            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0.0" linear="1" quadratic="1" />
+            <attenuation constant="1" linear="0" quadratic="0" />
         </spot>
-        <spot id="SPOT 2" enabled="1" angle="15" exponent="20">
+        <spot id="SPOT 2" enabled="1" angle="15" exponent="1">
             <location x="-9" y="5" z="-9" w="1.0" />
             <target x="-9" y="5" z="-9" w="1.0"/>
-            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0.0" linear="1" quadratic="1" />
+            <attenuation constant="1" linear="0" quadratic="0" />
         </spot>
     </lights>
 
@@ -77,14 +77,11 @@
         <texture id="wubba"         file="images/rm3.png" />
         <texture id="morty"         file="images/morty.jpg" />
         <texture id="rick"          file="images/rick.jpg" />
-        <texture id="rocks"         file="images/rocks.jpg" />
         <texture id="lightning"     file="images/lightning.png" />
         <texture id="darkm"         file="images/darkmatter.png" />
         <texture id="space"         file="images/space.jpg" />
         <texture id="matter"        file="images/spherematter.png" />
-        <texture id="desk"          file="images/desk.jpg" />
         <texture id="floor"         file="images/floor.jpg" />
-        <texture id="digital"       file="images/digital.png" />
         <texture id="sky"           file="images/sky.jpg" />
         <texture id="PENCIL_wood"   file="images/PENCIL_tip.jpg" />
         <texture id="carbon"        file="images/carbon.jpg" />
@@ -278,22 +275,22 @@
             <rectangle x1="0" y1="0" x2="4" y2="4" />
         </primitive>
         <primitive id="sphere">
-            <sphere radius="1" slices="30" stacks="30"/>
+            <sphere radius="1" slices="20" stacks="10"/>
         </primitive>
         <primitive id="tinysphere">
-            <sphere radius="0.25" slices="20" stacks="20"/>
+            <sphere radius="0.25" slices="20" stacks="10"/>
         </primitive>                
         <primitive id="torus">
-            <torus loops="30" slices="30" inner="0.3" outer="3.0"/>
+            <torus loops="10" slices="20" inner="0.3" outer="3.0"/>
         </primitive>
         <primitive id="ring">
-            <torus loops="30" slices="30" inner="0.08" outer="2.0"/>
+            <torus loops="10" slices="20" inner="0.08" outer="2.0"/>
         </primitive>
         <primitive id="donut">
-            <torus loops="30" slices="30" inner="0.3" outer="1.0"/>
+            <torus loops="10" slices="20" inner="0.3" outer="1.0"/>
         </primitive>        
         <primitive id="cylinder">
-            <cylinder slices="30" stacks="20" base="1" top="1" height="4" />
+            <cylinder slices="15" stacks="15" base="1" top="1" height="4" />
         </primitive>
         <primitive id="triangle">
             <triangle x1="0" x2="0" x3="0" y1="0" y2="2" y3="1" z1="0" z2="0" z3="2" />
@@ -339,9 +336,7 @@
                 <transformationref id="ring1_setup" />
             </transformation>
             <materials>
-                <material id="metal" />
-                <material id="metalblue" />
-                <material id="metalpurple" />
+                <material id="inherit" />
             </materials>
                 <texture id="none" length_s="1" length_t="1"/>
             <children>
@@ -353,9 +348,7 @@
                 <transformationref id="ring2_setup" />
             </transformation>
             <materials>
-                <material id="metal" />
-                <material id="metalblue" />
-                <material id="metalpurple" />
+                <material id="inherit" />
             </materials>
                 <texture id="none" length_s="1" length_t="1"/>
             <children>
@@ -367,9 +360,7 @@
                 <transformationref id="ring3_setup" />
             </transformation>
             <materials>
-                <material id="metal" />
-                <material id="metalblue" />
-                <material id="metalpurple" />
+                <material id="inherit" />
             </materials>
                 <texture id="none" length_s="1" length_t="1"/>
             <children>
@@ -909,9 +900,6 @@
             </children>
         </component>
 
-     
-
-
 
         <!-- PLATE -->
         <component id="plate_base">
@@ -1101,7 +1089,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-                <texture id="none" length_s="1" length_t="1" />
+                <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="tinysphere" />
             </children>
@@ -1114,7 +1102,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-                <texture id="none" length_s="1" length_t="1" />
+                <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="tinysphere" />
             </children>
@@ -1127,7 +1115,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-                <texture id="none" length_s="1" length_t="1" />
+                <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="tinysphere" />
             </children>
@@ -1140,12 +1128,159 @@
             <materials>
                 <material id="inherit" />
             </materials>
-                <texture id="none" length_s="1" length_t="1" />
+                <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="tinysphere" />
             </children>
-        </component>            
-
+        </component>
+        <component id="edge1">
+            <transformation>
+                <translate x="-2.95" y="5.2" z="-9" />
+                <scale x="0.1" y="1" z="0.1" />
+                <rotate axis ="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="edge2">
+            <transformation>
+                <translate x="2.95" y="5.2" z="-9" />
+                <scale x="0.1" y="1" z="0.1" />
+                <rotate axis ="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="edge3">
+            <transformation>
+                <translate x="-2.8" y="5.1" z="-9" />
+                <rotate axis ="y" angle="90"/>
+                <scale x="0.1" y="0.1" z="1.4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="edge4">
+            <transformation>
+                <translate x="-2.8" y="1.12" z="-9" />
+                <rotate axis ="y" angle="90"/>
+                <scale x="0.1" y="0.1" z="1.4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="leg1">
+            <transformation>
+                <translate x="-1.37" y="0.1" z="-9.5" />
+                <rotate axis ="z" angle="50"/>
+                <rotate axis ="y" angle="90"/>
+                <scale x="0.1" y="0.1" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="redMAT" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="leg2">
+            <transformation>
+                <translate x="-0.1" y="1.6" z="-9.5" />
+                <rotate axis ="z" angle="-50"/>
+                <rotate axis ="y" angle="90"/>
+                <scale x="0.1" y="0.1" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="redMAT" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+        <component id="triangle1">
+            <transformation>
+                <rotate axis ="y" angle="-90"/>
+                <translate x="2" y="2" z="-1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+        <component id="triangle2">
+            <transformation>
+                <rotate axis ="y" angle="-90"/>
+                <translate x="2" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+        <component id="triangle3">
+            <transformation>
+                <rotate axis ="y" angle="-90"/>
+                <translate x="2" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />            
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>        
+        <component id="triforce">
+            <transformation>
+                <scale x="0.95" y="0.9" z="0.95" />
+                <translate x="0" y="0.95" z="-5.8" />
+            </transformation>
+            <materials>
+                <material id="yellowMAT" />
+                <material id="limeMAT" />
+                <material id="redMAT" />
+                <material id="blueMAT" />
+                <material id="purpleMAT" />
+                <material id="darkgreenMAT"/>
+                <material id="bookMAT"/>
+                <material id="pinkMAT"/>
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="triangle1" />
+                <componentref id="triangle2" />
+                <componentref id="triangle3" />
+            </children>
+        </component>
+        
 
         <!--  -->
         <!--  -->
@@ -1192,7 +1327,6 @@
             </transformation>
             <materials>
                 <material id="greyMAT" />
-                <material id="pinkMAT"/>
                 <material id="whiteMAT" />>
             </materials>
                 <texture id="portugal" length_s="1" length_t="1" />
@@ -1227,7 +1361,7 @@
                 <material id="greyMAT" />
                 <material id="whiteMAT" />
                 <material id="yellowMAT" />
-                <material id="greenMAT" />
+                <material id="darkgreenMAT" />
                 <material id="redMAT" />
                 <material id="cyanMAT" />
                 <material id="blueMAT" />
@@ -1293,21 +1427,22 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="blackMAT" />
+                <material id="defaultMAT" />
             </materials>
-                <texture id="sky" length_s="1" length_t="1" />
+                <texture id="carbon" length_s="1" length_t="1" />
             <children>
                 <componentref id="vertsph1"/>
                 <componentref id="vertsph2"/>
                 <componentref id="vertsph3"/>
                 <componentref id="vertsph4"/>
-                <!-- <componentref id="edge1"/> -->
-                <!-- <componentref id="edge2"/> -->
-                <!-- <componentref id="edge3"/> -->
-                <!-- <componentref id="edge4"/> -->
-                <!-- <componentref id="leg1"/> -->
-                <!-- <componentref id="leg2"/> -->
+                <componentref id="edge1"/>
+                <componentref id="edge2"/>
+                <componentref id="edge3"/>
+                <componentref id="edge4"/>
+                <componentref id="leg1"/>
+                <componentref id="leg2"/>
                 <componentref id="mainboard"/>
+                <componentref id="triforce"/>
             </children>
         </component>        
 
@@ -1319,7 +1454,7 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-            <texture id="default" length_s="1" length_t="1" />
+                <texture id="default" length_s="1" length_t="1" />
             <children>
                 <componentref id="ATOM_SET" />
                 <componentref id="CUBEMAP" />

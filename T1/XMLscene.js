@@ -58,6 +58,7 @@ class XMLscene extends CGFscene
                 if (this.view.id == this.graph.defaultViewID){ 
                     var V = this.view;
                     this.selected = this.view.id;
+                    break;
                 }
             }
         } else return;
@@ -126,6 +127,7 @@ class XMLscene extends CGFscene
             else this.lights[i].disable();
             if(!this.viewLightBoxes) this.lights[i].setVisible(false);
             else this.lights[i].setVisible(true);
+
             this.lights[i].setLinearAttenuation(0.2);
             this.lights[i].update();
             i++;

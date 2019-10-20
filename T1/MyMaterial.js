@@ -14,7 +14,6 @@ class MyMaterial {
     }
 
     apply(appearance) {
-        //use ... because of vector
         appearance.setShininess(this.shininess); //one number
         appearance.setEmission(...this.emission);
         appearance.setAmbient(...this.ambient);
