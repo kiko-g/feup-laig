@@ -731,7 +731,7 @@ class MySceneGraph
             var primitiveType = grandChildren[0].nodeName;
 
             // Retrieves the primitive coordinates.
-            if (primitiveType == "rectangle")
+            if (primitiveType == 'rectangle')
             {
                 // x1
                 var x1 = this.reader.getFloat(grandChildren[0], 'x1');
@@ -756,6 +756,50 @@ class MySceneGraph
                 var rect = new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
 
                 this.primitives[primitiveId] = rect;
+            }
+
+
+            else if (primitiveType == 'triangle') {
+                // X1
+                var x1 = this.reader.getFloat(grandChildren[0], 'x1');
+                if (!(x1 != null && !isNaN(x1))) return "unable to parse x1 of the primitive coordinates for ID = " + primitiveId;
+
+                // X2
+                var x2 = this.reader.getFloat(grandChildren[0], 'x2');
+                if (!(x2 != null && !isNaN(x2))) return "unable to parse x2 of the primitive coordinates for ID = " + primitiveId;
+
+                // X3
+                var x3 = this.reader.getFloat(grandChildren[0], 'x3');
+                if (!(x3 != null && !isNaN(x3))) return "unable to parse x3 of the primitive coordinates for ID = " + primitiveId;
+
+                // Y1
+                var y1 = this.reader.getFloat(grandChildren[0], 'y1');
+                if (!(y1 != null && !isNaN(y1))) return "unable to parse y1 of the primitive coordinates for ID = " + primitiveId;
+
+                // Y2
+                var y2 = this.reader.getFloat(grandChildren[0], 'y2');
+                if (!(y2 != null && !isNaN(y2))) return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
+
+                // Y3
+                var y3 = this.reader.getFloat(grandChildren[0], 'y3');
+                if (!(y3 != null && !isNaN(y3))) return "unable to parse y3 of the primitive coordinates for ID = " + primitiveId;
+
+                // Z1
+                var z1 = this.reader.getFloat(grandChildren[0], 'z1');
+                if (!(z1 != null && !isNaN(z1))) return "unable to parse z1 of the primitive coordinates for ID = " + primitiveId;
+                    
+                // Z2
+                var z2 = this.reader.getFloat(grandChildren[0], 'z2');
+                if (!(z2 != null && !isNaN(z2))) return "unable to parse z2 of the primitive coordinates for ID = " + primitiveId;
+
+                // Z3
+                var z3 = this.reader.getFloat(grandChildren[0], 'z3');
+                if (!(z3 != null && !isNaN(z3))) return "unable to parse z3 of the primitive coordinates for ID = " + primitiveId;      
+                    
+                    
+                let v1 = [], v2 = [], v3 = []; v1.push(x1, x2, x3); v2.push(y1, y2, y3); v3.push(z1, z2, z3);
+                var tri = new MyTriangle(this.scene, primitiveId, v1, v2, v3);
+                this.primitives[primitiveId] = tri;
             }
 
 
@@ -808,7 +852,7 @@ class MySceneGraph
             }
 
 
-            else if (primitiveType == 'cylinder' ||primitiveType == 'cylinder2' || primitiveType == 'cone')
+            else if(primitiveType == 'cylinder' || primitiveType == 'cylinder2' || primitiveType == 'cone')
             {
                 //slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');
@@ -976,7 +1020,6 @@ class MySceneGraph
             
             //build texture
             var texture = {texture: tex, ls: ls, lt: lt}; 
-            console.log(texture, texID);
             
             //CHILDREN SECTION
             // FOCUS ON THIS
@@ -1105,11 +1148,7 @@ class MySceneGraph
      */
     displayScene()
     {
-        this.scene.pushMatrix();
-        // this.textures['default'].bind();
-        // this.primitives['torus'].display();
         this.traverseGraph(this.components[this.idRoot], this.components[this.idRoot].materials, this.components[this.idRoot].texture);
-        this.scene.popMatrix();
     }
 
     // ==================================================================================================================================
@@ -1147,16 +1186,16 @@ class MySceneGraph
 
         var currentTexture = currentnode.texture.texture;
         var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
-
-
+        currentMaterial.setTexture(currentTexture);
+        currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        currentMaterial.apply();
+        if(currentTexture != null) currentTexture.bind();
+        
+        
         this.scene.multMatrix(currentnode.transfMatrix);
         for (let key in leaves)
         {
-            currentMaterial.apply();
-            if(currentTexture != null) currentTexture.bind();
             this.scene.pushMatrix();
-            currentMaterial.setTexture(currentTexture);
-            currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
             leaves[key].display(ls, lt);
             this.scene.popMatrix();
         }
@@ -1168,6 +1207,8 @@ class MySceneGraph
             this.traverseGraph(children[key], MATS, TEX);
             this.scene.popMatrix();
         }
+
+        if(currentTexture!=null) currentTexture.unbind();
     }
 
 

@@ -11,8 +11,9 @@ class MyInterface extends CGFinterface
         this.gui = new dat.GUI();
         this.settings = this.gui.addFolder("General");
         this.normals = this.gui.addFolder("Normals");
-        this.lights = this.gui.addFolder("Lighting");   this.lights.open();
-        this.camera = this.gui.addFolder("Camera");     this.camera.open();
+        this.lights = this.gui.addFolder("Lighting");
+        this.camera = this.gui.addFolder("Camera");
+        this.camera.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");

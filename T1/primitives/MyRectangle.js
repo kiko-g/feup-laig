@@ -71,8 +71,6 @@ class MyRectangle extends CGFobject
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
-        if (this.scene.displayNormals) this.enableNormalViz();
-        if (!this.scene.displayNormals) this.normalViz = false;
 	}
 
     display(ls, lt) 
@@ -93,7 +91,6 @@ class MyRectangle extends CGFobject
             t = this.defaultTexCoords[i+1]/lt;
             this.texCoords.push(s, t);
         }
-        // this.defaultTexCoords = this.texCoords;
         this.updateTexCoordsGLBuffers();
     }
 
