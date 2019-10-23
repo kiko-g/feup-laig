@@ -118,7 +118,6 @@
         <texture id="wubba"         file="images/rm3.png" />
         <texture id="morty"         file="images/morty.jpg" />
         <texture id="rick"          file="images/rick.jpg" />
-        <texture id="lightning"     file="images/lightning.png" />
         <texture id="darkm"         file="images/darkmatter.png" />
         <texture id="space"         file="images/space.jpg" />
         <texture id="matter"        file="images/spherematter.png" />
