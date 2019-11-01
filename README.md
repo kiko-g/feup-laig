@@ -4,15 +4,15 @@
 > [Eduardo Macedo](github.com/EduMacedo99)
 
 ### Course Info:
-> **2019/2020** - 3rd Year, 1st Semester (FEUP MIEIC)\
+> **2019/2020** - 3rd Year, 1st Semester [FEUP MIEIC](https://sigarra.up.pt/feup/pt/CUR_GERAL.CUR_PLANOS_ESTUDOS_VIEW?pv_plano_id=2496&pv_tipo_cur_sigla=&pv_origem=CUR&pv_ano_lectivo=2019)\
 > **Course**: Laboratório de Aplicações com Interface Gráfico [LAIG Page (2019/20)](https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=436446) | *Graphical Interfaces and Applications Laboratory*
 
-##### Basic Project Description and Information
+#### Basic Project Description and Information
 > **1st Project**
->> Display Scene according to an XML file
+> *Display Scene according to an XML file*
 >
 > **2nd Project**
->> Keyframe animations, Shaders and RenderToTexture (RTT)
+> *Keyframe animations, Shaders and RenderToTexture (RTT)*
 >
 > **3rd Project**
->> TBD
+> *TBD*
