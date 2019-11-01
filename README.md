@@ -18,4 +18,4 @@
 > **3rd Project** -
 > *TBD*
 >
-> **Using [WebCGF]**: https://paginas.fe.up.pt/~ruirodrig/pub/sw/webcgf/docs/#
+> **[WebCGF]**: https://paginas.fe.up.pt/~ruirodrig/pub/sw/webcgf/docs/#

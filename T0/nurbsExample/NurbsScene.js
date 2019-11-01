@@ -1,6 +1,5 @@
 class NurbsScene extends CGFscene
 {
-
 	constructor() {
 		super();
 		this.texture = null;
@@ -9,11 +8,10 @@ class NurbsScene extends CGFscene
 		this.translations = [];
 	}
 
-	init(application) {
+    init(application) 
+    {
 		super.init(application);
-
 		this.initCameras();
-
 		this.initLights();
 
 		this.gl.clearColor(0,0,0, 1.0);
@@ -21,11 +19,10 @@ class NurbsScene extends CGFscene
 		this.gl.enable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.CULL_FACE);
 		this.gl.depthFunc(this.gl.LEQUAL);
-		
-		this.axis=new CGFaxis(this);
-		this.enableTextures(true);
-	   
 
+		this.enableTextures(true);
+        this.axis=new CGFaxis(this);
+        
 		this.appearance = new CGFappearance(this);
 		this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
 		this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
@@ -35,9 +32,8 @@ class NurbsScene extends CGFscene
 		this.appearance.setTexture(this.texture);
 		this.appearance.setTextureWrap ('REPEAT', 'REPEAT');
 		
-		this.surfaces = [];
-		
-
+        this.surfaces = [];
+        
 		this.makeSurface(1, // degree on U: 2 control vertexes U
 						 1, // degree on V: 2 control vertexes on V
 						[	// U = 0
