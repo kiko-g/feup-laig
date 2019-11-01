@@ -1,5 +1,7 @@
-class Animation {
-    constructor(scene, time) {
+class Animation
+{
+    constructor(scene, time) 
+    {
         if (this.constructor == Animation) {
             throw new Error('Abstract classes can\'t be instantiated.');
         }
@@ -9,7 +11,10 @@ class Animation {
         this.timeElapsed = 0;
     }
 
-    update(deltaTime) {
+
+    update(deltaTime)
+    {
+        
     }
 
     apply() { }

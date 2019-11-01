@@ -12,7 +12,7 @@
 >> Display Scene according to an XML file
 >
 > **2nd Project**
->> TBD
+>> Keyframe animations, Shaders and RenderToTexture (RTT)
 >
 > **3rd Project**
 >> TBD

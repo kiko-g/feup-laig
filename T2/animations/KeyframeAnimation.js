@@ -1,4 +1,5 @@
-class KeyframeAnimation extends Animation{
+class KeyframeAnimation extends Animation
+{
 
     
 
