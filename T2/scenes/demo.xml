@@ -2,38 +2,38 @@
     <scene root="ROOT NODE" axis_length="5"/>
     <views default="CORNER">
         <perspective id="DEFAULT" near="0.1" far="500" angle="50">
-            <from x="-25" y="30" z="50" />
-            <to x="0" y="3" z="-10" />
+            <from x="-75" y="90" z="150" />
+            <to x="0" y="9" z="-30" />
         </perspective>
         <perspective id="CORNER" near="0.1" far="500" angle="70">
-            <from x="-29" y="30" z="21" />
-            <to x="-3" y="10" z="-5" />
+            <from x="-87" y="90" z="63" />
+            <to x="-9" y="30" z="-15" />
         </perspective>
         <perspective id="LOW" near="0.1" far="500" angle="45">
-            <from x="0" y="6" z="30" />
-            <to x="0" y="3" z="-20" />
+            <from x="0" y="18" z="90" />
+            <to x="0" y="9" z="-60" />
         </perspective>
         <perspective id="ATOM" near="0.1" far="500" angle="60">
-            <from x="0" y="35" z="-5" />
-            <to x="0" y="27" z="-20" />
+            <from x="0" y="105" z="-15" />
+            <to x="0" y="81" z="-60" />
         </perspective>
         <perspective id="BACK" near="0.1" far="500" angle="50">
-            <from x="5" y="40" z="-60" />
-            <to x="0" y="-10" z="30" />
+            <from x="15" y="120" z="-180" />
+            <to x="0" y="-30" z="90" />
         </perspective>
         <perspective id="SECRET" near="0.1" far="500" angle="80">
-            <from x="-28" y="30" z="-28" />
-            <to x="-20" y="20" z="-20" />
+            <from x="-88" y="90" z="-88" />
+            <to x="-60" y="60" z="-60" />
         </perspective>
-        <ortho id="ORTHO SIDE" near="0.1" far="500" left="-50.0" right="50.0" top="30" bottom="-30">
-            <from x="30" y="30" z="30" />
-            <to x="-20" y="0" z="-20" />
-            <up x="-20" y="0" z="-20" />
+        <ortho id="ORTHO SIDE" near="0.1" far="500" left="-150.0" right="150.0" top="90" bottom="-90">
+            <from x="90" y="90" z="90" />
+            <to x="-60" y="0" z="-60" />
+            <up x="-60" y="0" z="-60" />
         </ortho>
-        <ortho id="ORTHO FRONT" near="0.1" far="500" left="-35.0" right="35.0" top="40" bottom="-6">
-            <from x="0" y="5" z="30" />
+        <ortho id="ORTHO FRONT" near="0.1" far="500" left="-105.0" right="105.0" top="120" bottom="-18">
+            <from x="0" y="15" z="90" />
             <to x="0" y="0" z="0" />
-            <up x="0" y="0.1" z="-1" />
+            <up x="0" y="0.3" z="-3" />
         </ortho>
     </views>
 
@@ -49,55 +49,55 @@
 
     <lights>
         <omni id="TOP LEFT" enabled="1">
-            <location x="-20.0" y="40.0" z="0.0" w="1.0" />
+            <location x="-87.0" y="150.0" z="0.0" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
+            <attenuation constant="0" linear="0.04" quadratic="0" />
         </omni>
         <omni id="TOP RIGHT" enabled="1">
-            <location x="20.0" y="40.0" z="0.0" w="1.0" />
+            <location x="87.0" y="150.0" z="0.0" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
+            <attenuation constant="0" linear="0.04" quadratic="0" />
         </omni>        
         <omni id="LEFT" enabled="1">
-            <location x="-20.0" y="2.0" z="20.0" w="1.0" />
+            <location x="-60.0" y="6.0" z="60.0" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
+            <attenuation constant="0" linear="0.02" quadratic="0" />
         </omni>
         <omni id="CENTER" enabled="1">
-            <location x="0"  y="2.0" z="20" w="1.0" />
+            <location x="0"  y="6.0" z="0" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
+            <attenuation constant="0" linear="0.03" quadratic="0" />
         </omni>
         <omni id="RIGHT" enabled="1">
-            <location x="20" y="2.0" z="20" w="1.0" />
+            <location x="60" y="6.0" z="60" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
+            <attenuation constant="0" linear="0.04" quadratic="0" />
         </omni>
         <spot id="SPOT 1" enabled="0" angle="15" exponent="1">
-            <location x="20" y="10" z="-18" w="1.0" />
-            <target x="-9" y="5" z="-9" w="1.0"/>
+            <location x="60" y="30" z="-54" w="1.0" />
+            <target x="-27" y="15" z="-27" w="1.0"/>
             <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0" linear="0.15" quadratic="0" />
+            <attenuation constant="0.5" linear="0.05" quadratic="0" />
         </spot>
         <spot id="SPOT 2" enabled="1" angle="15" exponent="1">
-            <location x="-20" y="10" z="-18" w="1.0" />
+            <location x="-60" y="30" z="-54" w="1.0" />
             <target x="-9" y="5" z="-9" w="1.0"/>
             <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0" linear="0.15" quadratic="0" />
+            <attenuation constant="0.3" linear="0.05" quadratic="0" />
         </spot>
         <spot id="SPOT ATOM" enabled="1" angle="15" exponent="1">
             <location x="0" y="20" z="-25" w="1.0" />
@@ -105,7 +105,7 @@
             <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0" linear="0.15" quadratic="0" />
+            <attenuation constant="0.3" linear="0.05" quadratic="0" />
         </spot>        
     </lights>
 
@@ -1623,7 +1623,7 @@
 
         <component id="ROOT NODE">
             <transformation>
-                <scale x="3" y="3" z="3" />
+                <scale x="9" y="9" z="9" />
             </transformation>
             <materials>
                 <material id="defaultMAT" />

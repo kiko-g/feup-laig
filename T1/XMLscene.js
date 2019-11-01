@@ -128,7 +128,6 @@ class XMLscene extends CGFscene
             if(!this.viewLightBoxes) this.lights[i].setVisible(false);
             else this.lights[i].setVisible(true);
 
-            // console.log(light[6][0]);
             this.lights[i].setConstantAttenuation(light[6][0]);
             this.lights[i].setLinearAttenuation(light[6][1]);
             // this.lights[i].setQuadraticAttenuation(light[6][2]);
