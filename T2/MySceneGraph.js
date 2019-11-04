@@ -727,6 +727,7 @@ parseKeyframe(keyframe){
     scale.push(parseFloat(S[0].getAttribute("y")));
     scale.push(parseFloat(S[0].getAttribute("z")));
 
+    console.log(translate);
     //args constructor for KeyframeAnimation.js
 }
 
