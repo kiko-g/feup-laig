@@ -1,25 +1,26 @@
 class Animation
 {
-    constructor(scene, time, id) 
+    constructor(scene) 
     {
-        if (this.constructor == Animation) {
-            throw new Error('Abstract classes can\'t be instantiated.');
-        }
-        this.id = id;
-        this.scene = scene;
-        this.time = time;
-        this.over = false;
-        this.timeElapsed = 0;
-        
-        this.matrix = mat4.create();
-        this.matrix = mat4.identity(this.matrix);
+        this.scene = scene.Animation
+        this.aniMatrix = mat4.create();
+        mat4.identity(this.aniMatrix);
     }
 
+    /**
+     * funcao abstrata que
+     * @param {
+     */
+    generateAniMatrix(deltaTime){
+        
+    }
 
     update(deltaTime)
     {
-        
+        this.generateAniMatrix(deltaTime);
     }
 
-    apply() { }
+    apply() { 
+        this.scene.multMatrix(this.aniMatrix);
+    }
 }
