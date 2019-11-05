@@ -695,10 +695,12 @@ parseAnimations(animationNode){
                 continue;
             }
             keyframeInstant = this.reader.getString(grandChildren[i],"instant");
-            if (keyframeInstant == null) return "no instant defined for keyframe";
+            if (keyframeInstant == null) 
+                return "no instant defined for keyframe";
             
             //grandChildren[i].children: 0 -> translate, 1-> rotate, 2 -> scale
-            this.parseKeyframe(grandChildren[i]);
+            this.animations[animationID] = this.parseKeyframe(grandChildren[i], keyframeInstant);
+            console.log(this.animations);
         }
     }
         this.log("Parsed animations");
@@ -706,7 +708,7 @@ parseAnimations(animationNode){
 }
 
 
-parseKeyframe(keyframe){
+parseKeyframe(keyframe, keyframeInstant){
     //keyframe: 0 -> translate, 1-> rotate, 2 -> scale
     var translate = []; 
     var rotate = []; 
@@ -727,8 +729,7 @@ parseKeyframe(keyframe){
     scale.push(parseFloat(S[0].getAttribute("y")));
     scale.push(parseFloat(S[0].getAttribute("z")));
 
-    console.log(translate);
-    //args constructor for KeyframeAnimation.js
+    return new MyKeyframe(translate, rotate, scale, keyframeInstant);
 }
 
 

@@ -16,7 +16,7 @@ class KeyframeAnimation extends Animation
 
     
     calculateSegmentValues(){
-            
+        
     }
 
 

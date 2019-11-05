@@ -9,7 +9,7 @@ class Animation
 
     /**
      * funcao abstrata que
-     * @param {
+     * 
      */
     generateAniMatrix(deltaTime){
         

@@ -335,7 +335,7 @@
             <!--    <rotate axis="z" angle="angle_z" />   -->
                 <translate x="1" y="1" z="1" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="2" y="1" z="1" />
             </keyframe>
         </animation>
 </animations>
@@ -1459,9 +1459,11 @@
             <transformation>
                 <transformationref id="pencil_setup" />
             </transformation>
+            <animationref id="heterolizacao" />
             <materials>
                 <material id="defaultMAT" />
             </materials>
+                <animationref id="heterolizacao" />
                 <texture id="none" length_s="4" length_t="4" />
             <children>
                 <componentref id="body" />
