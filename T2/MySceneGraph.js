@@ -951,7 +951,7 @@ parseKeyframe(keyframe, keyframeInstant){
         var children = componentsNode.children; //children has all components
         var grandChildren = [];
         var grandgrandChildren = [];
-        var componentNodeNames = []; //vector with the node names inside each <component>
+        var componentNodeNames = [];            //vector with the node names inside each <component>
         
         for (var i = 0; i < children.length; i++)
         {

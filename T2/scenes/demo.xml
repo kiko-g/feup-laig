@@ -314,31 +314,15 @@
         </transformation>            
     </transformations>
 
-<animations>
-        <!-- O bloco animations pode ser vazio, isto é, pode -->
-        <!-- não ser declarada qualquer animação -->
+    <animations>
         <animation id="heterolizacao" >
-        <!-- Deve existir pelo menos 1 elemento keyframe. -->
-        <!-- instant e’ o tempo expresso em segundos -->
-        <!-- desde o inicio da animação. -->
             <keyframe instant="1">
-            <!-- translate, rotate e scale representam as -->
-            <!-- quantidades das transformações -->
-            <!-- correspondentes, medidas em relação à -->
-            <!-- situação inicial (instante zero) --> -->
-            <!-- Para uma mesma keyframe, os elementos -->
-            <!-- translate, rotate e scale sao obrigatorios -->
-            <!-- e fornecidos por esta ordem -->
-            <!-- a instrução rotação corresponde a:       -->
-            <!--    <rotate axis="x" angle="angle_x" />   -->
-            <!--    <rotate axis="y" angle="angle_y" />   -->
-            <!--    <rotate axis="z" angle="angle_z" />   -->
                 <translate x="1" y="1" z="1" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="2" y="1" z="1" />
             </keyframe>
         </animation>
-</animations>
+    </animations>
 
 
 
@@ -1459,11 +1443,10 @@
             <transformation>
                 <transformationref id="pencil_setup" />
             </transformation>
-            <animationref id="heterolizacao" />
+            <!-- <animationref id="heterolizacao" /> -->
             <materials>
                 <material id="defaultMAT" />
             </materials>
-                <animationref id="heterolizacao" />
                 <texture id="none" length_s="4" length_t="4" />
             <children>
                 <componentref id="body" />
