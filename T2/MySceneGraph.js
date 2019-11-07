@@ -700,7 +700,6 @@ parseAnimations(animationNode){
             
             //grandChildren[i].children: 0 -> translate, 1-> rotate, 2 -> scale
             this.animations[animationID] = this.parseKeyframe(grandChildren[i], keyframeInstant);
-            console.log(this.animations);
         }
     }
         this.log("Parsed animations");
@@ -972,10 +971,12 @@ parseKeyframe(keyframe, keyframeInstant){
             if (this.components[componentID] != null)   // Checks repeated ids
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
-            grandChildren = children[i].children;
+            grandChildren = children[i].children;   //grab current component children
+            componentNodeNames = [];                //empty component node names array
             for (var j = 0; j < grandChildren.length; j++) componentNodeNames.push(grandChildren[j].nodeName);
 
             var transformationIndex = componentNodeNames.indexOf("transformation");
+            var animationIndex      = componentNodeNames.indexOf("animationref");
             var materialsIndex      = componentNodeNames.indexOf("materials");
             var textureIndex        = componentNodeNames.indexOf("texture");
             var childrenIndex       = componentNodeNames.indexOf("children");
@@ -1003,6 +1004,10 @@ parseKeyframe(keyframe, keyframeInstant){
                     default: this.onXMLMinorError("unknown transformation <" + transformation.nodeName + ">"); break;
                 }
             }
+
+            //ANIMATIONS SECTION
+            if(animationIndex != -1) var animationID = this.reader.getString(grandChildren[animationIndex], "id");
+            else animationID = null;
 
             //MATERIALS SECTION
             grandgrandChildren = grandChildren[materialsIndex].children;
@@ -1100,7 +1105,7 @@ parseKeyframe(keyframe, keyframeInstant){
             }
 
             // ============= BUILD COMPONENT AND IT TO COMPONENT LIST =============
-            this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren);
+            this.components[componentID] = new MyComponent(this.scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren, animationID);
             // ====================================================================
         }
         

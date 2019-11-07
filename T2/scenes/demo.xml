@@ -315,7 +315,7 @@
     </transformations>
 
     <animations>
-        <animation id="heterolizacao" >
+        <animation id="anim" >
             <keyframe instant="1">
                 <translate x="1" y="1" z="1" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
@@ -1443,7 +1443,7 @@
             <transformation>
                 <transformationref id="pencil_setup" />
             </transformation>
-            <!-- <animationref id="heterolizacao" /> -->
+                <animationref id="anim" />
             <materials>
                 <material id="defaultMAT" />
             </materials>

@@ -12,9 +12,10 @@ class MyComponent extends CGFobject
      * @param texture texture applied to the component
      * @param children component children of the node/component
      * @param leaves primitive children of the node/component (leaves)
+     * @param animationID
 	 */
 
-    constructor(scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren) {
+    constructor(scene, componentID, materials, transfMatrix, texture, componentChildren, primitiveChildren, animationID = null) {
         super(scene);
         this.componentID = componentID;
         this.materials = materials; //has current and materials
@@ -22,7 +23,6 @@ class MyComponent extends CGFobject
         this.texture = texture; //has texture, length_t and length_s
         this.compchildren = componentChildren;
         this.leaves = primitiveChildren;
-        // this.isPrimitive = isPrimitive;
-        // this.loaded = loaded;
+        this.animationID = animationID;
     }
 }
