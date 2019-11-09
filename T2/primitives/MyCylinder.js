@@ -12,7 +12,7 @@ class MyCylinder extends CGFobject {
 	 * @param {Number} radius cylinder radius
 	 * @param {Number} height cylinder height
 	 */
-    constructor(scene, id, slices, stacks, base, top, height) {
+    constructor(scene, id, slices, stacks, base, top, height, bothSides = false) {
         super(scene);
         this.id = id;
         this.slices = Math.floor(slices);
@@ -20,6 +20,7 @@ class MyCylinder extends CGFobject {
         this.base = base;
         this.top = top;
         this.height = height;
+        this.bothSides = bothSides
 
         this.initBuffers();
     };
@@ -84,9 +85,9 @@ class MyCylinder extends CGFobject {
                     d = b + 1;
 
                     this.indices.push(c, b, a);
-                    // this.indices.push(a, b, c);
+                    if(this.bothSides) this.indices.push(a, b, c);
                     this.indices.push(c, d, b);
-                    // this.indices.push(b, d, c);
+                    if(this.bothSides) this.indices.push(b, d, c);
                 }
                 k++;
             }

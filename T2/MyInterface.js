@@ -7,23 +7,16 @@ class MyInterface extends CGFinterface
     init(application)
     {
         super.init(application);
+        this.scene.displayAxis = false;
 
         this.gui = new dat.GUI();
         this.settings = this.gui.addFolder("General");
-        this.normals = this.gui.addFolder("Regular Object Normals");
         this.lights = this.gui.addFolder("Lighting");
         this.camera = this.gui.addFolder("Camera");
-        this.settings.open();
         this.camera.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
-        this.normals.add(this.scene, 'allNormals').name("ALL (5)");
-        this.normals.add(this.scene, 'sphNormals').name("Sphere");
-        this.normals.add(this.scene, 'torNormals').name("Torus");
-        this.normals.add(this.scene, 'cylNormals').name("Cylinder");
-        this.normals.add(this.scene, 'rectNormals').name("Rectangle");
-        this.normals.add(this.scene, 'triangNormals').name("Triangle");
 
         this.initKeys();
         return true;
@@ -35,17 +28,18 @@ class MyInterface extends CGFinterface
     }
 
     viewsInterface(){
-        this.camera.add(this.scene, "selected", this.scene.viewNames).onChange(this.scene.onViewChanged.bind(this.scene)).name("Perspective");
+        this.camera.add(this.scene, "selected", this.scene.viewNames).
+        onChange(this.scene.onViewChanged.bind(this.scene)).name("Perspective");
     }
     
     initKeys()
     {
-        this.scene.gui=this;
-        this.processKeyboard=function(){};
-        this.activeKeys={};
+        this.scene.gui = this;
+        this.processKeyboard = function(){};
+        this.activeKeys = {};
     }
 
-    processKeyDown(event){ this.activeKeys[event.code]=true; }
-    processKeyUp(event){ this.activeKeys[event.code]=false; }
+    processKeyDown(event){ this.activeKeys[event.code] = true; }
+    processKeyUp(event){ this.activeKeys[event.code] = false; }
     isKeyPressed(keyCode) { return this.activeKeys[keyCode] || false; }
 }

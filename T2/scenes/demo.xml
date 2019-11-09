@@ -1,17 +1,17 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
     <views default="CORNER">
-        <perspective id="DEFAULT" near="0.1" far="500" angle="50">
-            <from x="-75" y="90" z="150" />
-            <to x="0" y="9" z="-30" />
-        </perspective>
         <perspective id="CORNER" near="0.1" far="500" angle="70">
             <from x="-87" y="90" z="63" />
             <to x="-9" y="30" z="-15" />
         </perspective>
-        <perspective id="LOW" near="0.1" far="500" angle="45">
-            <from x="0" y="18" z="90" />
-            <to x="0" y="9" z="-60" />
+        <perspective id="CORNER LOW" near="0.1" far="500" angle="70">
+            <from x="-87" y="20" z="63" />
+            <to x="-9" y="30" z="-15" />
+        </perspective>        
+        <perspective id="LOW" near="0.1" far="500" angle="50">
+            <from x="0" y="10" z="100" />
+            <to x="0" y="50" z="-60" />
         </perspective>
         <perspective id="ATOM" near="0.1" far="500" angle="60">
             <from x="0" y="105" z="-15" />
@@ -160,12 +160,18 @@
             <diffuse  r="1.0" g="0.5" b="0.1" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
-        <material id="darkgreenMAT" shininess="10" >
+        <material id="greenMAT" shininess="10" >
             <emission r="0.0" g="0.0" b="0.0" a="1" />
             <ambient  r="0.0" g="0.48" b="0.0" a="1" />
             <diffuse  r="0.1" g="0.5" b="0.1" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
+        <material id="darkgreenMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.3" b="0.0" a="1" />
+            <diffuse  r="0.1" g="0.2" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>        
         <material id="limeMAT" shininess="10" >
             <emission r="0.0" g="0.1" b="0.0" a="1" />
             <ambient  r="0.55" g="1.0" b="0.4" a="1" />
@@ -190,10 +196,10 @@
             <diffuse  r="0.0" g="1" b="1" a="1" />
             <specular r="1" g="1" b="1" a="1" />
         </material>
-        <material id="darkblueMAT" shininess="10">
+        <material id="darkblueMAT" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1" />
-            <ambient  r="0.0" g="0.4" b="0.6" a="1" />
-            <diffuse  r="0.0" g="0.4" b="0.6" a="1" />
+            <ambient  r="0.0" g="0.4" b="0.7" a="1" />
+            <diffuse  r="0.1" g="0.1" b="0.6" a="1" />
             <specular r="1" g="1" b="1" a="1" />
         </material>
         <material id="yellowMAT" shininess="10">
@@ -317,9 +323,9 @@
     <animations>
         <animation id="anim" >
             <keyframe instant="1">
-                <translate x="1" y="1" z="1" />
+                <translate x="2" y="2" z="2" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="2" y="1" z="1" />
+                <scale x="2" y="2" z="2" />
             </keyframe>
         </animation>
     </animations>
@@ -327,9 +333,15 @@
 
 
     <primitives>
+        <primitive id="plane">
+            <plane udivs="5" vdivs="5"/>
+        </primitive>    
         <primitive id="rectangle">
-            <rectangle x1="0" y1="0" x2="4" y2="4" />
+            <rectangle x1="0" y1="0" x2="4" y2="4" bothSides="false" />
         </primitive>
+        <primitive id="rectangle_bothsides">
+            <rectangle x1="0" y1="0" x2="4" y2="4" bothSides = "true" />
+        </primitive>        
         <primitive id="sphere">
             <sphere radius="1" slices="20" stacks="10"/>
         </primitive>
@@ -348,17 +360,20 @@
         <primitive id="donut">
             <torus loops="10" slices="20" inner="0.3" outer="1.0"/>
         </primitive>        
-        <primitive id="cylinder">
-            <cylinder slices="15" stacks="15" base="1" top="1" height="4" />
-        </primitive>
         <primitive id="triangle">
             <triangle x1="0" x2="0" x3="0" y1="0" y2="2" y3="1" z1="0" z2="0" z3="2" />
         </primitive>
-        <primitive id="cylinder2">
-            <cylinder slices="6" stacks="6" base="0.5" top="0.5" height="6" />
+        <primitive id="cylinder">
+            <cylinder slices="15" stacks="15" base="1" top="1" height="4" bothSides="false"/>
+        </primitive>
+        <primitive id="cylinder_bothsides">
+            <cylinder slices="15" stacks="15" base="1" top="1" height="4" bothSides = "true" />
+        </primitive>        
+        <primitive id="cylinder_prism">
+            <cylinder slices="6" stacks="6" base="0.5" top="0.5" height="6" bothSides="false" />
         </primitive>
         <primitive id="cone">
-            <cylinder slices="6" stacks="6" base="0.5" top="0.01" height="2" />
+            <cylinder slices="6" stacks="6" base="0.5" top="0.01" height="2" bothSides="false" />
         </primitive>
     </primitives>
 
@@ -432,9 +447,11 @@
                 <transformationref id="ring1_setup" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="blackMAT" />
+                <material id="metal" />
+                <material id="darkblueMAT" />
             </materials>
-                <texture id="carbon" length_s="1" length_t="1"/>
+                <texture id="none" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="ring" />
             </children>
@@ -444,9 +461,11 @@
                 <transformationref id="ring2_setup" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkblueMAT" />
+                <material id="blackMAT" />
+                <material id="metal" />
             </materials>
-                <texture id="carbon" length_s="1" length_t="1"/>
+                <texture id="none" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="ring" />
             </children>
@@ -456,9 +475,11 @@
                 <transformationref id="ring3_setup" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="metal" />
+                <material id="darkblueMAT" />
+                <material id="blackMAT" />
             </materials>
-                <texture id="carbon" length_s="1" length_t="1"/>
+                <texture id="none" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="ring" />
             </children>
@@ -504,7 +525,8 @@
                 <transformationref id="tinysphere1_setup" />
             </transformation>
             <materials>
-                <material id="limeMAT" />
+                <material id="pencilMAT" />
+                <material id="cyanMAT" />
                 <material id="pinkMAT" />
             </materials>
                 <texture id="none" length_s="1" length_t="1"/>
@@ -517,8 +539,9 @@
                 <transformationref id="tinysphere2_setup" />
             </transformation>
             <materials>
-                <material id="limeMAT" />
                 <material id="pinkMAT" />
+                <material id="pencilMAT" />
+                <material id="cyanMAT" />
             </materials>
                 <texture id="none" length_s="1" length_t="1"/>
             <children>
@@ -530,8 +553,9 @@
                 <transformationref id="tinysphere3_setup" />
             </transformation>
             <materials>
-                <material id="limeMAT" />
+                <material id="cyanMAT" />
                 <material id="pinkMAT" />
+                <material id="pencilMAT" />
             </materials>
                 <texture id="none" length_s="1" length_t="1"/>
             <children>
@@ -701,13 +725,14 @@
                 <material id="redMAT" />
                 <material id="blueMAT" />
                 <material id="purpleMAT" />
-                <material id="darkgreenMAT"/>
+                <material id="greenMAT"/>
                 <material id="bookMAT"/>
                 <material id="pinkMAT"/>
+                <material id="metalblue"/>
             </materials>
                 <texture id="none" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="cylinder2" />
+                <primitiveref id="cylinder_prism" />
             </children>
         </component>
 
@@ -734,7 +759,7 @@
             </materials>
                 <texture id="laig" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="cylinder" />
+                <primitiveref id="cylinder_bothsides" />
             </children>
         </component>
         <component id="coffee">
@@ -952,12 +977,13 @@
                 <scale x="0.4" y="0.3" z="0.45" />
                 <rotate axis="y" angle="90" />
             </transformation>
+                <animationref id="anim"/>
             <materials>
                 <material id="defaultMAT" />
             </materials>
                 <texture id="inherit" length_s="4" length_t="4" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="rectangle_bothsides" />
             </children>
         </component>
 
@@ -1015,7 +1041,7 @@
             <materials>
                 <material id="darkblueMAT" />
                 <material id="yellowMAT" />
-                <material id="darkgreenMAT" />                
+                <material id="greenMAT" />                
                 <material id="redMAT" />
                 <material id="blackMAT" />                
             </materials>
@@ -1030,7 +1056,7 @@
             </transformation>
             <materials>
                 <material id="yellowMAT" /> 
-                <material id="darkgreenMAT" />
+                <material id="greenMAT" />
                 <material id="redMAT" />
                 <material id="blackMAT" />
                 <material id="darkblueMAT" />
@@ -1048,7 +1074,7 @@
                 <material id="blackMAT" />
                 <material id="darkblueMAT" />
                 <material id="yellowMAT" />  
-                <material id="darkgreenMAT" />
+                <material id="greenMAT" />
                 <material id="redMAT" />                                   
             </materials>
                 <texture id="none" length_s="1" length_t="1" />
@@ -1061,7 +1087,7 @@
                 <translate x="4.5" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="darkgreenMAT" />
+                <material id="greenMAT" />
                 <material id="redMAT" />
                 <material id="blackMAT" />
                 <material id="darkblueMAT" />
@@ -1081,8 +1107,7 @@
                 <material id="blackMAT" />
                 <material id="darkblueMAT" />
                 <material id="yellowMAT" />
-                <material id="darkgreenMAT" />
-                
+                <material id="greenMAT" />
             </materials>
                 <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -1365,8 +1390,8 @@
         </component>
         <component id="triangle1">
             <transformation>
+                <translate x="1" y="2" z="2" />
                 <rotate axis ="y" angle="-90"/>
-                <translate x="2" y="2" z="-1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1378,8 +1403,8 @@
         </component>
         <component id="triangle2">
             <transformation>
+                <translate x="2" y="0" z="2" />
                 <rotate axis ="y" angle="-90"/>
-                <translate x="2" y="0" z="-2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1391,17 +1416,32 @@
         </component>
         <component id="triangle3">
             <transformation>
+                <translate x="0" y="0" z="2" />
                 <rotate axis ="y" angle="-90"/>
-                <translate x="2" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="inherit" />            
+                <material id="inherit" />
             </materials>
                 <texture id="none" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="triangle" />
             </children>
-        </component>        
+        </component>
+        <component id="midtriangle">
+            <transformation>
+                <translate x="-1" y="2" z="2" />
+                <rotate axis ="y" angle="-90"/>
+                <rotate axis ="x" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="darkgreenMAT" />
+                <material id="pencilMAT" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
         <component id="triforce">
             <transformation>
                 <scale x="0.95" y="0.9" z="0.95" />
@@ -1416,6 +1456,7 @@
                 <componentref id="triangle1" />
                 <componentref id="triangle2" />
                 <componentref id="triangle3" />
+                <componentref id="midtriangle" />
             </children>
         </component>
         
@@ -1443,7 +1484,6 @@
             <transformation>
                 <transformationref id="pencil_setup" />
             </transformation>
-                <animationref id="anim" />
             <materials>
                 <material id="defaultMAT" />
             </materials>
@@ -1459,7 +1499,9 @@
 
         <component id="FLAG">
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <scale x="2" y="2" z="2" />
+                <rotate axis="y" angle="180"/>
+                <translate x="3.5" y="0" z="-6.5" />
             </transformation>
             <materials>
                 <material id="greyMAT" />
@@ -1498,7 +1540,8 @@
                 <material id="greyMAT" />
                 <material id="whiteMAT" />
                 <material id="pencilMAT" />
-                <material id="darkgreenMAT" />
+                <material id="pencilMAT" />
+                <material id="greenMAT" />
                 <material id="redMAT" />
                 <material id="cyanMAT" />
                 <material id="blueMAT" />
@@ -1520,7 +1563,7 @@
                 <material id="blueMAT" />
                 <material id="pencilMAT" />
                 <material id="blackMAT" />
-                <material id="darkgreenMAT" />
+                <material id="greenMAT" />
                 <material id="redMAT" />
             </materials>
                 <texture id="none" length_s="1" length_t="1" />
@@ -1603,8 +1646,21 @@
                 <componentref id="mainboard"/>
                 <componentref id="triforce"/>
             </children>
-        </component>        
+        </component>
 
+        <component id="PLANE">
+            <transformation>
+                <translate x="0" y="2" z="0" />
+                <scale x="15" y="1" z="15" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
 
         <component id="ROOT NODE">
             <transformation>
@@ -1625,6 +1681,7 @@
                 <componentref id="FLAG" />
                 <componentref id="SCREEN" />
                 <componentref id="OLYMPIC_GAMES_LOGO" />
+                <componentref id="PLANE" />
             </children>
         </component>
 </components>

@@ -7,14 +7,15 @@
  */
 class MyRectangle extends CGFobject
 {
-    constructor(scene, id, x1, x2, y1, y2)
+    constructor(scene, id, x1, x2, y1, y2, bothSides = false)
     {
         super(scene);
         this.id = id;
 		this.x1 = x1;
 		this.x2 = x2;
 		this.y1 = y1;
-		this.y2 = y2;
+        this.y2 = y2;
+        this.bothSides = bothSides;
 
 		this.initBuffers();
 	}
@@ -28,13 +29,10 @@ class MyRectangle extends CGFobject
 		];
 
 		//Counter-clockwise reference of vertices
-		this.indices = [
-			0, 1, 2,
-            1, 3, 2,
-            // 2, 1, 0,
-            // 2, 3, 1
-		];
+        this.indices = [ 0, 1, 2, 1, 3, 2 ];
+        if(this.bothSides) this.indices.push(2, 1, 0, 2, 3, 1);
 
+        
 		//Facing Z positive
 		this.normals = [
 			0, 0, 1,

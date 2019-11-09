@@ -16,6 +16,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js',
                'MyInterface.js',
                'MyMaterial.js',
                'MyComponent.js',
+               'primitives/MyPlane.js',
                'primitives/MyRectangle.js',
                'primitives/MySphere.js',
                'primitives/MyTorus.js',
@@ -45,7 +46,7 @@ main=function()
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors
-	var myGraph = new MySceneGraph(filename, myScene);
+    var myGraph = new MySceneGraph(filename, myScene);
 	
 	// start
     app.run();
