@@ -377,7 +377,7 @@
             <cylinder slices="15" stacks="15" base="1" top="1" height="4" bothSides="false"/>
         </primitive>
         <primitive id="cylinder2">
-            <cylinder2 slices="15" stacks="15" base="1" top="1" height="4" />
+            <cylinder2 slices="15" stacks="15" base="0.5" top="0.5" height="3" />
         </primitive>
         <primitive id="cylinder_bothsides">
             <cylinder slices="15" stacks="15" base="1" top="1" height="4" bothSides = "true" />
@@ -1691,9 +1691,9 @@
 
             <component id="CYLINDER_NURBS">
                 <transformation>
+                    <translate x="0" y="1" z="0" />
                     <scale x="2" y="2" z="2" />
                     <rotate axis="x" angle="-90" />
-                    <!-- <translate x="0" y="3" z="0" /> -->
                 </transformation>
                 <materials>
                     <material id="defaultMAT"/>
@@ -1723,7 +1723,7 @@
                     <componentref id="FLAG" />
                     <componentref id="SCREEN" />
                     <componentref id="OLYMPIC_GAMES_LOGO" />
-                    <componentref id="CYLINDER_NURBS" />
+                    <!-- <componentref id="" /> -->
                 </children>
             </component>
     </components>

@@ -23,8 +23,8 @@ class MyCylinder2 extends CGFobject
         this.base = base;
         this.top = top;
         this.H = height;
-        this.UCtrlPoints = 2;
-        this.VCtrlPoints = 9;
+        this.UCtrlPoints = 2; //2 faces
+        this.VCtrlPoints = 9; //lap around face
 
         this.initBuffers();
 
@@ -35,26 +35,30 @@ class MyCylinder2 extends CGFobject
 
     initBuffers()
     {
+        var DW = Math.sqrt(2)/2; 
+        //let D = this.base ----> 2D^2 = 1 <=> D = Math.sqrt(2)/2
+        //DW --> Distance Weight (for points in diagonal)
+
         this.controlArray = 
         [
-            [[      0.0,  this.base, 0.0, 1.0],
-            [ this.base,  this.base, 0.0, 1.0],
-            [ this.base,        0.0, 0.0, 1.0],
-            [ this.base, -this.base, 0.0, 1.0],
-            [       0.0, -this.base, 0.0, 1.0],
-            [-this.base, -this.base, 0.0, 1.0],
-            [-this.base,        0.0, 0.0, 1.0],
-            [-this.base,  this.base, 0.0, 1.0],
+            [[      0.0,  this.base, 0.0,  1.0],
+            [ this.base,  this.base, 0.0,   DW],
+            [ this.base,        0.0, 0.0,  1.0],
+            [ this.base, -this.base, 0.0,   DW],
+            [       0.0, -this.base, 0.0,  1.0],
+            [-this.base, -this.base, 0.0,   DW],
+            [-this.base,        0.0, 0.0,  1.0],
+            [-this.base,  this.base, 0.0,   DW],
             [       0.0,  this.base, 0.0, 1.0]],
             
-            [[      0.0,  this.top, this.H, 1.0],
-            [  this.top,  this.top, this.H, 1.0],
-            [  this.top,       0.0, this.H, 1.0],
-            [  this.top, -this.top, this.H, 1.0],
-            [       0.0, -this.top, this.H, 1.0],
-            [ -this.top, -this.top, this.H, 1.0],
-            [ -this.top,       0.0, this.H, 1.0],
-            [ -this.top,  this.top, this.H, 1.0],
+            [[      0.0,  this.top, this.H,  1.0],
+            [  this.top,  this.top, this.H,   DW],
+            [  this.top,       0.0, this.H,  1.0],
+            [  this.top, -this.top, this.H,   DW],
+            [       0.0, -this.top, this.H,  1.0],
+            [ -this.top, -this.top, this.H,   DW],
+            [ -this.top,       0.0, this.H,  1.0],
+            [ -this.top,  this.top, this.H,   DW],
             [       0.0,  this.top, this.H, 1.0]],
         ];
     }

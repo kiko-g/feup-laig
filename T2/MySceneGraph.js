@@ -1342,6 +1342,7 @@ parseKeyframe(keyframe, keyframeInstant)
      */
     displayScene()
     {
+        // this.security = new MySecurityCamera(this.scene);
         this.traverseGraph(this.components[this.idRoot], this.components[this.idRoot].materials, this.components[this.idRoot].texture);
     }
 

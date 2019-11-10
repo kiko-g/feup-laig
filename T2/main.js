@@ -25,6 +25,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js',
                'primitives/MyCylinder2.js',
                'primitives/MyTriangle.js',
                'animations/Animation.js',
+               'primitives/MySecurityCamera.js',
                'animations/KeyframeAnimation.js',
                'animations/MyKeyframe.js',
                
