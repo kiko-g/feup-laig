@@ -17,8 +17,8 @@ class Patch extends CGFobject
         this.id = id;
         this.UDivs = UDivs;
         this.VDivs = VDivs;
-        this.UControlPoints = uCtrlPoints;
-        this.VControlPoints = vCtrlPoints;
+        this.UCtrlPoints = uCtrlPoints;
+        this.VCtrlPoints = vCtrlPoints;
         this.controlArray = controlArray;
 
         this.surface = new CGFnurbsSurface(uCtrlPoints-1, vCtrlPoints-1, controlArray);

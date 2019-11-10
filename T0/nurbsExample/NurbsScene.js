@@ -132,7 +132,6 @@ class NurbsScene extends CGFscene
 
     makeSurface(degree1, degree2, controlvertexes, translation)
     {
-        console.log(controlvertexes);
 		var nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
         var obj = new CGFnurbsObject(this, 20, 20, nurbsSurface);
         // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)

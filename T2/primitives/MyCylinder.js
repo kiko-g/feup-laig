@@ -9,7 +9,8 @@ class MyCylinder extends CGFobject {
 	 * @param {CGFscene} scene main scene
 	 * @param {Number} slices number of slices/sectors
 	 * @param {Number} stacks number of stacks
-	 * @param {Number} radius cylinder radius
+	 * @param {Number} base cylinder base radius
+     * @param {Number} top cylinder base radius
 	 * @param {Number} height cylinder height
 	 */
     constructor(scene, id, slices, stacks, base, top, height, bothSides = false) {
@@ -20,7 +21,7 @@ class MyCylinder extends CGFobject {
         this.base = base;
         this.top = top;
         this.height = height;
-        this.bothSides = bothSides
+        this.bothSides = bothSides;
 
         this.initBuffers();
     };

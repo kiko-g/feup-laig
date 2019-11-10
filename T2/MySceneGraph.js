@@ -767,6 +767,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 (primitiveType != 'rectangle' && 
                  primitiveType != 'triangle'  && 
                  primitiveType != 'cylinder'  && 
+                 primitiveType != 'cylinder2' &&
                  primitiveType != 'sphere'    &&
                  primitiveType != 'torus'     &&
                  primitiveType != 'plane'     &&
@@ -984,6 +985,30 @@ parseKeyframe(keyframe, keyframeInstant)
                 this.primitives[primitiveId] = patch;
             }
 
+            else if (primitiveType == 'cylinder2') {
+                var slices = this.reader.getInteger(grandChildren[0], 'slices');
+                if (slices == null || isNaN(slices) || slices < 1)
+                    return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
+
+                var stacks = this.reader.getInteger(grandChildren[0], 'stacks');
+                if (stacks == null || isNaN(stacks) || stacks < 1)
+                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
+
+                var base = this.reader.getFloat(grandChildren[0], 'base');
+                if (base == null || isNaN(base) || base <= 0)
+                    return "unable to parse base radius of the primitive coordinates for ID = " + primitiveId;
+
+                var top = this.reader.getFloat(grandChildren[0], 'top');
+                if (top == null || isNaN(top) || top <= 0)
+                    return "unable to parse top radius of the primitive coordinates for ID = " + primitiveId;
+
+                var height = this.reader.getFloat(grandChildren[0], 'height');
+                if (height == null || isNaN(height) || height <= 0)
+                    return "unable to parse height of the primitive coordinates for ID = " + primitiveId;
+
+                var cyli2 = new MyCylinder2(this.scene, primitiveId, slices, stacks, base, top, height);
+                this.primitives[primitiveId] = cyli2;
+            }
 
             else console.warn("TO DO: Parse remaining primitives");
         }
