@@ -131,7 +131,8 @@ class NurbsScene extends CGFscene
 	};
 
     makeSurface(degree1, degree2, controlvertexes, translation)
-    {		
+    {
+        console.log(controlvertexes);
 		var nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
         var obj = new CGFnurbsObject(this, 20, 20, nurbsSurface);
         // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
@@ -187,7 +188,7 @@ class NurbsScene extends CGFscene
         for (var i =0; i<this.surfaces.length; i++)
         {
 			this.pushMatrix();
-			this.translate(this.translations[i][0], this.translations[i][1], this.translations[i][2]);
+            this.translate(this.translations[i][0], this.translations[i][1], this.translations[i][2]);
             this.surfaces[i].display();
 			this.popMatrix();
 		}

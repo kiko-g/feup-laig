@@ -334,8 +334,18 @@
 
     <primitives>
         <primitive id="plane">
-            <plane udivs="5" vdivs="5"/>
-        </primitive>    
+            <plane npartsU="5" npartsV="5"/>
+        </primitive>
+        <primitive id="patch">
+            <patch npointsU="3" npointsV="2" npartsU="20" npartsV="20" >
+                <controlpoint xx="-1.5" yy="-2.5"   zz="0.0" />
+                <controlpoint xx="-1.5" yy="2.5"    zz="0.0" />
+                <controlpoint xx="0"    yy="-2.5"   zz="2.0" />
+                <controlpoint xx="0"    yy="2.5"    zz="2.0" />
+                <controlpoint xx="1.5"  yy="-2.5"   zz="0.0" />
+                <controlpoint xx="1.5"  yy="2.5"    zz="0.0" />
+            </patch>
+        </primitive>
         <primitive id="rectangle">
             <rectangle x1="0" y1="0" x2="4" y2="4" bothSides="false" />
         </primitive>
@@ -1651,7 +1661,7 @@
         <component id="PLANE">
             <transformation>
                 <translate x="0" y="2" z="0" />
-                <scale x="15" y="1" z="15" />
+                <scale x="8" y="1" z="8" />
             </transformation>
             <materials>
                 <material id="defaultMAT" />
@@ -1661,6 +1671,20 @@
                 <primitiveref id="plane" />
             </children>
         </component>
+
+        <component id="PATCH">
+            <transformation>
+                <translate x="0" y="10" z="0" />
+                <scale x="2" y="1" z="2" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="patch" />
+            </children>
+        </component>        
 
         <component id="ROOT NODE">
             <transformation>
@@ -1681,7 +1705,7 @@
                 <componentref id="FLAG" />
                 <componentref id="SCREEN" />
                 <componentref id="OLYMPIC_GAMES_LOGO" />
-                <componentref id="PLANE" />
+                <componentref id="PATCH" />
             </children>
         </component>
 </components>

@@ -762,9 +762,15 @@ parseKeyframe(keyframe, keyframeInstant)
             grandChildren = children[i].children;
 
             // Validate the primitive type
-            var h = grandChildren[0].nodeName;
-            if (grandChildren.length!=1||(h!='rectangle'&&h!='triangle'&&h!='cylinder'&&h!='sphere'&&h!='torus'&&h!='plane'))
-                return "Invalid primitive type";
+            var primitiveType = grandChildren[0].nodeName;
+            if (grandChildren.length != 1 || 
+                (primitiveType != 'rectangle' && 
+                 primitiveType != 'triangle'  && 
+                 primitiveType != 'cylinder'  && 
+                 primitiveType != 'sphere'    &&
+                 primitiveType != 'torus'     &&
+                 primitiveType != 'plane'     &&
+                 primitiveType != 'patch')) return "Invalid primitive type";
     
 
             // Specifications for the current primitive.
@@ -837,12 +843,11 @@ parseKeyframe(keyframe, keyframeInstant)
                     return "unable to parse z3 of the primitive coordinates for ID = " + primitiveId;      
                     
                 var v1 = [], v2 = [], v3 = [];
-                v1.push(x1, x2, x3);
-                v2.push(y1, y2, y3);
-                v3.push(z1, z2, z3);
+                v1.push(x1, x2, x3); v2.push(y1, y2, y3); v3.push(z1, z2, z3);
                 var tri = new MyTriangle(this.scene, primitiveId, v1, v2, v3);
                 this.primitives[primitiveId] = tri;
             }
+
 
             else if (primitiveType == 'sphere')
             {
@@ -850,11 +855,11 @@ parseKeyframe(keyframe, keyframeInstant)
                 if (radius == null || isNaN(radius) || radius < 0)
                     return "unable to parse radius of the primitive coordinates for ID = " + primitiveId;
 
-                var slices = this.reader.getFloat(grandChildren[0], 'slices');
+                var slices = this.reader.getInteger(grandChildren[0], 'slices');
                 if (slices == null || isNaN(slices) || slices < 0)
                     return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
 
-                var stacks = this.reader.getFloat(grandChildren[0], 'stacks');
+                var stacks = this.reader.getInteger(grandChildren[0], 'stacks');
                 if (stacks == null || isNaN(stacks) || stacks < 0) 
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
@@ -863,7 +868,7 @@ parseKeyframe(keyframe, keyframeInstant)
             }
 
 
-            else if (primitiveType == 'torus' || primitiveType == 'ring')
+            else if (primitiveType == 'torus')
             {
                 var inner = this.reader.getFloat(grandChildren[0], 'inner');
                 if (inner == null || isNaN(inner) || inner < 0)
@@ -873,11 +878,11 @@ parseKeyframe(keyframe, keyframeInstant)
                 if (outer == null || isNaN(outer) || outer < 0)
                     return "unable to parse OUTER radius of the primitive coordinates for ID = " + primitiveId;
 
-                var slices = this.reader.getFloat(grandChildren[0], 'slices');
+                var slices = this.reader.getInteger(grandChildren[0], 'slices');
                 if (slices == null || isNaN(slices) || slices < 1)
                     return "unable to parse SLICES of the primitive coordinates for ID = " + primitiveId;
 
-                var loops = this.reader.getFloat(grandChildren[0], 'loops');
+                var loops = this.reader.getInteger(grandChildren[0], 'loops');
                 if (loops == null || isNaN(loops) || loops < 1)
                     return "unable to parse LOOPS of the primitive coordinates for ID = " + primitiveId;
 
@@ -886,13 +891,13 @@ parseKeyframe(keyframe, keyframeInstant)
             }
 
 
-            else if (primitiveType == 'cylinder' || primitiveType == 'cylinder2' || primitiveType == 'cone')
+            else if (primitiveType == 'cylinder')
             {
-                var slices = this.reader.getFloat(grandChildren[0], 'slices');
+                var slices = this.reader.getInteger(grandChildren[0], 'slices');
                 if (slices == null || isNaN(slices) || slices < 1)
                     return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
 
-                var stacks = this.reader.getFloat(grandChildren[0], 'stacks');
+                var stacks = this.reader.getInteger(grandChildren[0], 'stacks');
                 if (stacks == null || isNaN(stacks) || stacks < 1)
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
@@ -916,22 +921,71 @@ parseKeyframe(keyframe, keyframeInstant)
                 this.primitives[primitiveId] = cyli;
             }
 
+
             else if (primitiveType == 'plane')
             {
-                var UDivs = this.reader.getFloat(grandChildren[0], 'udivs');
+                var UDivs = this.reader.getInteger(grandChildren[0], 'npartsU');
                 if (UDivs == null || isNaN(UDivs) || UDivs < 0)
                     return "unable to parse INNER radius of the primitive coordinates for ID = " + primitiveId;
 
-                var VDivs = this.reader.getFloat(grandChildren[0], 'vdivs');
+                var VDivs = this.reader.getInteger(grandChildren[0], 'npartsV');
                 if (VDivs == null || isNaN(VDivs) || VDivs < 0)
                     return "unable to parse OUTER radius of the primitive coordinates for ID = " + primitiveId;
 
-                var pln = new MyPlane(this.scene, primitiveId, UDivs, VDivs);
-                this.primitives[primitiveId] = pln;
+                var plane = new Plane(this.scene, primitiveId, UDivs, VDivs);
+                this.primitives[primitiveId] = plane;
+            }
+
+            else if(primitiveType == 'patch')
+            {
+                var UDivs = this.reader.getInteger(grandChildren[0], 'npartsU');
+                if (UDivs == null || isNaN(UDivs) || UDivs < 0)
+                    return "unable to parse INNER radius of the primitive coordinates for ID = " + primitiveId;
+
+                var VDivs = this.reader.getInteger(grandChildren[0], 'npartsV');
+                if (VDivs == null || isNaN(VDivs) || VDivs < 0)
+                    return "unable to parse OUTER radius of the primitive coordinates for ID = " + primitiveId;
+
+                var UControl = this.reader.getInteger(grandChildren[0], 'npointsU');
+                if (UControl == null || isNaN(UControl) || UControl < 1)
+                    return "unable to parse OUTER radius of the primitive coordinates for ID = " + primitiveId;
+
+                var VControl = this.reader.getInteger(grandChildren[0], 'npointsV');
+                if (VControl == null || isNaN(VControl) || VControl < 1)
+                    return "unable to parse OUTER radius of the primitive coordinates for ID = " + primitiveId;
+
+                //build control array
+                var controlxml = grandChildren[0].children;
+                var CA = [];
+
+                for(var j=0; j<controlxml.length; j++)
+                {
+                    var cpx = this.reader.getFloat(controlxml[j], 'xx');
+                    var cpy = this.reader.getFloat(controlxml[j], 'yy');
+                    var cpz = this.reader.getFloat(controlxml[j], 'zz');
+                    CA.push(cpx, cpy, cpz, 1.0);
+                }
+                
+                var c = 0;
+                var parsedControl = [], vmatrix = [];
+                for(var j=0; j<UControl; j++)
+                {
+                    for(var k=0; k<VControl; k++)
+                    {
+                        vmatrix.push( [ CA[c], CA[c+1], CA[c+2], CA[c+3] ] );
+                        c+=4;
+                    }
+                    parsedControl.push(vmatrix);
+                    vmatrix = [];
+                }
+
+                // console.log(parsedControl);
+                var patch = new Patch(this.scene, primitiveId, UControl, VControl, UDivs, VDivs, parsedControl);
+                this.primitives[primitiveId] = patch;
             }
 
 
-            else console.warn("To do: Parse other primitives.");
+            else console.warn("TO DO: Parse remaining primitives");
         }
 
         this.log("Parsed primitives");
