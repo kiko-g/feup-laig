@@ -1,6 +1,6 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
-    <views default="CORNER">
+    <views default="FLAG">
         <perspective id="CORNER" near="0.1" far="500" angle="70">
             <from x="-87" y="90" z="63" />
             <to x="-9" y="30" z="-15" />
@@ -8,7 +8,11 @@
         <perspective id="CORNER LOW" near="0.1" far="500" angle="70">
             <from x="-87" y="20" z="63" />
             <to x="-9" y="30" z="-15" />
-        </perspective>        
+        </perspective>
+        <perspective id="FLAG" near="0.1" far="500" angle="70">
+            <from x="-90" y="140" z="0" />
+            <to x="0" y="140" z="-15" />
+        </perspective>                
         <perspective id="LOW" near="0.1" far="500" angle="50">
             <from x="0" y="10" z="100" />
             <to x="0" y="50" z="-60" />
@@ -322,8 +326,13 @@
 
     <animations>
         <animation id="anim" >
-            <keyframe instant="1">
-                <translate x="2" y="2" z="2" />
+            <keyframe instant="2">
+                <translate x="0" y="-10" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="2" y="2" z="2" />
             </keyframe>

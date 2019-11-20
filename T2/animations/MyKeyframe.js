@@ -1,5 +1,3 @@
-//construtuor tem transl, rotata(seprar em ), scale e instant
-
 class MyKeyframe
 {
     constructor(translate, rotate, scale, instant)

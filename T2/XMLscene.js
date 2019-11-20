@@ -42,7 +42,7 @@ class XMLscene extends CGFscene
 
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(20);
     }
 
     // Use camera with default ID if it exists
@@ -122,13 +122,11 @@ class XMLscene extends CGFscene
         {
             //there are two different arrays of lights
             var light = this.graph.lights[key];
-            // var attenuation = this.graph.lights[key].attenuation;
             if (light[0]) this.lights[i].enable();
             else this.lights[i].disable();
             if(!this.viewLightBoxes) this.lights[i].setVisible(false);
             else this.lights[i].setVisible(true);
 
-            // console.log(light[6][0]);
             this.lights[i].setConstantAttenuation(light[6][0]);
             this.lights[i].setLinearAttenuation(light[6][1]);
             // this.lights[i].setQuadraticAttenuation(light[6][2]);
@@ -163,6 +161,22 @@ class XMLscene extends CGFscene
         this.sceneInited = true;
     }
 
+    update(t)
+    {
+        if(this.prev == undefined) this.prev = 0.0;
+        if(this.current == undefined) this.current = 0.0;
+        if(this.timeDif == undefined) this.timeDif = 0.0;
+
+        this.prev = this.prev;
+        this.timeDif = (t - this.prev) / 1000.0;
+        this.current = (this.current + this.timeDif);
+        this.prev = t;
+        
+        for(let key in this.graph.animations){
+            this.graph.animations[key].update(this.timeDif);
+            // console.log(this.graph.animations[key]);
+        }
+    }
 
     // Displays the scene
     display()
@@ -197,6 +211,7 @@ class XMLscene extends CGFscene
             else if(!this.interface.isKeyPressed('KeyM')){
                 this.MPress = false;
             }
+
 
 
             if(this.displayAxis) this.axis.display();
