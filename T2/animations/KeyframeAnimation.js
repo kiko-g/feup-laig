@@ -42,7 +42,6 @@ class KeyframeAnimation extends Animation
         this.determineTransformation();
         this.aniMatrix = mat4.multiply(this.aniMatrix, this.prevMatrix, this.newMatrix);
         
-        this.apply();
         this.prevMatrix = this.aniMatrix;
         this.T1 = this.T2;
     }
