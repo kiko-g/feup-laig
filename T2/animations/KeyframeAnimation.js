@@ -24,14 +24,14 @@ class KeyframeAnimation extends Animation
         {
             if(this.postKFIndex == this.keyframes.length-1){
                 this.animationDone = true;
-                this.scene.graph.log("Animation segment " + this.postKFIndex + " done");
+                this.scene.graph.log("\nANIMATION SEGMENT " + this.postKFIndex + " DONE\n");
             }
 
             else{
                 this.segmentTime = this.keyframes[this.postKFIndex].instant - this.keyframes[this.prevKFIndex].instant;
                 this.sumT -= this.segmentTime;
                 this.prevKFIndex++;
-                this.scene.graph.log("Animation segment " + this.postKFIndex + " done");
+                this.scene.graph.log("\nANIMATION SEGMENT " + this.postKFIndex + " DONE\n");
                 this.postKFIndex++;
             }
         }
@@ -52,7 +52,7 @@ class KeyframeAnimation extends Animation
     }
 
     update(deltaTime) { this.generateAniMatrix(deltaTime); }
-    apply() { this.scene.multMatrix(this.aniMatrix); }
+    apply() { this.scene.graph.log(this.aniMatrix); this.scene.multMatrix(this.newMatrix); }
 
     
     determineTransformation()

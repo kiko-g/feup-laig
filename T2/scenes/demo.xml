@@ -335,6 +335,11 @@
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="90" angle_z="0" />
                 <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translate x="0" y="-10" z="0" />
+                <rotate angle_x="0" angle_y="-90" angle_z="0" />
+                <scale x="1" y="1" z="1" />
             </keyframe>            
         </animation>
     </animations>
