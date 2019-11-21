@@ -42,7 +42,7 @@ class XMLscene extends CGFscene
 
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(20);
+        this.setUpdatePeriod(1);
     }
 
     // Use camera with default ID if it exists
@@ -167,14 +167,12 @@ class XMLscene extends CGFscene
         if(this.current == undefined) this.current = 0.0;
         if(this.timeDif == undefined) this.timeDif = 0.0;
 
-        this.prev = this.prev;
         this.timeDif = (t - this.prev) / 1000.0;
         this.current = (this.current + this.timeDif);
         this.prev = t;
-        
         for(let key in this.graph.animations){
-            this.graph.animations[key].update(this.timeDif);
-            // console.log(this.graph.animations[key]);
+            if(!this.graph.animations[key].animationDone)
+                this.graph.animations[key].update(this.timeDif);
         }
     }
 
