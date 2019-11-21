@@ -22,12 +22,17 @@ class KeyframeAnimation extends Animation
     {
         if(this.sumT > this.segmentTime)
         {
-            if(this.postKFIndex == this.keyframes.length-1) { this.animationDone = true; }
+            if(this.postKFIndex == this.keyframes.length-1){
+                this.animationDone = true;
+                this.scene.graph.log("Animation segment " + this.postKFIndex + " done");
+            }
+
             else{
-                this.prevKFIndex++;
-                this.postKFIndex++;
-                this.sumT -= this.segmentTime;
                 this.segmentTime = this.keyframes[this.postKFIndex].instant - this.keyframes[this.prevKFIndex].instant;
+                this.sumT -= this.segmentTime;
+                this.prevKFIndex++;
+                this.scene.graph.log("Animation segment " + this.postKFIndex + " done");
+                this.postKFIndex++;
             }
         }
     }

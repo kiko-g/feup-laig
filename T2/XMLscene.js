@@ -42,7 +42,7 @@ class XMLscene extends CGFscene
 
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(1);
+        this.setUpdatePeriod(20);
     }
 
     // Use camera with default ID if it exists

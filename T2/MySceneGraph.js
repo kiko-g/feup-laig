@@ -1390,8 +1390,9 @@ parseKeyframe(keyframe, keyframeInstant)
         if(currentTexture != null) currentTexture.bind();
         this.scene.multMatrix(currentnode.transfMatrix);
         
-        if(currentnode.animationID != null)
-            this.animations[currentnode.animationID].apply();
+        if(currentnode.animationID != null) // apply animation matrix if node has animation and if
+            if(!this.animations[currentnode.animationID].animationDone) // its still not finished
+                this.animations[currentnode.animationID].apply();
 
         for (var key in leaves)
         {
@@ -1433,5 +1434,5 @@ parseKeyframe(keyframe, keyframeInstant)
      * Callback to be executed on any message.
      * @param {string} message
      */
-    log(message) { console.log("========== " + message + " =========="); }
+    log(message) { console.log(">>> " + message); }
 }
