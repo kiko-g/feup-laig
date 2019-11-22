@@ -1390,9 +1390,8 @@ parseKeyframe(keyframe, keyframeInstant)
         if(currentTexture != null) currentTexture.bind();
         this.scene.multMatrix(currentnode.transfMatrix);
         
-        if(currentnode.animationID != null) // apply animation matrix if node has animation and if
-            if(!this.animations[currentnode.animationID].animationDone) // its still not finished
-                this.animations[currentnode.animationID].apply();
+        // apply animation matrix if node has animation
+        if(currentnode.animationID != null) this.animations[currentnode.animationID].apply();
 
         for (var key in leaves)
         {
