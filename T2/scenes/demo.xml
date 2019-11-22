@@ -326,20 +326,25 @@
 
     <animations>
         <animation id="anim" >
-            <keyframe instant="5">
+            <keyframe instant="2">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="6">
-                <translate x="0" y="-10" z="0" />
-                <rotate angle_x="0" angle_y="240" angle_z="0" />
-                <scale x="2" y="2" z="2" />
-            </keyframe>
-            <keyframe instant="7">
-                <translate x="0" y="10" z="0" />
-                <rotate angle_x="0" angle_y="240" angle_z="0" />
+            <keyframe instant="4">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="360" angle_z="0" />
                 <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="360" angle_z="0" />
+                <scale x="2.5" y="2.5" z="2.5" />
+            </keyframe>
+            <keyframe instant="8">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="360" angle_z="0" />
+                <scale x="0.5" y="0.5" z="0.5" />
             </keyframe>
         </animation>
     </animations>

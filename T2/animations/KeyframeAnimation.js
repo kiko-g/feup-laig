@@ -58,6 +58,8 @@ class KeyframeAnimation extends Animation
     determineTransformation()
     {
         mat4.identity(this.newMatrix);
+
+        // TRANSLATION
         var delta_tx = this.move * this.keyframes[this.postKF].translate[0];
         var delta_ty = this.move * this.keyframes[this.postKF].translate[1];
         var delta_tz = this.move * this.keyframes[this.postKF].translate[2];
@@ -65,6 +67,8 @@ class KeyframeAnimation extends Animation
         this.translation = vec3.set(this.translation, delta_tx, delta_ty, delta_tz);
         this.newMatrix = mat4.translate(this.newMatrix, this.newMatrix, this.translation);
 
+
+        // ROTATION
         var delta_rx = this.move * this.keyframes[this.postKF].rotateX * DEGREE_TO_RAD;
         var delta_ry = this.move * this.keyframes[this.postKF].rotateY * DEGREE_TO_RAD;
         var delta_rz = this.move * this.keyframes[this.postKF].rotateZ * DEGREE_TO_RAD;
@@ -72,14 +76,24 @@ class KeyframeAnimation extends Animation
         this.newMatrix = mat4.rotateY(this.newMatrix, this.newMatrix, delta_ry);
         this.newMatrix = mat4.rotateZ(this.newMatrix, this.newMatrix, delta_rz);
 
-        //we need to subtract 1 to then multiply that by percentage
-        var delta_sx = this.keyframes[this.postKF].scale[0] / this.keyframes[this.prevKF].scale[0];
-        var delta_sy = this.keyframes[this.postKF].scale[1] / this.keyframes[this.prevKF].scale[1];
-        var delta_sz = this.keyframes[this.postKF].scale[2] / this.keyframes[this.prevKF].scale[2];
-
-        var kx = delta_sx / this.move;
-        var ky = delta_sy / this.move;
-        var kz = delta_sz / this.move;
+        // SCALING
+        var prev_sx = this.keyframes[this.prevKF].scale[0];
+        var prev_sy = this.keyframes[this.prevKF].scale[1];
+        var prev_sz = this.keyframes[this.prevKF].scale[2];
+        var post_sx = this.keyframes[this.postKF].scale[0];
+        var post_sy = this.keyframes[this.postKF].scale[1];
+        var post_sz = this.keyframes[this.postKF].scale[2];
+        
+        // Considering non accumulative scale (delta scale)
+        var delta_sx = post_sx - prev_sx;
+        var delta_sy = post_sy - prev_sy;
+        var delta_sz = post_sz - prev_sz;
+        
+        // delta_sn is signed and helps scale down or up
+        var kx = 1, ky = 1, kz = 1;
+        if (delta_sx != 0) kx = 1 + this.move * delta_sx;
+        if (delta_sy != 0) ky = 1 + this.move * delta_sy;
+        if (delta_sz != 0) kz = 1 + this.move * delta_sz;
 
         this.scale = vec3.create();
         this.scale = vec3.set(this.scale, kx, ky, kz);
