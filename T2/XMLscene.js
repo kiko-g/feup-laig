@@ -13,22 +13,18 @@ class XMLscene extends CGFscene
         this.interface = myinterface;
     }
 
-    /**
-     * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
-     * @param {CGFApplication} application */
+    /** Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
+     *  @param {CGFApplication} application */
     init(application)
     {
         super.init(application);
         this.sceneInited = false;
         this.displayAxis = true;
         this.viewLightBoxes = true;
-        this.cylNormals = false;
-        this.sphNormals = false;
-        this.rectNormals = false;
-        this.torNormals = false;
-        this.allNormals = false;
-        this.triangNormals = false;
+        this.allNormals = true;
         this.MPress = false;
+        this.RTT = new CGFtextureRTT(this, this.gl.canvas.width * 2, this.gl.canvas.height * 2);
+        this.securityCamera = new MySecurityCamera(this, this.RTT);
 
         //fov (radians), near, far, position, target 
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
@@ -43,6 +39,21 @@ class XMLscene extends CGFscene
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
         this.setUpdatePeriod(10);
+    }
+
+    update(t)
+    {
+        this.securityCamera.updateTimeFactor(t / 200 % 1000);
+        if(this.prev == undefined) this.prev = 0.0;
+        if(this.current == undefined) this.current = 0.0;
+        if(this.timeDif == undefined) this.timeDif = 0.0;
+
+        this.timeDif = (t - this.prev) / 1000.0;
+        this.current = (this.current + this.timeDif);
+        this.prev = t;
+        for(let key in this.graph.animations)
+            if(!this.graph.animations[key].animationDone)
+                this.graph.animations[key].update(this.timeDif);
     }
 
     // Use camera with default ID if it exists
@@ -116,7 +127,8 @@ class XMLscene extends CGFscene
         }
     }
     
-    toggleLights() {
+    toggleLights() 
+    {
         var i = 0;
         for (let key in this.graph.lights)
         {
@@ -129,7 +141,7 @@ class XMLscene extends CGFscene
 
             this.lights[i].setConstantAttenuation(light[6][0]);
             this.lights[i].setLinearAttenuation(light[6][1]);
-            // this.lights[i].setQuadraticAttenuation(light[6][2]);
+            this.lights[i].setQuadraticAttenuation(light[6][2]);
             this.lights[i].update();
             i++;
         }
@@ -161,26 +173,12 @@ class XMLscene extends CGFscene
         this.sceneInited = true;
     }
 
-    update(t)
-    {
-        if(this.prev == undefined) this.prev = 0.0;
-        if(this.current == undefined) this.current = 0.0;
-        if(this.timeDif == undefined) this.timeDif = 0.0;
 
-        this.timeDif = (t - this.prev) / 1000.0;
-        this.current = (this.current + this.timeDif);
-        this.prev = t;
-        for(let key in this.graph.animations)
-            if(!this.graph.animations[key].animationDone)
-                this.graph.animations[key].update(this.timeDif);
-    }
-
-    // Displays the scene
     display()
     {
+        // Displays the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
         this.updateProjectionMatrix();  
         this.loadIdentity();            // Initialize Model-View matrix as identity (no transformation)
         this.applyViewMatrix();         // Apply transformations corresponding to the camera position relative to the origin
@@ -193,61 +191,30 @@ class XMLscene extends CGFscene
         
         this.toggleLights();
 
-        if (this.sceneInited){
-            
+        if (this.sceneInited)
+        {    
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)
-
+            if(this.displayAxis) 
+                this.axis.display();
             this.updateMAT();
-            if(this.interface.isKeyPressed('KeyM') && !this.MPress)
-            {
-                this.MPress = true;
-                for (let key in this.graph.components)
-                    this.graph.cycleMaterial(this.graph.components[key]);
-            }
-            else if(!this.interface.isKeyPressed('KeyM')){
-                this.MPress = false;
-            }
-
-
-
-            if(this.displayAxis) this.axis.display();
-            this.manageNormals();
         }
 
+        // this.gl.disable(this.gl.DEPTH_TEST);
+        // this.securityCamera.display();
+        // this.gl.enable(this.gl.DEPTH_TEST);
+
         this.popMatrix();
-        // ---- END Background, camera and axis setup
     }
 
 
-    updateMAT(){
-        if (this.interface.isKeyPressed('KeyM') && !this.MPress) {
+    updateMAT()
+    {
+        if (this.interface.isKeyPressed('KeyM') && !this.MPress){
             this.MPress = true;
             for (let key in this.graph.components)
                 this.graph.cycleMaterial(this.graph.components[key]);
         }
-        else if (!this.interface.isKeyPressed('KeyM')) {
-            this.MPress = false;
-        }
-    }
-
-    
-    manageNormals() {
-        if (this.allNormals) for(var key in this.graph.primitives[key])
-            this.graph.primitives[key].enableNormalViz();
-
-        else for (var key in this.graph.primitives[key])
-            this.graph.primitives[key].disableNormalViz();
-
-        if (this.cylNormals || this.allNormals) this.graph.primitives['cylinder'].enableNormalViz();
-        else this.graph.primitives['cylinder'].disableNormalViz();
-        if (this.sphNormals || this.allNormals) this.graph.primitives['sphere'].enableNormalViz();
-        else this.graph.primitives['sphere'].disableNormalViz();
-        if (this.rectNormals || this.allNormals) this.graph.primitives['rectangle'].enableNormalViz();
-        else this.graph.primitives['rectangle'].disableNormalViz();
-        if (this.torNormals || this.allNormals) this.graph.primitives['torus'].enableNormalViz();
-        else this.graph.primitives['torus'].disableNormalViz();
-        if (this.triangNormals || this.allNormals) this.graph.primitives['triangle'].enableNormalViz();
-        else this.graph.primitives['triangle'].disableNormalViz();
+        else if (!this.interface.isKeyPressed('KeyM')) this.MPress = false;
     }
 }
