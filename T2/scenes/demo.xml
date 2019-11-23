@@ -1,9 +1,9 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
-    <views default="FLAG">
+    <views default="CORNER">
         <perspective id="CORNER" near="0.1" far="500" angle="70">
-            <from x="-87" y="90" z="-63" />
-            <to x="-9" y="30" z="-15" />
+            <from x="-87" y="100" z="63" />
+            <to x="90" y="50" z="-90" />
         </perspective>
         <perspective id="CORNER LOW" near="0.1" far="500" angle="70">
             <from x="-87" y="20" z="63" />
@@ -48,6 +48,7 @@
         <ambient    r="0.1" g="0.1"  b="0.1"  a="1.0" />
         <background r="0.53" g="0.81"  b="0.92"  a="1.0" />
     </globals>
+
 
 
 
@@ -265,7 +266,6 @@
 
 
 
-
     <transformations>
         <transformation id="centersph_setup">
             <scale x="0.75" y="0.75" z="0.75"/>
@@ -324,6 +324,9 @@
         </transformation>            
     </transformations>
 
+
+
+
     <animations>
         <animation id="flag_anim" >
             <keyframe instant="2">
@@ -332,29 +335,29 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="4">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="360" angle_z="0" />
+                <translate x="0" y="9" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="6">
-                <translate x="0" y="-5" z="0" />
-                <rotate angle_x="0" angle_y="360" angle_z="0" />
+            <keyframe instant="5">
+                <translate x="0" y="9" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translate x="0" y="18" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="8">
-                <translate x="0" y="5" z="0" />
-                <rotate angle_x="0" angle_y="360" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="10">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="2" y="2" z="2" />
-            </keyframe>
-            <keyframe instant="11">
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="18" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="9">
+                <translate x="0" y="21" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.4" y="1.4" z="1.4" />
             </keyframe>
         </animation>
     </animations>
@@ -1015,7 +1018,7 @@
             </component>
             <component id="flagPT">
                 <transformation>
-                    <translate x="-8" y="6.8" z="8" />
+                    <translate x="-8" y="0" z="8" />
                     <scale x="0.4" y="0.3" z="0.45" />
                     <rotate axis="y" angle="90" />
                 </transformation>

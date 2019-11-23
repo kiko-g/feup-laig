@@ -1387,11 +1387,11 @@ parseKeyframe(keyframe, keyframeInstant)
         currentMaterial.setTexture(currentTexture);
         currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
         currentMaterial.apply();
-        if(currentTexture != null) currentTexture.bind();
+        if(currentTexture != null) 
+            currentTexture.bind();
         this.scene.multMatrix(currentnode.transfMatrix);
-        
-        // apply animation matrix if node has animation
-        if(currentnode.animationID != null) this.animations[currentnode.animationID].apply();
+        if(currentnode.animationID != null) // apply animation matrix if node has animation
+            this.animations[currentnode.animationID].apply();
 
         for (var key in leaves)
         {
