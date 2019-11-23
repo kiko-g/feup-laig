@@ -174,7 +174,7 @@ class XMLscene extends CGFscene
     }
 
 
-    display()
+    render(camera)
     {
         // Displays the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -191,6 +191,8 @@ class XMLscene extends CGFscene
         
         this.toggleLights();
 
+        this.interface.setActiveCamera(camera);
+
         if (this.sceneInited)
         {    
             this.setDefaultAppearance();    // Draw Axis
@@ -200,13 +202,26 @@ class XMLscene extends CGFscene
             this.updateMAT();
         }
 
-        // this.gl.disable(this.gl.DEPTH_TEST);
-        // this.securityCamera.display();
-        // this.gl.enable(this.gl.DEPTH_TEST);
 
         this.popMatrix();
     }
 
+    display(){
+
+
+    this.render(this.camera); //renders scene
+
+    this.RTT.attachToFrameBuffer();
+    this.render(this.camera);
+    this.RTT.detachFromFrameBuffer();
+
+    this.gl.disable(this.gl.DEPTH_TEST);
+    //this.securityCamera.display();
+    this.gl.enable(this.gl.DEPTH_TEST);
+
+    
+
+    }
 
     updateMAT()
     {

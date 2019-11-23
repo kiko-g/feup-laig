@@ -14,7 +14,9 @@ class MyInterface extends CGFinterface
         this.settings = this.gui.addFolder("General");
         this.lights = this.gui.addFolder("Lighting");
         this.camera = this.gui.addFolder("Camera");
+        this.SecCam = this.gui.addFolder("Securtiy Camera");
         this.camera.open();
+        this.SecCam.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
