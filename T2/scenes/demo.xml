@@ -1,43 +1,39 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
     <views default="CORNER">
+        <perspective id="DEFAULT" near="0.1" far="500" angle="50">
+            <from x="-25" y="30" z="50" />
+            <to x="0" y="3" z="-10" />
+        </perspective>
         <perspective id="CORNER" near="0.1" far="500" angle="70">
-            <from x="-87" y="100" z="63" />
-            <to x="90" y="50" z="-90" />
+            <from x="-29" y="35" z="29" />
+            <to x="0" y="15" z="-10" />
         </perspective>
-        <perspective id="CORNER LOW" near="0.1" far="500" angle="70">
-            <from x="-87" y="20" z="63" />
-            <to x="-9" y="30" z="-15" />
-        </perspective>
-        <perspective id="FLAG" near="0.1" far="500" angle="70">
-            <from x="50" y="140" z="-90" />
-            <to x="90" y="110" z="90" />
-        </perspective>                
-        <perspective id="LOW" near="0.1" far="500" angle="50">
-            <from x="0" y="10" z="100" />
-            <to x="0" y="50" z="-60" />
+        <perspective id="LOW" near="0.1" far="500" angle="45">
+            <from x="0" y="6" z="30" />
+            <to x="0" y="3" z="-20" />
         </perspective>
         <perspective id="ATOM" near="0.1" far="500" angle="60">
-            <from x="0" y="105" z="-15" />
-            <to x="0" y="81" z="-60" />
+            <from x="0" y="35" z="-5" />
+            <to x="0" y="27" z="-20" />
         </perspective>
         <perspective id="BACK" near="0.1" far="500" angle="50">
-            <from x="15" y="120" z="-180" />
-            <to x="0" y="-30" z="90" />
+            <from x="5" y="40" z="-60" />
+            <to x="0" y="-10" z="30" />
         </perspective>
         <perspective id="SECRET" near="0.1" far="500" angle="80">
-            <from x="-88" y="90" z="-88" />
-            <to x="-60" y="60" z="-60" />
+            <from x="-28" y="30" z="-28" />
+            <to x="-20" y="20" z="-20" />
         </perspective>
-        <ortho id="ORTHO SIDE" near="0.1" far="500" left="-150.0" right="150.0" top="90" bottom="-90">
-            <from x="90" y="90" z="90" />
-            <to x="-60" y="0" z="-60" />
-            <up x="-60" y="0" z="-60" />
+        <ortho id="ORTHO SIDE" near="0.1" far="500" left="-50.0" right="50.0" top="30" bottom="-30">
+            <from x="30" y="30" z="30" />
+            <to x="-20" y="0" z="-20" />
+            <up x="-20" y="0" z="-20" />
         </ortho>
-        <ortho id="ORTHO FRONT" near="0.1" far="500" left="-105.0" right="105.0" top="120" bottom="-18">
-            <from x="0" y="15" z="90" />
+        <ortho id="ORTHO FRONT" near="0.1" far="500" left="-35.0" right="35.0" top="40" bottom="-6">
+            <from x="0" y="5" z="30" />
             <to x="0" y="0" z="0" />
-            <up x="0" y="0.3" z="-3" />
+            <up x="0" y="0.1" z="-1" />
         </ortho>
     </views>
 
@@ -45,75 +41,73 @@
 
 
     <globals>
-        <ambient    r="0.1" g="0.1"  b="0.1"  a="1.0" />
+        <ambient    r="0.3" g="0.3"  b="0.3"  a="1.0" />
         <background r="0.53" g="0.81"  b="0.92"  a="1.0" />
     </globals>
 
 
 
-
     <lights>
         <omni id="TOP LEFT" enabled="1">
-            <location x="-87.0" y="150.0" z="0.0" w="1.0" />
-            <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
+            <location x="-20.0" y="40.0" z="0.0" w="1.0" />
+            <ambient  r="0.1" g="0.1" b="0.1" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.04" quadratic="0" />
+            <attenuation constant="0" linear="0.2" quadratic="0" />
         </omni>
         <omni id="TOP RIGHT" enabled="1">
-            <location x="87.0" y="150.0" z="0.0" w="1.0" />
-            <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
+            <location x="20.0" y="40.0" z="0.0" w="1.0" />
+            <ambient  r="0.1" g="0.1" b="0.1" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.04" quadratic="0" />
+            <attenuation constant="0" linear="0.2" quadratic="0" />
         </omni>        
         <omni id="LEFT" enabled="1">
-            <location x="-60.0" y="6.0" z="60.0" w="1.0" />
+            <location x="-20.0" y="2.0" z="20.0" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.02" quadratic="0" />
+            <attenuation constant="0" linear="0.2" quadratic="0" />
         </omni>
-        <omni id="CENTER" enabled="0">
-            <location x="0"  y="6.0" z="0" w="1.0" />
-            <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
+        <omni id="CENTER" enabled="1">
+            <location x="0"  y="3.0" z="0" w="1.0" />
+            <ambient  r="0.1" g="0.1" b="0.1" a="0.0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="0.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="0.0" />
+            <attenuation constant="0" linear="0.5" quadratic="0.0" />
         </omni>
         <omni id="RIGHT" enabled="1">
-            <location x="60" y="6.0" z="60" w="1.0" />
-            <ambient  r="0.0" g="0.0" b="0.0" a="1.0" />
+            <location x="20" y="2.0" z="20" w="1.0" />
+            <ambient  r="0.1" g="0.1" b="0.1" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0" linear="0.04" quadratic="0" />
+            <attenuation constant="0" linear="0.2" quadratic="0" />
         </omni>
-        <spot id="SPOT 1" enabled="0" angle="15" exponent="1">
-            <location x="60" y="30" z="-54" w="1.0" />
-            <target x="-27" y="15" z="-27" w="1.0"/>
-            <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+        <spot id="SPOT BOOK 1" enabled="1" angle="15" exponent="1">
+            <location x="20"  y="10"  z="-18" w="1.0" />
+            <target   x="-9"  y="5"   z="-9"  w="1.0"/>
+            <ambient  r="0.6" g="0.6" b="0.6" a="1.0" />
+            <diffuse  r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0.5" linear="0.05" quadratic="0" />
+            <attenuation constant="0" linear="0.2" quadratic="0" />
         </spot>
-        <spot id="SPOT 2" enabled="1" angle="15" exponent="1">
-            <location x="-60" y="30" z="-54" w="1.0" />
-            <target x="-9" y="5" z="-9" w="1.0"/>
-            <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+        <spot id="SPOT BOOK 2" enabled="1" angle="15" exponent="1">
+            <location x="-20" y="10"  z="-18" w="1.0" />
+            <target   x="-9"  y="5"   z="-9"  w="1.0"/>
+            <ambient  r="0.6" g="0.6" b="0.6" a="1.0" />
+            <diffuse  r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0.3" linear="0.05" quadratic="0" />
+            <attenuation constant="0" linear="0.2" quadratic="0" />
         </spot>
         <spot id="SPOT ATOM" enabled="1" angle="15" exponent="1">
-            <location x="0" y="20" z="-25" w="1.0" />
-            <target x="0" y="40" z="-19" w="1.0"/>
-            <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <location x="0"   y="32"  z="-22" w="1.0" />
+            <target   x="0"   y="30"  z="-25" w="1.0"/>
+            <ambient  r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse  r="1" g="1" b="1" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <attenuation constant="0.3" linear="0.05" quadratic="0" />
+            <attenuation constant="0" linear="0.3" quadratic="0" />
         </spot>        
     </lights>
-
 
 
 
@@ -159,19 +153,19 @@
             <diffuse  r="0.8" g="0.4" b="0.0" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
-        <material id="pencilMAT" shininess="10" >
+        <material id="pencilMAT" shininess="3" >
             <emission r="0.0" g="0.0" b="0.0" a="0" />
             <ambient  r="1.0" g="0.67" b="0.18" a="1" />
             <diffuse  r="1.0" g="0.5" b="0.1" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
-        <material id="greenMAT" shininess="10" >
+        <material id="greenMAT" shininess="20" >
             <emission r="0.0" g="0.0" b="0.0" a="1" />
             <ambient  r="0.0" g="0.48" b="0.0" a="1" />
             <diffuse  r="0.1" g="0.5" b="0.1" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
-        <material id="darkgreenMAT" shininess="10" >
+        <material id="darkgreenMAT" shininess="1" >
             <emission r="0.0" g="0.0" b="0.0" a="1" />
             <ambient  r="0.0" g="0.3" b="0.0" a="1" />
             <diffuse  r="0.1" g="0.2" b="0.1" a="1" />
@@ -238,7 +232,7 @@
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
         <material id="metal" shininess="50">
-            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <emission r="0.1" g="0.1" b="0.1" a="1" />
             <ambient  r="0.3" g="0.3" b="0.3" a="1" />
             <diffuse  r="1" g="1" b="1" a="1" />
             <specular r="1" g="1" b="1" a="1" />
@@ -261,6 +255,12 @@
             <diffuse  r="0.38" g="0.2" b="0.07" a="1" />
             <specular r="0.38" g="0.2" b="0.07" a="1" />
         </material>
+        <material id="orangeGLOSS" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="0" />
+            <ambient  r="1.0" g="0.67" b="0.1" a="1" />
+            <diffuse  r="1.0" g="0.5" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>        
     </materials>
 
 
@@ -334,30 +334,43 @@
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
+            <keyframe instant="3">
+                <translate x="0" y="9" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
             <keyframe instant="4">
                 <translate x="0" y="9" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="5">
-                <translate x="0" y="9" z="0" />
+                <translate x="0" y="18" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translate x="0" y="18" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="7">
-                <translate x="0" y="18" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="8">
-                <translate x="0" y="18" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="9">
                 <translate x="0" y="21" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1.4" y="1.4" z="1.4" />
+            </keyframe>
+        </animation>
+
+        <animation id="atom_rotate">
+            <keyframe instant="20">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>                
+            <keyframe instant="30">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="360" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />                
             </keyframe>
         </animation>
     </animations>
@@ -455,6 +468,7 @@
                 <transformation>
                     <transformationref id="ring1_setup" />
                 </transformation>
+                    <animationref id="atom_rotate"/>
                 <materials>
                     <material id="inherit" />
                 </materials>
@@ -570,7 +584,7 @@
                     <transformationref id="tinysphere1_setup" />
                 </transformation>
                 <materials>
-                    <material id="pencilMAT" />
+                    <material id="orangeGLOSS" />
                     <material id="cyanMAT" />
                     <material id="pinkMAT" />
                 </materials>
@@ -1738,7 +1752,7 @@
 
             <component id="ROOT NODE">
                 <transformation>
-                    <scale x="9" y="9" z="9" />
+                    <scale x="3" y="3" z="3" />
                 </transformation>
                 <materials>
                     <material id="defaultMAT" />

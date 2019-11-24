@@ -7,8 +7,8 @@ class KeyframeAnimation extends Animation
         this.prevKF = 0;                        //prev keyframe index
         this.postKF = 1;                        //post keyframe index
         this.time_acc = 0;                      //time accumulator
-        this.T1 = 0;                            //time letiable 1
-        this.T2 = 0;                            //time letiable 2 
+        this.T1 = 0;                            //time 1
+        this.T2 = 0;                            //time 2 
         this.move = 0;                          //percentage of move to be done in iteration (T2-T1)
         this.move_acc = 0                       //move accumulator
         this.lastExtraMove = false              //boolean controlling last move of the segment executed
@@ -26,9 +26,8 @@ class KeyframeAnimation extends Animation
         if(this.time_acc >= this.segmentTime && this.move_acc >= 1)
         {
             if(this.postKF == this.keyframes.length-1) this.animationDone = true;
-            else
+            else //next segment
             {
-                //next segment
                 this.T1 = 0;
                 this.T2 = 0;
                 this.time_acc = 0;
@@ -53,7 +52,7 @@ class KeyframeAnimation extends Animation
 
     update(time) { this.generateAniMatrix(time); }
     apply() { this.scene.multMatrix(this.aniMatrix); }
-    
+    // console.log(">"+this.aniMatrix);
     determineTransformation()
     {
         mat4.identity(this.aniMatrix);

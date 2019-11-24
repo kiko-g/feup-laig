@@ -11,7 +11,7 @@ void main()
     float focus = 0.25;                      //
     vec2  vtc = vTextureCoord;               //smaller name
 	vec4  color = texture2D(uSampler, vtc);
-    float value = 0.5-sqrt((vtc.x - focus)*(vtc.x - focus) + (vtc.y - focus)*(vtc.y - focus));
+    float value = 0.5-sqrt(pow(vtc.x - focus, 2.0) + pow(vtc.y - focus, 2.0));
 	
     if (mod(-vtc.y * 100.0 + timeFactor,  5.0) > 1.0) 
         color = vec4(color.rgb * 2.0, 2.0);
