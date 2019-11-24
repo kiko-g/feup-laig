@@ -9,7 +9,6 @@ attribute vec2 aTextureCoord;
 
 void main()
 {
-    vec3 avp = aVertexPosition;
-	gl_Position = vec4(avp.x, avp.y, avp.z, 1.0);
+	gl_Position = vec4(aVertexPosition.x, aVertexPosition.y, 0.0, 1.0);
 	vTextureCoord = aTextureCoord;
 }
