@@ -2,12 +2,10 @@
  * MyRectangle
  * @constructor
  * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
  */
 class MyRectangle extends CGFobject
 {
-    constructor(scene, id, x1, x2, y1, y2, bothSides = false)
+    constructor(scene, id, x1, x2, y1, y2, bothSides = false, secCam = false)
     {
         super(scene);
         this.id = id;
@@ -16,6 +14,10 @@ class MyRectangle extends CGFobject
 		this.y1 = y1;
         this.y2 = y2;
         this.bothSides = bothSides;
+        this.secCam = secCam;
+        //we made some changes to the ractangle, the first boolean (false) controls if the ractangle
+        //has two sides and the second boolean (true) controls if the rectangle created corresponds
+        //to the security camera
 
 		this.initBuffers();
 	}
@@ -23,9 +25,9 @@ class MyRectangle extends CGFobject
 	initBuffers() {
 		this.vertices = [
 			this.x1, this.y1, 0,	//0
-			this.x2, this.y1, 0,	//1
+            this.x2, this.y1, 0,	//1
 			this.x1, this.y2, 0,	//2
-			this.x2, this.y2, 0,	//3
+            this.x2, this.y2, 0,	//3
 		];
 
 		//Counter-clockwise reference of vertices
@@ -51,15 +53,22 @@ class MyRectangle extends CGFobject
         t
         */
 
-        var dx = this.x2-this.x1;
-        var dy = this.y2-this.y1;
+        var dx = this.x2 - this.x1;
+        var dy = this.y2 - this.y1;
 
-		this.defaultTexCoords = [
+        if(!this.secCam) this.defaultTexCoords = [
              0, dy,
             dx, dy,
 			 0,  0,
-            dx,  0,
-        ]
+            dx,  0
+        ];
+        
+        else this.defaultTexCoords = [
+              0, 0,
+             dx, 0,
+             0, dy,
+            dx, dy
+        ];
         
         this.texCoords = [];
         for(var coord in this.defaultTexCoords)
@@ -75,7 +84,6 @@ class MyRectangle extends CGFobject
             this.updateTexScale(ls, lt);
         super.display();
     }
-    
     
     updateTexScale(ls, lt)
     {

@@ -43,7 +43,7 @@ class XMLscene extends CGFscene
 
     update(t)
     {
-        this.securityCamera.updateTimeFactor(t/100 % 1000);
+        this.securityCamera.updateTimeFactor(t/1500 % 2000);
 
         this.prev || 0.0;
         this.current || 0.0;
