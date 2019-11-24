@@ -8,7 +8,7 @@ uniform float timeFactor;
 
 void main()
 {
-    float focus = 0.25;                      //
+    float focus = 0.25;                      //0.25 is the "center"
     vec2  vtc = vTextureCoord;               //smaller name
 	vec4  color = texture2D(uSampler, vtc);
     float value = 0.5-sqrt(pow(vtc.x - focus, 2.0) + pow(vtc.y - focus, 2.0));

@@ -1,6 +1,6 @@
 class Animation
 {
-    constructor(scene) 
+    constructor(scene, keyframesList)
     {
         this.aniMatrix = mat4.create();
         this.saveMatrix = mat4.create();

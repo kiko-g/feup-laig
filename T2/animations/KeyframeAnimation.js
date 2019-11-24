@@ -1,8 +1,9 @@
 class KeyframeAnimation extends Animation
 {
-    constructor(scene, keyframesList)
+    constructor(scene, id, keyframesList)
     {
         super(scene);
+        this.id = id;
         this.scene = scene;
         this.prevKF = 0;                        //prev keyframe index
         this.postKF = 1;                        //post keyframe index
@@ -11,8 +12,6 @@ class KeyframeAnimation extends Animation
         this.T2 = 0;                            //time 2 
         this.move = 0;                          //percentage of move to be done in iteration (T2-T1)
         this.move_acc = 0                       //move accumulator
-        this.lastExtraMove = false              //boolean controlling last move of the segment executed
-        this.lastSegment = false;               //boolean that tells us if we're in the last segment
         this.animationDone = false;             //boolean controlling end of animation
         this.keyframes = [];                    //keyframe array
         this.keyframes.push(new MyKeyframe([0, 0, 0], [0, 0, 0], [1, 1, 1], 0));
@@ -51,13 +50,11 @@ class KeyframeAnimation extends Animation
     }
 
     update(time) { this.generateAniMatrix(time); }
-    apply() { this.scene.multMatrix(this.aniMatrix); }
-    // console.log(">"+this.aniMatrix);
+    apply() {  this.scene.multMatrix(this.aniMatrix); }
     determineTransformation()
     {
         mat4.identity(this.aniMatrix);
-        // used to prevent an extra movement in last segment
-        if(this.lastSegment && this.move_acc >= 1) this.lastExtraMove = true;
+        // used to prevent extra movement in last iteration of segment
         if(this.move_acc >= 1) this.move_acc = 1;
         
         // TRANSLATION

@@ -52,10 +52,11 @@ class XMLscene extends CGFscene
         this.timeDif = (t - this.prev) / 1000.0;
         this.current = (this.current + this.timeDif);
         this.prev = t;
-        for(let key in this.graph.animations)
+        for(let key in this.graph.animations){
+            console.log(key);
             if(!this.graph.animations[key].animationDone)
-                this.graph.animations[key].update(this.timeDif);
-                
+               this.graph.animations[key].update(this.timeDif);
+        }
     }
 
     // Use camera with default ID if it exists

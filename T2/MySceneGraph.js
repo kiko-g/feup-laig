@@ -669,11 +669,11 @@ parseAnimations(animationNode)
 {
     var children = animationNode.children;
     var grandChildren = [];      //keyframes
-    this.keyframes = [];
     this.animations = [];
 
     for (var i = 0; i < children.length; i++)
     {
+        let keyframes = [];
         if (children[i].nodeName != "animation") {
             this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
             continue;
@@ -699,10 +699,11 @@ parseAnimations(animationNode)
             var keyframeInstant = this.reader.getFloat(grandChildren[j], "instant");
             if (keyframeInstant == null) return "no instant defined for keyframe";
             
-            this.keyframes.push(this.parseKeyframe(grandChildren[j], keyframeInstant));
+            keyframes.push(this.parseKeyframe(grandChildren[j], keyframeInstant));
         }
-        this.animations[animationID] = new KeyframeAnimation(this.scene, this.keyframes);
+        this.animations[animationID] = new KeyframeAnimation(this.scene, animationID,keyframes);
     }
+        // console.log(this.animations);
         this.log("Parsed animations");
         return null;
 }
@@ -982,7 +983,6 @@ parseKeyframe(keyframe, keyframeInstant)
                     vmatrix = [];
                 }
 
-                // console.log(parsedControl);
                 var patch = new Patch(this.scene, primitiveID, nUControl, nVControl, UDivs, VDivs, parsedControl);
                 this.primitives[primitiveID] = patch;
             }
@@ -1392,9 +1392,8 @@ parseKeyframe(keyframe, keyframeInstant)
         this.scene.multMatrix(currentnode.transfMatrix);
         if(currentnode.animationID != null){
             // apply animation matrix if node has animation
-            console.log(currentnode.animationID);
             this.animations[currentnode.animationID].apply();
-        } 
+        }
 
         for (var key in leaves)
         {
