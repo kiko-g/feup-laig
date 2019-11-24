@@ -15,10 +15,10 @@ class Patch extends CGFobject
     {
         super(scene);
         this.id = id;
-        this.UDivs = UDivs;
-        this.VDivs = VDivs;
-        this.UCtrlPoints = uCtrlPoints;
-        this.VCtrlPoints = vCtrlPoints;
+        this.npartsU = UDivs;
+        this.npartsV = VDivs;
+        this.uCtrlPoints = uCtrlPoints;
+        this.vCtrlPoints = vCtrlPoints;
         this.controlArray = controlArray;
 
         this.surface = new CGFnurbsSurface(uCtrlPoints-1, vCtrlPoints-1, controlArray);

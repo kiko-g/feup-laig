@@ -8,16 +8,15 @@ class MySecurityCamera extends CGFobject
 	 * Builds a MySecurityCamera object 
 	 * 
 	 * @param {CGFscene} scene main scene
-	 * @param {Number} 
-	 * @param {Number} 
+	 * @param {CGFtextureRTT} RTT Render To Texture object 
 	 */
     constructor(scene, RTT)
     {
         super(scene);
         this.RTT = RTT;
-        this.rectangle = new MyRectangle(scene, "security_rect", 1, 0, 1, 0);
-        this.shader = new CGFshader(this.scene.gl, "shaders/security.vert", "shaders/security.frag");
-        this.shader.setUniformsValues({ uSampler2: 0, timeFactor: 0 });
+        this.rectangle = new MyRectangle(scene, "security_rect", 0.5, 2, -2, -0.5);
+        this.shader = new CGFshader(scene.gl, "shaders/security.vert", "shaders/security.frag");
+        this.shader.setUniformsValues({ timeFactor: 0 });
     }
 
     display()
@@ -28,8 +27,8 @@ class MySecurityCamera extends CGFobject
         this.rectangle.display();
         this.RTT.unbind(0);
         this.scene.popMatrix();
-        this.scene.setActiveShader(this.defaultShader); //reset shader
+        this.scene.setActiveShader(this.scene.defaultShader); //reset shader
     }
 
-    updateTimeFactor(t) { this.shader.setUniformsValues({ timeFactor: t }); }
+    updateTimeFactor(t) { this.shader.setUniformsValues( {timeFactor: t} ); }
 }

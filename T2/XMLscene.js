@@ -38,22 +38,24 @@ class XMLscene extends CGFscene
 
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(10);
+        this.setUpdatePeriod(1);
     }
 
     update(t)
     {
-        this.securityCamera.updateTimeFactor(t / 200 % 1000);
-        if(this.prev == undefined) this.prev = 0.0;
-        if(this.current == undefined) this.current = 0.0;
-        if(this.timeDif == undefined) this.timeDif = 0.0;
+        this.securityCamera.updateTimeFactor(t/100 % 1000);
 
+        this.prev || 0.0;
+        this.current || 0.0;
+        this.timeDif || 0.0;
+        
         this.timeDif = (t - this.prev) / 1000.0;
         this.current = (this.current + this.timeDif);
         this.prev = t;
         for(let key in this.graph.animations)
             if(!this.graph.animations[key].animationDone)
                 this.graph.animations[key].update(this.timeDif);
+                
     }
 
     // Use camera with default ID if it exists
@@ -206,21 +208,15 @@ class XMLscene extends CGFscene
         this.popMatrix();
     }
 
-    display(){
-
-
-    this.render(this.camera); //renders scene
-
-    this.RTT.attachToFrameBuffer();
-    this.render(this.camera);
-    this.RTT.detachFromFrameBuffer();
-
-    this.gl.disable(this.gl.DEPTH_TEST);
-    //this.securityCamera.display();
-    this.gl.enable(this.gl.DEPTH_TEST);
-
-    
-
+    display()
+    {
+        this.render(this.camera); //renders scene
+        this.RTT.attachToFrameBuffer();
+        this.render(this.camera);
+        this.RTT.detachFromFrameBuffer();
+        this.gl.disable(this.gl.DEPTH_TEST);
+        this.securityCamera.display();
+        this.gl.enable(this.gl.DEPTH_TEST);
     }
 
     updateMAT()

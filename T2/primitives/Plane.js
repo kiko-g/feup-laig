@@ -14,8 +14,8 @@ class Plane extends CGFobject
     {
         super(scene);
         this.id = id;
-        this.UDivs = UDivs;
-        this.VDivs = VDivs;
+        this.npartsU = UDivs;
+        this.npartsV = VDivs;
 
         this.surface = new CGFnurbsSurface(
           1,  // degree on U: 2 control vertexes U
@@ -31,7 +31,7 @@ class Plane extends CGFobject
               ],
           ]
         );
-        this.object = new CGFnurbsObject(this.scene, this.UDivs, this.VDivs, this.surface);
+        this.object = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, this.surface);
     }
 
     display() { this.object.display(); }

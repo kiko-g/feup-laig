@@ -63,10 +63,8 @@ class MyRectangle extends CGFobject
         
         this.texCoords = [];
         for(var coord in this.defaultTexCoords)
-        {
             this.texCoords.push(this.defaultTexCoords[coord]);
-        }
-
+            
 		this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
 	}
