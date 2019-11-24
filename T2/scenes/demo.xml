@@ -52,7 +52,7 @@
 
 
     <lights>
-        <omni id="TOP LEFT" enabled="0">
+        <omni id="TOP LEFT" enabled="1">
             <location x="-20.0" y="40.0" z="0.0" w="1.0" />
             <ambient  r="0.1" g="0.1" b="0.1" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -237,7 +237,7 @@
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
         <material id="metal" shininess="50">
-            <emission r="0.2" g="0.2" b="0.2" a="1" />
+            <emission r="0.3" g="0.3" b="0.3" a="1" />
             <ambient  r="0.3" g="0.3" b="0.3" a="1" />
             <diffuse  r="1" g="1" b="1" a="1" />
             <specular r="1" g="1" b="1" a="1" />
@@ -367,7 +367,7 @@
         </animation>
 
         <animation id="atom_rotate1">
-            <keyframe instant="15">
+            <keyframe instant="20">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="2160" angle_y="1800" angle_z="0" />
                 <scale x="1" y="1" z="1" />                
@@ -375,7 +375,7 @@
         </animation>
 
         <animation id="atom_rotate2">
-            <keyframe instant="15">
+            <keyframe instant="20">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="2160" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />                
@@ -390,122 +390,55 @@
             </keyframe>            
         </animation>
 
-        <animation id="OL1_anim">
-            <keyframe instant="30">
-                <translate x="0" y="0" z="1" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />    
-            </keyframe>
-            <keyframe instant="35">
-                <translate x="0" y="2" z="2" />
-                <rotate angle_x="-270" angle_y="270" angle_z="-270" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="38">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>            
-        </animation>
-
-        <animation id="OL2_anim">
-            <keyframe instant="28">
-                <translate x="0" y="0" z="1" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />    
-            </keyframe>
-            <keyframe instant="31">
-                <translate x="0" y="2" z="2" />
-                <rotate angle_x="270" angle_y="-270" angle_z="270" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="38">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>            
-        </animation>
-
-        <animation id="OL3_anim">
-            <keyframe instant="30">
-                <translate x="0" y="0" z="3" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />    
-            </keyframe>
-            <keyframe instant="36">
-                <translate x="0" y="2" z="4" />
-                <rotate angle_x="-270" angle_y="270" angle_z="-270" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="38">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>            
-        </animation>
-
-        <animation id="OL4_anim">
-            <keyframe instant="30">
-                <translate x="0" y="0" z="3" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />    
-            </keyframe>
-            <keyframe instant="35">
-                <translate x="0" y="2" z="4" />
-                <rotate angle_x="270" angle_y="-270" angle_z="270" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="38">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>            
-        </animation>
-
-        <animation id="OL5_anim">
-            <keyframe instant="28">
-                <translate x="0" y="0" z="3" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />    
-            </keyframe>
-            <keyframe instant="32">
-                <translate x="0" y="2" z="4" />
-                <rotate angle_x="-270" angle_y="270" angle_z="-270" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>
-            <keyframe instant="38">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />
-            </keyframe>            
-        </animation>                              
-
         <animation id="atom_finale">
-            <keyframe instant="15">
+            <keyframe instant="18">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />                
             </keyframe>
-            <keyframe instant="18">
+            <keyframe instant="22">
                 <translate x="0" y="5" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />                
             </keyframe>
-            <keyframe instant="20">
+            <keyframe instant="26">
                 <translate x="0" y="4" z="2" />
                 <rotate angle_x="360" angle_y="180" angle_z="360" />
                 <scale x="1.5" y="1.5" z="1.5" />                
             </keyframe>
-            <keyframe instant="28">
+            <keyframe instant="30">
                 <translate x="0" y="2" z="3" />
                 <rotate angle_x="0" angle_y="1845" angle_z="0" />
                 <scale x="2.5" y="2.5" z="2.5" />
             </keyframe>
-            <keyframe instant="32">
+            <keyframe instant="35">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>            
+        </animation>
+
+        <animation id="OLmain_anim">
+            <keyframe instant="20">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />    
+            </keyframe>
+            <keyframe instant="25">
+                <translate x="6" y="8" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="180" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="30">
+                <translate x="6" y="2" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="180" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="35">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
         </animation>
 
         <animation id="book_slip">
@@ -514,17 +447,17 @@
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="4">
+            <keyframe instant="3.7">
                 <translate x="0" y="0" z="0.6" />
                 <rotate angle_x="-20" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="17">
+            <keyframe instant="14.7">
                 <translate x="0" y="0" z="0.6" />
                 <rotate angle_x="-20" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="20">
+            <keyframe instant="15">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
@@ -547,12 +480,12 @@
                 <rotate angle_x="90" angle_y="0" angle_z="-30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="15">
-                <translate x="-13" y="1.6" z="1.3" />
+            <keyframe instant="11.8">
+                <translate x="-13" y="1.8" z="1.3" />
                 <rotate angle_x="90" angle_y="0" angle_z="-30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="20">
+            <keyframe instant="15">
                 <translate x="-2" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
@@ -570,47 +503,47 @@
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="7.3">
+            <keyframe instant="8">
                 <translate x="4" y="6.2" z="9.5" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="7.6">
+            <keyframe instant="8.3">
                 <translate x="4.5" y="6.4" z="9.8" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="7.9">
+            <keyframe instant="8.6">
                 <translate x="5" y="6.2" z="10.1" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="8.2">
+            <keyframe instant="8.9">
                 <translate x="5.5" y="6.4" z="10.4" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="8.5">
+            <keyframe instant="9.2">
                 <translate x="6" y="6.2" z="10.7" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="9">
+            <keyframe instant="9.5">
                 <translate x="6.5" y="6.4" z="11" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="9.5">
+            <keyframe instant="10.5">
                 <translate x="0" y="9" z="0" />
                 <rotate angle_x="60" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="9.8">
+            <keyframe instant="11">
                 <translate x="0" y="9" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="10.2">
+            <keyframe instant="11.8">
                 <translate x="0" y="0" z="0.8" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
@@ -1335,7 +1268,7 @@
                 <transformation>
                     <translate x="0" y="1.5" z="0" />
                 </transformation>
-                <animationref id="OL1_anim" />
+                <!-- <animationref id="OL1_anim" /> -->
                 <materials>
                     <material id="darkblueMAT" />
                     <material id="yellowMAT" />
@@ -1352,7 +1285,7 @@
                 <transformation>
                     <translate x="1.5" y="0" z="0" />
                 </transformation>
-                <animationref id="OL2_anim" />
+                <!-- <animationref id="OL2_anim" /> -->
                 <materials>
                     <material id="yellowMAT" /> 
                     <material id="greenMAT" />
@@ -1369,7 +1302,7 @@
                 <transformation>
                     <translate x="3" y="1.5" z="0" />
                 </transformation>
-                <animationref id="OL3_anim" />
+                <!-- <animationref id="OL3_anim" /> -->
                 <materials>
                     <material id="blackMAT" />
                     <material id="darkblueMAT" />
@@ -1386,7 +1319,7 @@
                 <transformation>
                     <translate x="4.5" y="0" z="0" />
                 </transformation>
-                <animationref id="OL4_anim" />
+                <!-- <animationref id="OL4_anim" /> -->
                 <materials>
                     <material id="greenMAT" />
                     <material id="redMAT" />
@@ -1403,7 +1336,7 @@
                 <transformation>
                     <translate x="6" y="1.5" z="0" />
                 </transformation>
-                <animationref id="OL5_anim" />
+                <!-- <animationref id="OL5_anim" /> -->
                 <materials>
                     <material id="redMAT" />
                     <material id="blackMAT" />
@@ -1854,6 +1787,7 @@
                     <translate x="9" y="1.6" z="2" />
                     <rotate axis="y" angle="-90" />
                 </transformation>
+                <animationref id="OLmain_anim" />
                 <materials>
                     <material id="blueMAT" />
                     <material id="pencilMAT" />

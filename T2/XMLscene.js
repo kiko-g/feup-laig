@@ -193,8 +193,8 @@ class XMLscene extends CGFscene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
-        this.interface.setActiveCamera(camera);
         this.camera = camera;
+        this.interface.setActiveCamera(camera);
 
         // Initialize Model-View matrix as identity (no transformation)
         this.updateProjectionMatrix();  
