@@ -6,7 +6,8 @@ class XMLscene extends CGFscene
 {
     /**
      * @constructor
-     * @param {MyInterface} myinterface*/
+     * @param {MyInterface} myinterface
+     */
     constructor(myinterface)
     {
         super();
@@ -24,7 +25,7 @@ class XMLscene extends CGFscene
         this.allNormals = true;
         this.MPress = false;
         this.RTT = new CGFtextureRTT(this, this.gl.canvas.width * 2, this.gl.canvas.height * 2);
-        this.securityCamera = new MySecurityCamera(this, this.RTT);
+        this.mySecurityCamera = new MySecurityCamera(this, this.RTT);
 
         //fov (radians), near, far, position, target 
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
@@ -38,12 +39,12 @@ class XMLscene extends CGFscene
 
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(10);
+        this.setUpdatePeriod(10); //100 fps
     }
 
     update(t)
     {
-        this.securityCamera.updateTimeFactor(t/1500 % 2000);
+        this.mySecurityCamera.updateTimeFactor(t/1500 % 2000);
 
         this.prev || 0.0;
         this.current || 0.0;
@@ -52,11 +53,9 @@ class XMLscene extends CGFscene
         this.timeDif = (t - this.prev) / 1000.0;
         this.current = (this.current + this.timeDif);
         this.prev = t;
-        for(let key in this.graph.animations){
-            console.log(key);
+        for(let key in this.graph.animations)
             if(!this.graph.animations[key].animationDone)
                this.graph.animations[key].update(this.timeDif);
-        }
     }
 
     // Use camera with default ID if it exists
@@ -72,6 +71,7 @@ class XMLscene extends CGFscene
                 if (this.view.id == this.graph.defaultViewID){ 
                     var V = this.view;
                     this.selected = this.view.id;
+                    this.securitySelected = this.view.id;
                 }
             }
         } else return;
@@ -83,6 +83,7 @@ class XMLscene extends CGFscene
         else if (V.type = "ortho") 
             this.camera = new CGFcameraOrtho(V.left, V.right, V.bottom, V.top, V.near, V.far, V.from, V.to, V.up);
         
+        this.securityCAM = this.camera;
         this.interface.setActiveCamera(this.camera);
     }
     
@@ -94,6 +95,12 @@ class XMLscene extends CGFscene
         else if(curV.type == "perspective") this.camera = new CGFcamera(DEGREE_TO_RAD*curV.angle, curV.near, curV.far, curV.from, curV.to);
         
         this.interface.setActiveCamera(this.camera);
+    }
+
+    onSecurityChanged()
+    {
+        this.securityCAM = this.graph.views[this.securitySelected];
+        console.log(this.securityCAM);
     }
     
 
@@ -172,6 +179,7 @@ class XMLscene extends CGFscene
         this.initCameras();
         this.interface.lightsInterface();
         this.interface.viewsInterface();
+        this.interface.securityInterface();
         
         this.sceneInited = true;
     }
@@ -182,9 +190,12 @@ class XMLscene extends CGFscene
         // Displays the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        this.interface.setActiveCamera(camera);
+
         this.updateProjectionMatrix();  
         this.loadIdentity();            // Initialize Model-View matrix as identity (no transformation)
         this.applyViewMatrix();         // Apply transformations corresponding to the camera position relative to the origin
+
         this.pushMatrix();
         
         for (let i = 0; i < this.lights.length; i++){
@@ -193,8 +204,6 @@ class XMLscene extends CGFscene
         }
         
         this.toggleLights();
-
-        this.interface.setActiveCamera(camera);
 
         if (this.sceneInited)
         {    
@@ -211,12 +220,15 @@ class XMLscene extends CGFscene
 
     display()
     {
-        this.render(this.camera); //renders scene
+        if(!this.sceneInited) return;
+
         this.RTT.attachToFrameBuffer();
-        this.render(this.camera);
+        this.render(this.securityCAM);
         this.RTT.detachFromFrameBuffer();
+        this.render(this.camera);
+
         this.gl.disable(this.gl.DEPTH_TEST);
-        this.securityCamera.display();
+        this.mySecurityCamera.display();
         this.gl.enable(this.gl.DEPTH_TEST);
     }
 

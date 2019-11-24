@@ -11,13 +11,8 @@ class MyInterface extends CGFinterface
         this.scene.viewLightBoxes = false;
 
         this.gui = new dat.GUI();
-        this.settings = this.gui.addFolder("General");
         this.lights = this.gui.addFolder("Lighting");
-        this.camera = this.gui.addFolder("Camera");
-        this.SecCam = this.gui.addFolder("Securtiy Camera");
-        this.settings.open();
-        this.camera.open();
-        this.SecCam.open();
+        this.settings = this.gui.addFolder("General Settings");
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
@@ -32,10 +27,15 @@ class MyInterface extends CGFinterface
     }
 
     viewsInterface(){
-        this.camera.add(this.scene, "selected", this.scene.viewNames).
+        this.gui.add(this.scene, "selected", this.scene.viewNames).
         onChange(this.scene.onViewChanged.bind(this.scene)).name("Perspective");
     }
-    
+
+    securityInterface(){
+        this.gui.add(this.scene, "securitySelected", this.scene.viewNames).
+        onChange(this.scene.onSecurityChanged.bind(this.scene)).name("Security Camera");
+    }
+
     initKeys()
     {
         this.scene.gui = this;
