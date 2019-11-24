@@ -75,7 +75,7 @@ class XMLscene extends CGFscene
                 }
             }
         } else return;
-
+        
 
         if (V == null) return;
         else if (V.type == "perspective") 
@@ -93,14 +93,16 @@ class XMLscene extends CGFscene
 
         if(curV.type == "ortho") this.camera=new CGFcameraOrtho(curV.left, curV.right, curV.bottom, curV.top, curV.near, curV.far, curV.from, curV.to, curV.up);
         else if(curV.type == "perspective") this.camera = new CGFcamera(DEGREE_TO_RAD*curV.angle, curV.near, curV.far, curV.from, curV.to);
-        
+
         this.interface.setActiveCamera(this.camera);
     }
 
     onSecurityChanged()
     {
-        this.securityCAM = this.graph.views[this.securitySelected];
-        console.log(this.securityCAM);
+        let curV = this.graph.views[this.securitySelected];
+
+        if (curV.type == "ortho") this.securityCAM = new CGFcameraOrtho(curV.left, curV.right, curV.bottom, curV.top, curV.near, curV.far, curV.from, curV.to, curV.up);
+        else if (curV.type == "perspective") this.securityCAM = new CGFcamera(DEGREE_TO_RAD * curV.angle, curV.near, curV.far, curV.from, curV.to);
     }
     
 
@@ -190,38 +192,33 @@ class XMLscene extends CGFscene
         // Displays the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+    
         this.interface.setActiveCamera(camera);
+        this.camera = camera;
 
+        // Initialize Model-View matrix as identity (no transformation)
         this.updateProjectionMatrix();  
-        this.loadIdentity();            // Initialize Model-View matrix as identity (no transformation)
-        this.applyViewMatrix();         // Apply transformations corresponding to the camera position relative to the origin
+        this.loadIdentity();   
+        // Apply transformations corresponding to the camera position relative to the origin
+        this.applyViewMatrix();
 
         this.pushMatrix();
-        
-        for (let i = 0; i < this.lights.length; i++){
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
-        }
-        
-        this.toggleLights();
 
+        
         if (this.sceneInited)
         {    
+            this.toggleLights();
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)
-            if(this.displayAxis) 
-                this.axis.display();
+            if(this.displayAxis) this.axis.display();
             this.updateMAT();
         }
-
-
         this.popMatrix();
     }
 
     display()
     {
         if(!this.sceneInited) return;
-
         this.RTT.attachToFrameBuffer();
         this.render(this.securityCAM);
         this.RTT.detachFromFrameBuffer();
