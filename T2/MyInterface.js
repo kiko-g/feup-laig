@@ -28,7 +28,7 @@ class MyInterface extends CGFinterface
     }
 
     viewsInterface(){
-        this.gui.add(this.scene, "selected", this.scene.viewNames).
+        this.gui.add(this.scene, "cameraSelected", this.scene.viewNames).
         onChange(this.scene.onViewChanged.bind(this.scene)).name("Perspective");
     }
 

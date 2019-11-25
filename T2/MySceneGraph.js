@@ -703,7 +703,6 @@ parseAnimations(animationNode)
         }
         this.animations[animationID] = new KeyframeAnimation(this.scene, animationID,keyframes);
     }
-        // console.log(this.animations);
         this.log("Parsed animations");
         return null;
 }
