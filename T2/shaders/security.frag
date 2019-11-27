@@ -12,16 +12,15 @@ void main()
     vec2  vtc = vTextureCoord; //smaller name for vTexture
 	vec4  color = texture2D(uSampler, vTextureCoord);
 
-    //whiter in the center - filter (rectangle with more white to simulate gradient)
+    // whiter in the center - filter (rectangle with more white to simulate gradient)
     float j=1.0;
-    for(int i=0; i<30; i++)
+    for(int i=0; i<20; i++)
     {
-        if(vtc.y > (0.23 - 0.003 * j) 
-        && vtc.y < (0.23 + 0.003 * j) 
+        if(vtc.y > (0.25 - 0.003 * j) 
+        && vtc.y < (0.25 + 0.003 * j) 
         && vtc.x > (0.25 - 0.003 * j) 
-        && vtc.x < (0.25 + 0.003 * j)) 
-            color = vec4(color.rgb + 0.02, 1.0);
-        
+        && vtc.x < (0.25 + 0.003 * j)) color = vec4(color.rgb + 0.02, 1.0);
+
         j += 1.0;
     }
 

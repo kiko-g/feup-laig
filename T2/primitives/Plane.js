@@ -20,6 +20,7 @@ class Plane extends CGFobject
         this.surface = new CGFnurbsSurface(
           1,  // degree on U: 2 control vertexes U
           1,  // degree on V: 2 control vertexes on V
+          // V is lines of each U matrix (U is number of matrices)
           [
               [   // U = 0 | V = 0..1
                   [-0.5, 0.0,  0.5, 1.0 ],

@@ -711,8 +711,8 @@ parseAnimations(animationNode)
 parseKeyframe(keyframe, keyframeInstant)
 {
     //keyframe: 0 -> translate, 1-> rotate, 2 -> scale
-    var translate = []; 
-    var rotate = []; 
+    var translate = [];
+    var rotate = [];
     var scale = [];
 
     var T = keyframe.getElementsByTagName("translate");
@@ -723,7 +723,7 @@ parseKeyframe(keyframe, keyframeInstant)
     var R = keyframe.getElementsByTagName("rotate");
     rotate.push(parseFloat(R[0].getAttribute("angle_x")));
     rotate.push(parseFloat(R[0].getAttribute("angle_y")));
-    rotate.push(parseFloat(R[0].getAttribute("angle_z")));    
+    rotate.push(parseFloat(R[0].getAttribute("angle_z")));
 
     var S = keyframe.getElementsByTagName("scale");
     scale.push(parseFloat(S[0].getAttribute("x")));
@@ -960,13 +960,13 @@ parseKeyframe(keyframe, keyframeInstant)
                 //build control array
                 var controlxml = grandChildren[0].children;
                 var CA = [];
-
+                
                 for(var j=0; j<controlxml.length; j++)
                 {
                     var cpx = this.reader.getFloat(controlxml[j], 'xx');
                     var cpy = this.reader.getFloat(controlxml[j], 'yy');
                     var cpz = this.reader.getFloat(controlxml[j], 'zz');
-                    CA.push(cpx, cpy, cpz, 1.0);
+                    CA.push(cpx, cpy, cpz, 1.0); //vector with all values
                 }
                 
                 var c = 0;
