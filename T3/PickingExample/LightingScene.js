@@ -64,7 +64,7 @@ class LightingScene extends CGFscene{
 		}
 	}
 	display() {
-		this.logPicking();
+        this.logPicking();
 		this.clearPickRegistration();
 		// Clear image and depth buffer every time we update the scene
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
