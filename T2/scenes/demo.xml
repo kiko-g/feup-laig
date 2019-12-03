@@ -7,7 +7,7 @@
         </perspective>
         <perspective id="CORNER" near="0.1" far="500" angle="70">
             <from x="-29.5" y="30" z="29.5" />
-            <to x="0" y="15" z="-10" />
+            <to x="0" y="10" z="-10" />
         </perspective>
         <perspective id="LOW" near="0.1" far="500" angle="45">
             <from x="0" y="6" z="30" />
