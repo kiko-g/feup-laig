@@ -14,6 +14,7 @@ class MyInterface extends CGFinterface
         this.lights = this.gui.addFolder("Lighting");
         this.settings = this.gui.addFolder("General Settings");
         this.settings.open();
+        this.lights.open();
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
@@ -44,7 +45,7 @@ class MyInterface extends CGFinterface
         this.activeKeys = {};
     }
 
-    processKeyDown(event){ this.activeKeys[event.code] = true; }
-    processKeyUp(event){ this.activeKeys[event.code] = false; }
+    processKeyDown(event) { this.activeKeys[event.code] = true; }
+    processKeyUp(event)   { this.activeKeys[event.code] = false; }
     isKeyPressed(keyCode) { return this.activeKeys[keyCode] || false; }
 }
