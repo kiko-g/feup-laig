@@ -16,6 +16,6 @@
 > **2nd Project** -
 > *Keyframe animations, Shaders and RenderToTexture (RTT)*\
 > **3rd Project** -
-> *TBD*
+> *Graphical Support and Interface for Prolog game Fuse previously programmed in [PLOG](https://sigarra.up.pt/feup/pt/UCURR_GERAL.FICHA_UC_VIEW?pv_ocorrencia_id=436444) class*
 >
 > **[WebCGF]**: https://paginas.fe.up.pt/~ruirodrig/pub/sw/webcgf/docs/#
