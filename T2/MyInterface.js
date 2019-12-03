@@ -8,7 +8,7 @@ class MyInterface extends CGFinterface
     {
         super.init(application);
         this.scene.displayAxis = false;
-        this.scene.viewLightBoxes = false;
+        this.scene.viewLightBoxes = true;
 
         this.gui = new dat.GUI();
         this.lights = this.gui.addFolder("Lighting");
