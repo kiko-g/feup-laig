@@ -14,12 +14,12 @@ void main()
 
     // whiter in the center - filter (rectangle with more white to simulate gradient)
     float j=1.0;
-    for(int i=0; i<20; i++)
+    for(int i=0; i<25; i++)
     {
-        if(vtc.y > (0.25 - 0.003 * j) 
-        && vtc.y < (0.25 + 0.003 * j) 
-        && vtc.x > (0.25 - 0.003 * j) 
-        && vtc.x < (0.25 + 0.003 * j)) color = vec4(color.rgb + 0.02, 1.0);
+        if(vtc.y > (0.25 - 0.005 * j) 
+        && vtc.y < (0.25 + 0.005 * j) 
+        && vtc.x > (0.25 - 0.005 * j) 
+        && vtc.x < (0.25 + 0.005 * j)) color = vec4(color.rgb + 0.01, 1.0);
 
         j += 1.0;
     }

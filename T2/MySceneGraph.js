@@ -112,62 +112,62 @@ class MySceneGraph
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1) return "tag <lights> missing";
         else {
+            //Parse lights block
             if (index != LIGHTS_INDEX) this.onXMLMinorError("tag <lights> out of order");
             if ((error = this.parseLights(nodes[index])) != null) return error;
-            //Parse lights block
         }
         
         
         // <textures>
         if ((index = nodeNames.indexOf("textures")) == -1) return "tag <textures> missing";
         else {
+            //Parse textures block
             if (index != TEXTURES_INDEX) this.onXMLMinorError("tag <textures> out of order");
             if ((error = this.parseTextures(nodes[index])) != null) return error;
-            //Parse textures block
         }
 
         
         // <materials>
         if ((index = nodeNames.indexOf("materials")) == -1) return "tag <materials> missing";
         else {
+            //Parse materials block
             if (index != MATERIALS_INDEX) this.onXMLMinorError("tag <materials> out of order");
             if ((error = this.parseMaterials(nodes[index])) != null) return error;
-            //Parse materials block
         }
 
         
         // <transformations>
         if ((index = nodeNames.indexOf("transformations")) == -1) return "tag <transformations> missing";
         else {
+            //Parse transformations block
             if (index != TRANSFORMATIONS_INDEX) this.onXMLMinorError("tag <transformations> out of order");
             if ((error = this.parseTransformations(nodes[index])) != null) return error;
-            //Parse transformations block
         }
 
         
         if ((index = nodeNames.indexOf("animations")) == -1) return "tag <animations> missing";
         else {
+            //Parse animations block
             if (index != ANIMATIONS_INDEX) this.onXMLMinorError("tag <animations> out of order");
             if ((error = this.parseAnimations(nodes[index])) != null) return error;
-            //Parse animations block
         }
 
 
         // <primitives>
         if ((index = nodeNames.indexOf("primitives")) == -1) return "tag <primitives> missing";
         else {
+            //Parse primitives block
             if (index != PRIMITIVES_INDEX) this.onXMLMinorError("tag <primitives> out of order");
             if ((error = this.parsePrimitives(nodes[index])) != null) return error;
-            //Parse primitives block
         }
 
         
         // <components>
         if ((index = nodeNames.indexOf("components")) == -1) return "tag <components> missing";
         else {
+            //Parse components block
             if (index != COMPONENTS_INDEX) this.onXMLMinorError("tag <components> out of order");
             if ((error = this.parseComponents(nodes[index])) != null) return error;
-            //Parse components block
         }
 
         this.log("ALL BLOCKS PARSED");
@@ -180,7 +180,6 @@ class MySceneGraph
 
 
     /**
-     * ==== START PARSING FUNCTIONS ====
      * Originally implemented
      * Parses the <scene> block. 
      * @param {scene block element} sceneNode
@@ -378,8 +377,7 @@ class MySceneGraph
 
             // Get id of the current light.
             var lightId = this.reader.getString(children[i], 'id');
-            if (lightId == null)
-                return "no ID defined for light";
+            if (lightId == null) return "no ID defined for light";
 
             // Checks for repeated IDs.
             if (this.lights[lightId] != null)
@@ -982,6 +980,7 @@ parseKeyframe(keyframe, keyframeInstant)
                     vmatrix = [];
                 }
 
+                console.log(parsedControl);
                 var patch = new Patch(this.scene, primitiveID, nUControl, nVControl, UDivs, VDivs, parsedControl);
                 this.primitives[primitiveID] = patch;
             }
@@ -1386,9 +1385,10 @@ parseKeyframe(keyframe, keyframeInstant)
         currentMaterial.setTexture(currentTexture);
         currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
         currentMaterial.apply();
-        if(currentTexture != null) 
-            currentTexture.bind();
+        if(currentTexture != null) currentTexture.bind();
+
         this.scene.multMatrix(currentnode.transfMatrix);
+        
         if(currentnode.animationID != null){
             // apply animation matrix if node has animation
             this.animations[currentnode.animationID].apply();
