@@ -24,8 +24,9 @@ class XMLscene extends CGFscene
         this.viewLightBoxes = true;
         this.allNormals = true;
         this.MPress = false;
-        this.RTT = new CGFtextureRTT(this, this.gl.canvas.width * 2, this.gl.canvas.height * 2);
-        this.mySecurityCamera = new MySecurityCamera(this, this.RTT);
+        this.RTT  = new CGFtextureRTT(this, this.gl.canvas.width * 2, this.gl.canvas.height * 2);
+        this.mySecurityCam = new MySecurityCamera(this, this.RTT);
+        this.beach = new Beach(this, "img/_seatex.jpg", "img/_mask.jpg", "img/_alturas.jpg");
 
         //fov (radians), near, far, position, target 
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
@@ -44,7 +45,7 @@ class XMLscene extends CGFscene
 
     update(t)
     {
-        this.mySecurityCamera.updateTimeFactor(t/1500 % 2000);
+        this.mySecurityCam.updateTimeFactor(t / 1500 % 2000);
 
         this.prev || 0.0;
         this.current || 0.0;
@@ -76,10 +77,10 @@ class XMLscene extends CGFscene
            }
 
            if (V.type == "perspective")
-           this.camerasInited[V.id]=new CGFcamera(DEGREE_TO_RAD * V.angle, V.near, V.far, V.from, V.to);
+            this.camerasInited[V.id]=new CGFcamera(DEGREE_TO_RAD * V.angle, V.near, V.far, V.from, V.to);
                 
            else if (V.type == "ortho")
-           this.camerasInited[V.id]=new CGFcameraOrtho(V.left,V.right,V.bottom,V.top,V.near,V.far,V.from,V.to,V.up);
+            this.camerasInited[V.id]=new CGFcameraOrtho(V.left,V.right,V.bottom,V.top,V.near,V.far,V.from,V.to,V.up);
          }
        } 
        else return;
@@ -217,11 +218,11 @@ class XMLscene extends CGFscene
         this.RTT.attachToFrameBuffer();
         this.render(this.securityCAM);
         this.RTT.detachFromFrameBuffer();
-        this.render(this.camerasInited[this.cameraSelected]); 
-        //this.camera doesnt work above
+        this.render(this.camerasInited[this.cameraSelected]);
 
         this.gl.disable(this.gl.DEPTH_TEST);
-        this.mySecurityCamera.display();
+        this.mySecurityCam.display();
+        // this.beach.display();
         this.gl.enable(this.gl.DEPTH_TEST);
     }
 

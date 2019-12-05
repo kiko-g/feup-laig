@@ -1,0 +1,298 @@
+<lxs>
+    <scene root="ROOT NODE" axis_length="5"/>
+    <views default="CAMERA">
+        <perspective id="CAMERA" near="0.1" far="500" angle="50">
+            <from x="6" y="1" z="3" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+    </views>
+
+
+
+
+    <globals>
+        <ambient    r="0.4" g="0.4"  b="0.4"  a="1.0" />
+        <background r="0.7" g="0.8"  b="0.9"  a="1.0" />
+    </globals>
+
+
+
+    <lights>
+        <omni id="CENTER (MAIN)" enabled="1">
+            <location x="2"  y="8" z="2" w="1.0" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="0.0" />
+            <diffuse  r="0.4" g="0.4" b="0.4" a="0.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="0.0" />
+            <attenuation constant="1.0" linear="0.0" quadratic="0" />
+        </omni>
+    </lights>
+
+
+
+    <textures>
+        <texture id="default"       file="img/default.jpg" />
+        <texture id="pickle"        file="img/rm2.jpg" />
+        <texture id="wubba"         file="img/rm3.png" />
+        <texture id="morty"         file="img/morty.jpg" />
+        <texture id="rick"          file="img/rick.jpg" />
+        <texture id="darkm"         file="img/darkmatter.png" />
+        <texture id="space"         file="img/space.jpg" />
+        <texture id="matter"        file="img/spherematter.png" />
+        <texture id="floor"         file="img/floor.jpg" />
+        <texture id="sky"           file="img/sky.jpg" />
+        <texture id="PENCIL_wood"   file="img/PENCIL_tip.jpg" />
+        <texture id="carbon"        file="img/carbon.jpg" />
+        <texture id="white_plas"    file="img/white_plast.jpg" />
+        <texture id="rubber"        file="img/rubber.png" />
+        <texture id="laig"          file="img/LAIG_3.png" />
+        <texture id="pages"         file="img/pages.png" />
+        <texture id="portugal"      file="img/portugal.png" />
+        <texture id="sheet"         file="img/papersheet.png" />
+        <texture id="marega"        file="img/marega.jpg" />
+    </textures>
+
+
+
+
+    <materials>
+        <material id="defaultMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1" />
+            <specular r="0.0" g="0.0" b="0.0" a="1" />
+        </material>     
+    </materials>
+
+
+
+
+    <transformations>        
+    </transformations>
+
+
+
+
+    <animations>
+    </animations>
+
+
+
+    <primitives>
+        <primitive id="P">
+            <patch npointsU="4" npointsV="3" npartsU="15" npartsV="15">
+                <controlpoint xx="-1.0" yy="4" zz="-1" />
+                <controlpoint xx="0.0"  yy="4" zz="-1" />
+                <controlpoint xx="1.0"  yy="4" zz="-1" />
+
+                <controlpoint xx="-0.5" yy="1" zz="-0.5" />
+                <controlpoint xx="0.0"  yy="1" zz="-0.5" />
+                <controlpoint xx="0.5"  yy="1" zz="-0.5" />
+
+                <controlpoint xx="-0.5" yy="1" zz="0.5" />
+                <controlpoint xx="0.0"  yy="1" zz="0.5" />
+                <controlpoint xx="0.5"  yy="1" zz="0.5" />
+
+                <controlpoint xx="-1.0" yy="4" zz="1" />
+                <controlpoint xx="0.0"  yy="4" zz="1" />
+                <controlpoint xx="1.0"  yy="4" zz="1" />
+            </patch>
+        </primitive>
+    </primitives>
+
+
+
+
+    <components>
+            <component id="patch1">
+                <transformation>
+                    <rotate axis="x" angle="0" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch2">
+                <transformation>
+                    <rotate axis="x" angle="30" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch3">
+                <transformation>
+                    <rotate axis="x" angle="60" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch4">
+                <transformation>
+                    <rotate axis="x" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch5">
+                <transformation>
+                    <rotate axis="x" angle="120" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch6">
+                <transformation>
+                    <rotate axis="x" angle="150" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch7">
+                <transformation>
+                    <rotate axis="x" angle="180" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch8">
+                <transformation>
+                    <rotate axis="x" angle="210" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch9">
+                <transformation>
+                    <rotate axis="x" angle="240" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch10">
+                <transformation>
+                    <rotate axis="x" angle="270" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch11">
+                <transformation>
+                    <rotate axis="x" angle="300" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>
+
+            <component id="patch12">
+                <transformation>
+                    <rotate axis="x" angle="330" />
+                </transformation>
+                <materials>
+                    <material id="inherit"/>
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="P"/>
+                </children>
+            </component>                                                                        
+
+            <component id="12_PATCHES">
+                <transformation>
+                    <translate x="-5" y="0" z="0" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT"/>
+                </materials>
+                    <texture id="space" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="patch1" />
+                    <componentref id="patch2" />
+                    <componentref id="patch3" />
+                    <componentref id="patch4" />
+                    <componentref id="patch5" />
+                    <componentref id="patch6" />
+                    <componentref id="patch7" />
+                    <componentref id="patch8" />
+                    <componentref id="patch9" />
+                    <componentref id="patch10" />
+                    <componentref id="patch11" />
+                    <componentref id="patch12" />
+                </children>
+            </component>
+
+            <component id="ROOT NODE">
+                <transformation>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="default" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="12_PATCHES" />
+                </children>
+            </component>
+    </components>
+</lxs>

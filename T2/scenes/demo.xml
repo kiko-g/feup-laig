@@ -53,7 +53,7 @@
 
     <lights>
         <omni id="CENTER (MAIN)" enabled="1">
-            <location x="0"  y="55.0" z="0" w="1.0" />
+            <location x="0"  y="8.0" z="0" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="0.0" />
             <diffuse  r="0.4" g="0.4" b="0.4" a="0.0" />
             <specular r="0.1" g="0.1" b="0.1" a="0.0" />
@@ -477,32 +477,32 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="8">
-                <translate x="4.5" y="6.8" z="9.5" />
+                <translate x="4.5" y="6.6" z="10.0" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="8.3">
-                <translate x="5" y="7.0" z="9.9" />
+                <translate x="5" y="6.8" z="10.3" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="8.6">
-                <translate x="5.5" y="6.8" z="10.3" />
+                <translate x="5.5" y="6.6" z="10.6" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="8.9">
-                <translate x="6" y="7.0" z="10.7" />
+                <translate x="6" y="6.8" z="11.0" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="9.2">
-                <translate x="6.5" y="6.8" z="11.1" />
+                <translate x="6.5" y="6.6" z="11.3" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="9.5">
-                <translate x="7" y="7.0" z="11.5" />
+                <translate x="7" y="6.8" z="11.5" />
                 <rotate angle_x="120" angle_y="0" angle_z="30" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
@@ -532,42 +532,61 @@
         </primitive>
         <primitive id="patch">
             <patch npointsU="5" npointsV="6" npartsU="20" npartsV="20">
-                <controlpoint xx="-0.5" yy="0.6" zz="-0.5" />
-                <controlpoint xx="-0.3" yy="0.6" zz="-0.5" />
-                <controlpoint xx="-0.1" yy="0.6" zz="-0.5" />
-                <controlpoint xx="0.1" yy="0.6" zz="-0.5" />
-                <controlpoint xx="0.3" yy="0.6" zz="-0.5" />
-                <controlpoint xx="0.5" yy="0.6" zz="-0.5" />
+                <controlpoint xx="-0.5" yy="0.8" zz="-0.5" />
+                <controlpoint xx="-0.3" yy="0.8" zz="-0.5" />
+                <controlpoint xx="-0.1" yy="0.8" zz="-0.5" />
+                <controlpoint xx="0.1"  yy="0.8" zz="-0.5" />
+                <controlpoint xx="0.3"  yy="0.8" zz="-0.5" />
+                <controlpoint xx="0.5"  yy="0.8" zz="-0.5" />
 
                 <controlpoint xx="-0.5" yy="0.3" zz="-0.3" />
                 <controlpoint xx="-0.3" yy="0.3" zz="-0.3" />
                 <controlpoint xx="-0.1" yy="0.3" zz="-0.3" />
-                <controlpoint xx="0.1" yy="0.3" zz="-0.3" />
-                <controlpoint xx="0.3" yy="0.3" zz="-0.3" />
-                <controlpoint xx="0.5" yy="0.3" zz="-0.3" />
+                <controlpoint xx="0.1"  yy="0.3" zz="-0.3" />
+                <controlpoint xx="0.3"  yy="0.3" zz="-0.3" />
+                <controlpoint xx="0.5"  yy="0.3" zz="-0.3" />
 
-                <controlpoint xx="-0.5" yy="0" zz="-0.1" />
-                <controlpoint xx="-0.3" yy="0" zz="-0.1" />
-                <controlpoint xx="-0.1" yy="0" zz="-0.1" />
-                <controlpoint xx="0.1" yy="0" zz="-0.1" />
-                <controlpoint xx="0.3" yy="0" zz="-0.1" />
-                <controlpoint xx="0.5" yy="0" zz="-0.1" />
+                <controlpoint xx="-0.5" yy="-0.3" zz="-0.1" />
+                <controlpoint xx="-0.3" yy="-0.3" zz="-0.1" />
+                <controlpoint xx="-0.1" yy="-0.3" zz="-0.1" />
+                <controlpoint xx="0.1"  yy="-0.3" zz="-0.1" />
+                <controlpoint xx="0.3"  yy="-0.3" zz="-0.1" />
+                <controlpoint xx="0.5"  yy="-0.3" zz="-0.1" />
 
                 <controlpoint xx="-0.5" yy="0.3" zz="0.3" />
                 <controlpoint xx="-0.3" yy="0.3" zz="0.3" />
                 <controlpoint xx="-0.1" yy="0.3" zz="0.3" />
-                <controlpoint xx="0.1" yy="0.3" zz="0.3" />
-                <controlpoint xx="0.3" yy="0.3" zz="0.3" />
-                <controlpoint xx="0.5" yy="0.3" zz="0.3" />
+                <controlpoint xx="0.1"  yy="0.3"  zz="0.3" />
+                <controlpoint xx="0.3"  yy="0.3"  zz="0.3" />
+                <controlpoint xx="0.5"  yy="0.3"  zz="0.3" />
 
-                <controlpoint xx="-0.5" yy="0.6" zz="0.5" />
-                <controlpoint xx="-0.3" yy="0.6" zz="0.5" />
-                <controlpoint xx="-0.1" yy="0.6" zz="0.5" />
-                <controlpoint xx="0.1" yy="0.6" zz="0.5" />
-                <controlpoint xx="0.3" yy="0.6" zz="0.5" />
-                <controlpoint xx="0.5" yy="0.6" zz="0.5" />
+                <controlpoint xx="-0.5" yy="0.8" zz="0.5" />
+                <controlpoint xx="-0.3" yy="0.8" zz="0.5" />
+                <controlpoint xx="-0.1" yy="0.8" zz="0.5" />
+                <controlpoint xx="0.1"  yy="0.8" zz="0.5" />
+                <controlpoint xx="0.3"  yy="0.8" zz="0.5" />
+                <controlpoint xx="0.5"  yy="0.8" zz="0.5" />
             </patch>
-        </primitive>    
+        </primitive>
+        <primitive id="P">
+            <patch npointsU="4" npointsV="3" npartsU="15" npartsV="15">
+                <controlpoint xx="-0.5" yy="4" zz="-0.8" />
+                <controlpoint xx="0.0"  yy="4" zz="-0.8" />
+                <controlpoint xx="0.5"  yy="4" zz="-0.8" />
+
+                <controlpoint xx="-0.5" yy="1" zz="-0.5" />
+                <controlpoint xx="0.0"  yy="1" zz="-0.5" />
+                <controlpoint xx="0.5"  yy="1" zz="-0.5" />
+
+                <controlpoint xx="-0.5" yy="1" zz="0.5" />
+                <controlpoint xx="0.0"  yy="1" zz="0.5" />
+                <controlpoint xx="0.5"  yy="1" zz="0.5" />
+
+                <controlpoint xx="-0.5" yy="4" zz="0.8" />
+                <controlpoint xx="0.0"  yy="4" zz="0.8" />
+                <controlpoint xx="0.5"  yy="4" zz="0.8" />
+            </patch>
+        </primitive>
         <primitive id="rectangle">
             <rectangle x1="0" y1="0" x2="4" y2="4" bothSides="false" />
         </primitive>
@@ -1923,6 +1942,7 @@
                 </children>
             </component>
 
+
             <component id="ROOT NODE">
                 <transformation>
                     <scale x="3" y="3" z="3" />
@@ -1943,7 +1963,6 @@
                     <componentref id="SCREEN" />
                     <componentref id="OLYMPIC_GAMES_LOGO" />
                     <componentref id="PATCH" />
-                    <!-- <componentref id="PLANE" /> -->
                     <componentref id="CYLINDER_NURBS_POLE" />
                 </children>
             </component>

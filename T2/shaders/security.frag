@@ -27,7 +27,7 @@ void main()
     if (mod(-vtc.y*15.0 + timeFactor, 1.2) > 1.0)   //lines frown bottom to top
         color = vec4(color.rgb + 0.5, 1.0);         //white lines by color addition
 
-    float gradient_offset = 0.5;
+    float gradient_offset = 0.6;
     float darken = gradient_offset - sqrt( pow((vtc.x) - offset, 2.0) + pow(vtc.y - offset, 2.0) );
 	gl_FragColor = vec4(color.rgb * darken, 1.0);
 }

@@ -2,7 +2,7 @@ class ShaderScene extends CGFscene
 {
     constructor() 
     {
-		super();
+        super();
 		this.texture = null;
 		this.appearance = null;
 		// initial configuration of interface

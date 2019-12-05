@@ -7,10 +7,11 @@ class MyInterface extends CGFinterface
     init(application)
     {
         super.init(application);
-        this.scene.displayAxis = false;
+        this.scene.displayAxis = true;
         this.scene.viewLightBoxes = true;
 
         this.gui = new dat.GUI();
+        // this.gui.close();
         this.lights = this.gui.addFolder("Lighting");
         this.settings = this.gui.addFolder("General Settings");
         this.settings.open();

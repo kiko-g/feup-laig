@@ -980,7 +980,6 @@ parseKeyframe(keyframe, keyframeInstant)
                     vmatrix = [];
                 }
 
-                console.log(parsedControl);
                 var patch = new Patch(this.scene, primitiveID, nUControl, nVControl, UDivs, VDivs, parsedControl);
                 this.primitives[primitiveID] = patch;
             }
