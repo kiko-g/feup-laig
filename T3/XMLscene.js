@@ -19,17 +19,15 @@ class XMLscene extends CGFscene
     init(application)
     {
         super.init(application);
-        this.sceneInited = false;
-        this.displayAxis = true;
-        this.viewLightBoxes = true;
-        this.allNormals = true;
         this.MPress = false;
-        this.RTT  = new CGFtextureRTT(this, this.gl.canvas.width * 2, this.gl.canvas.height * 2);
-        this.mySecurityCam = new MySecurityCamera(this, this.RTT);
+        this.displayAxis = true;
+        this.sceneInited = false;
+        this.viewLightBoxes = true;
+        this.RTT = new CGFtextureRTT(this, this.gl.canvas.width * 4, this.gl.canvas.height * 4);
+        this.securityPOV = new MySecurityCamera(this, this.RTT);
 
         //fov (radians), near, far, position, target 
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
-        this.interface.setActiveCamera(this.camera);
         this.enableTextures(true);
 
         this.gl.clearDepth(100.0);
@@ -44,7 +42,7 @@ class XMLscene extends CGFscene
 
     update(t)
     {
-        this.mySecurityCam.updateTimeFactor(t / 1500 % 2000);
+        this.securityPOV.updateTimeFactor(t/1500 % 2000);
 
         this.prev || 0.0;
         this.current || 0.0;
@@ -72,21 +70,20 @@ class XMLscene extends CGFscene
                 
            if(V.id == this.graph.defaultViewID){ 
                  this.cameraSelected = V.id;
-                 this.securitySelected = V.id;
            }
 
            if (V.type == "perspective")
-            this.camerasInited[V.id]=new CGFcamera(DEGREE_TO_RAD * V.angle, V.near, V.far, V.from, V.to);
+           this.camerasInited[V.id]=new CGFcamera(DEGREE_TO_RAD * V.angle, V.near, V.far, V.from, V.to);
                 
            else if (V.type == "ortho")
-            this.camerasInited[V.id]=new CGFcameraOrtho(V.left,V.right,V.bottom,V.top,V.near,V.far,V.from,V.to,V.up);
+           this.camerasInited[V.id]=new CGFcameraOrtho(V.left,V.right,V.bottom,V.top,V.near,V.far,V.from,V.to,V.up);
          }
        } 
        else return;
+       this.securitySelected = "CORNER1";
         
         this.camera = this.camerasInited[this.cameraSelected];
         this.securityCAM = this.camerasInited[this.securitySelected];
-        this.interface.setActiveCamera(this.camera);
     }
     
     onViewChanged()
@@ -181,23 +178,26 @@ class XMLscene extends CGFscene
     }
 
 
+    // Displays the scene
     render(camera)
     {
-        // Displays the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
+        // UNCOMMENT LINE BELOW TO MOVE CAMERA
+        // this.interface.setActiveCamera(this.camera);
         this.camera = camera;
-        // this.interface.setActiveCamera(camera);
 
-        // Initialize Model-View matrix as identity (no transformation)
-        this.updateProjectionMatrix();  
+
+
+
+        this.updateProjectionMatrix();  // Initialize Model-View matrix as identity (no transformation)
         this.loadIdentity();   
-        // Apply transformations corresponding to the camera position relative to the origin
-        this.applyViewMatrix();
+        this.applyViewMatrix(); // Apply transformations corresponding to the camera position relative to the origin
+
+
 
         this.pushMatrix();
-
         
         if (this.sceneInited)
         {    
@@ -220,7 +220,7 @@ class XMLscene extends CGFscene
         this.render(this.camerasInited[this.cameraSelected]);
 
         this.gl.disable(this.gl.DEPTH_TEST);
-        this.mySecurityCam.display();
+        this.securityPOV.display();
         this.gl.enable(this.gl.DEPTH_TEST);
     }
 

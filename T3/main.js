@@ -27,8 +27,13 @@ serialInclude(['../lib/CGF.js',
                'primitives/MyRectangle.js',
                'primitives/MySecurityCamera.js',
                'animations/Animation.js',
-               'animations/KeyframeAnimation.js',
                'animations/MyKeyframe.js',
+               'animations/KeyframeAnimation.js',
+               'game/anim/Animator.js',
+               'game/anim/PieceAnim.js',
+               'game/primitives/Tile.js',
+               'game/primitives/Piece.js',
+               'game/primitives/GameTable.js',
                
 main=function()
 {
@@ -44,9 +49,9 @@ main=function()
     myInterface.setActiveCamera(myScene.camera);
 
 	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
-	// or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
+	// or use "anim.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
 	
-    var filename=getUrlVars()['file'] || "demo.xml";
+    var filename=getUrlVars()['file'] || "fuse.xml";
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors

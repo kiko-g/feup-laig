@@ -1,0 +1,1245 @@
+<lxs>
+    <scene root="ROOT NODE" axis_length="3"/>
+    <views default="PLAYER1">
+        <perspective id="PLAYER1" near="0.1" far="500" angle="70">
+            <from x="0" y="10" z="18" />
+            <to x="0" y="-4" z="-12" />
+        </perspective>
+        <perspective id="PLAYER2" near="0.1" far="500" angle="60">
+            <from x="0" y="12" z="-10" />
+            <to x="0" y="-10" z="12" />
+        </perspective>
+        <perspective id="CORNER1" near="0.1" far="500" angle="60">
+            <from x="-13" y="5" z="13" />
+            <to x="10" y="0" z="-5" />
+        </perspective>
+        <perspective id="CORNER2" near="0.1" far="500" angle="60">
+            <from x="13" y="5" z="13" />
+            <to x="-8" y="0" z="-5" />
+        </perspective>        
+    </views>
+
+
+
+
+    <globals>
+        <ambient    r="0.3" g="0.3"  b="0.3"  a="1.0" />
+        <background r="0.53" g="0.81"  b="0.92"  a="1.0" />
+    </globals>
+
+
+
+    <lights>
+        <omni id="CENTER (MAIN)" enabled="1">
+            <location x="0"  y="30.0" z="0" w="1.0" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="0.0" />
+            <diffuse  r="0.4" g="0.4" b="0.4" a="0.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="0.0" />
+            <attenuation constant="1.0" linear="0.0" quadratic="0" />
+        </omni>
+        <spot id="SPOT BOOK 1" enabled="1" angle="15" exponent="5">
+            <location x="25"  y="2"  z="-25" w="1.0" />
+            <target   x="-24" y="5"  z="-24"  w="1.0" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0" linear="1.0" quadratic="0" />
+        </spot>
+        <spot id="SPOT BOOK 2" enabled="1" angle="15" exponent="5">
+            <location x="-25" y="2"  z="-25" w="1.0" />
+            <target   x="-24" y="10" z="-24"  w="1.0" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0" linear="1.0" quadratic="0" />
+        </spot>
+        <spot id="SPOT ATOM" enabled="1" angle="15" exponent="5">
+            <location x="0"   y="32"  z="-22" w="1.0" />
+            <target   x="0"   y="30"  z="-25" w="1.0" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0" linear="1.0" quadratic="0" />
+        </spot>        
+    </lights>
+
+
+
+    <textures>
+        <texture id="default"       file="img/default.jpg" />
+        <texture id="abou"          file="img/abou.png" />
+        <texture id="morty"         file="img/morty.jpg" />
+        <texture id="rick"          file="img/rick.jpg" />
+        <texture id="darkm"         file="img/darkmatter.png" />
+        <texture id="space"         file="img/space.jpg" />
+        <texture id="matter"        file="img/spherematter.png" />
+        <texture id="floor"         file="img/floor.jpg" />
+        <texture id="sky"           file="img/sky.jpg" />
+        <texture id="PENCIL_wood"   file="img/PENCIL_tip.jpg" />
+        <texture id="carbon"        file="img/carbon.jpg" />
+        <texture id="white_plas"    file="img/white_plast.jpg" />
+        <texture id="rubber"        file="img/rubber.png" />
+        <texture id="laig"          file="img/LAIG_3.png" />
+        <texture id="pages"         file="img/pages.png" />
+        <texture id="portugal"      file="img/portugal.png" />
+        <texture id="marega"        file="img/marega.jpg" />
+    </textures>
+
+
+
+
+    <materials>
+        <material id="defaultMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1" />
+            <specular r="0.0" g="0.0" b="0.0" a="1" />
+        </material>
+        <material id="blackMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="1" />
+            <diffuse  r="0.0" g="0.0" b="0.0" a="1" />
+            <specular r="0.0" g="0.0" b="0.0" a="1" />
+        </material>        
+        <material id="donutMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="1" g="0.75" b="0.6" a="1" />
+            <diffuse  r="1" g="0.8" b="0.5" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>
+        <material id="pencilMAT" shininess="3" >
+            <emission r="0.0" g="0.0" b="0.0" a="0" />
+            <ambient  r="1.0" g="0.67" b="0.18" a="1" />
+            <diffuse  r="1.0" g="0.5" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>
+        <material id="greenMAT" shininess="20" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.48" b="0.0" a="1" />
+            <diffuse  r="0.1" g="0.5" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>
+        <material id="darkgreenMAT" shininess="1" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.3" b="0.0" a="1" />
+            <diffuse  r="0.1" g="0.2" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>        
+        <material id="limeMAT" shininess="10" >
+            <emission r="0.0" g="0.1" b="0.0" a="1" />
+            <ambient  r="0.55" g="1.0" b="0.4" a="1" />
+            <diffuse  r="0.55" g="1.0" b="0.4" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />        
+        </material>
+        <material id="pinkMAT" shininess="10" >
+            <emission r="0.3" g="0.3" b="0.3" a="0" />
+            <ambient  r="1.0" g="0.71" b="0.75" a="1" />
+            <diffuse  r="0.8" g="0.2" b="0.2" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>             
+        <material id="cyanMAT" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.1" g="1" b="1" a="1.0" />
+            <diffuse  r="0.1" g="1" b="1" a="1.0" />
+            <specular r="0.1" g="1" b="1" a="1.0" />
+        </material>
+        <material id="blueMAT" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.3" b="1" a="1" />
+            <diffuse  r="0.0" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </material>
+        <material id="darkblueMAT" shininess="20">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.4" b="0.7" a="1" />
+            <diffuse  r="0.1" g="0.1" b="0.6" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </material>
+        <material id="yellowMAT" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="0" />
+            <ambient  r="1.0" g="0.9" b="0.2" a="1" />
+            <diffuse  r="1.0" g="0.9" b="0.2" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>         
+        <material id="purpleMAT" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.8" g="0.0" b="1" a="1" />
+            <diffuse  r="0.2" g="0.2" b="0.2" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </material>        
+        <material id="greyMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1" />
+            <diffuse  r="0.1" g="0.1" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>
+        <material id="redMAT" shininess="10" >
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="1.0" g="0.0" b="0.0" a="1" />
+            <diffuse  r="0.6" g="0.1" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />        
+        </material>        
+        <material id="whiteMAT" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="1.0" g="1.0" b="1.0" a="1" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>
+        <material id="metal" shininess="50">
+            <emission r="0.3" g="0.3" b="0.3" a="1" />
+            <ambient  r="0.3" g="0.3" b="0.3" a="1" />
+            <diffuse  r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </material>
+        <material id="metalblue" shininess="50">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.0" g="0.5" b="0.8" a="1" />
+            <diffuse  r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </material>  
+        <material id="bookMAT" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1" />
+            <ambient  r="0.38" g="0.2" b="0.07" a="1" />
+            <diffuse  r="0.38" g="0.2" b="0.07" a="1" />
+            <specular r="0.38" g="0.2" b="0.07" a="1" />
+        </material>
+        <material id="orangeGLOSS" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="0" />
+            <ambient  r="1.0" g="0.67" b="0.1" a="1" />
+            <diffuse  r="1.0" g="0.5" b="0.1" a="1" />
+            <specular r="1.0" g="1.0" b="1.0" a="1" />
+        </material>        
+    </materials>
+
+
+
+
+    <transformations>
+        <transformation id="centersph_setup">
+            <scale x="0.75" y="0.75" z="0.75"/>
+        </transformation>            
+        <transformation id="ring1_setup">
+            <scale x="1" y="1" z="1" />
+            <rotate axis="x" angle="-90"/>
+        </transformation>
+        <transformation id="ring2_setup">
+            <scale x="1" y="1" z="0.95" />
+            <rotate axis="y" angle="90"/>
+            <rotate axis="x" angle="-35"/>
+        </transformation>
+        <transformation id="ring3_setup">
+            <scale x="1" y="1" z="0.9" />
+            <rotate axis="y" angle="90"/>
+            <rotate axis="x" angle="35"/>
+        </transformation>
+        <transformation id="tinysphere1_setup">
+            <translate x="-1.15" y="1.6" z="0" />
+        </transformation>
+        <transformation id="tinysphere2_setup">
+            <translate x="-0.9" y="-1.3" z="1" />
+        </transformation>
+        <transformation id="tinysphere3_setup">
+            <translate x="1.01" y="0" z="-1.71" />
+        </transformation>
+        <transformation id="mug_setup">
+            <translate x="-3.7" y="0" z="0" />
+            <rotate axis="y" angle="100" />
+            <scale x="0.25" y="0.25" z="0.25" />        
+        </transformation>
+        <transformation id="mugholder_setup">
+            <scale x="0.4" y="0.3" z="0.4" />
+            <rotate axis="y" angle="-60" />
+            <translate x="-3" y="5" z="0" />
+        </transformation>
+        <transformation id="mugmaincyl_setup">
+            <scale x="1.6" y="1" z="1.6" />
+            <translate x="0" y="4" z="0" />
+            <rotate axis="y" angle="135" />
+            <rotate axis="x" angle="90" />
+        </transformation>
+        <transformation id="coffee_setup">
+            <translate x="0" y="3.3" z="0" />
+            <scale x="1.55" y="0.1" z="1.55"/>    
+        </transformation>        
+        <transformation id="floor_setup">
+            <translate x="-10" y="0" z="10" />
+            <scale x="5" y="5" z="5" />
+            <rotate axis="x" angle="-90"/>
+        </transformation>
+        <transformation id="pencil_setup">
+            <translate x="4.2" y="0.3" z="0" />
+            <scale x="0.4" y="0.4" z="0.4" />
+            <rotate axis="y" angle="-10" />
+        </transformation>            
+    </transformations>
+
+
+
+
+    <animations> </animations>
+
+
+
+    <primitives>
+        <primitive id="plane">
+            <plane npartsU="5" npartsV="5"/>
+        </primitive>
+        <primitive id="patch">
+            <patch npointsU="3" npointsV="2" npartsU="20" npartsV="20" >
+                <controlpoint xx="-1.5" yy="2.5"     zz="0.0" />
+                <controlpoint xx="-1.5" yy="-2.5"    zz="0.0" />
+                <controlpoint xx="0"    yy="2.5"     zz="1.2" />
+                <controlpoint xx="0"    yy="-2.5"    zz="1.2" />
+                <controlpoint xx="1.5"  yy="2.5"     zz="0.0" />
+                <controlpoint xx="1.5"  yy="-2.5"    zz="0.0" />
+            </patch>
+        </primitive>
+        <primitive id="gameTable">
+            <gametable x="0" y="0" width="6.0" depth="6.0" height="0.2" />
+        </primitive>
+        <primitive id="rectangle">
+            <rectangle x1="0" y1="0" x2="4" y2="4" bothSides="false" />
+        </primitive>
+        <primitive id="rectangle_bothsides">
+            <rectangle x1="0" y1="0" x2="4" y2="4" bothSides = "true" />
+        </primitive>        
+        <primitive id="sphere">
+            <sphere radius="1" slices="20" stacks="10"/>
+        </primitive>
+        <primitive id="tinysphere">
+            <sphere radius="0.25" slices="20" stacks="10"/>
+        </primitive>                
+        <primitive id="torus">
+            <torus loops="10" slices="20" inner="0.3" outer="3.0"/>
+        </primitive>
+        <primitive id="ring">
+            <torus loops="10" slices="30" inner="0.08" outer="2.0"/>
+        </primitive>
+        <primitive id="olympics">
+            <torus loops="10" slices="30" inner="0.15" outer="1.5"/>
+        </primitive>
+        <primitive id="donut">
+            <torus loops="10" slices="20" inner="0.3" outer="1.0"/>
+        </primitive>        
+        <primitive id="triangle">
+            <triangle x1="0" x2="0" x3="0" y1="0" y2="2" y3="1" z1="0" z2="0" z3="2" />
+        </primitive>
+        <primitive id="cylinder">
+            <cylinder slices="15" stacks="15" base="1" top="1" height="4" bothSides="false"/>
+        </primitive>
+        <primitive id="cylinder2">
+            <cylinder2 slices="15" stacks="15" base="0.05" top="0.05" height="7.98" />
+        </primitive>
+        <primitive id="cylinder_bothsides">
+            <cylinder slices="15" stacks="15" base="1" top="1" height="4" bothSides = "true" />
+        </primitive>        
+        <primitive id="cylinder_prism">
+            <cylinder slices="6" stacks="6" base="0.5" top="0.5" height="6" bothSides="false" />
+        </primitive>
+        <primitive id="cone">
+            <cylinder slices="6" stacks="6" base="0.5" top="0.01" height="2" bothSides="false" />
+        </primitive>
+    </primitives>
+
+
+
+
+    <components>
+            <!-- SINGLE ATOM -->
+            <component id="center_sph">
+                <transformation>
+                    <transformationref id="centersph_setup" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="matter" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="sphere" />
+                </children>
+            </component>
+            <component id="center_sph2">
+                <transformation>
+                    <transformationref id="centersph_setup" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="inherit" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="sphere" />
+                </children>
+            </component>
+            <component id="tinysphere1">
+                <transformation>
+                    <translate x="-1.95" y="-0.3" z="0" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="darkm" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="tinysphere" />
+                </children>
+            </component>
+            <component id="tinysphere2">
+                <transformation>
+                    <translate x="1" y="0.5" z="1.5" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="darkm" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="tinysphere" />
+                </children>
+            </component>
+            <component id="tinysphere3">
+                <transformation>
+                    <translate x="1.0" y="-0.6" z="1.65" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="darkm" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="tinysphere" />
+                </children>
+            </component>            
+            <component id="ring1">
+                <transformation>
+                    <transformationref id="ring1_setup" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="ring" />
+                    <componentref id="tinysphere1" />
+                </children>
+            </component>
+            <component id="ring2">
+                <transformation>
+                    <transformationref id="ring2_setup" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="ring" />
+                    <componentref id="tinysphere2" />
+                </children>
+            </component>
+            <component id="ring3">
+                <transformation>
+                    <transformationref id="ring3_setup" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="ring" />
+                    <componentref id="tinysphere3" />
+                </children>
+            </component>
+            <component id="ring12">
+                <transformation>
+                    <transformationref id="ring1_setup" />
+                </transformation>
+                <materials>
+                    <material id="blackMAT" />
+                    <material id="metal" />
+                    <material id="darkblueMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="ring" />
+                </children>
+            </component>
+            <component id="ring22">
+                <transformation>
+                    <transformationref id="ring2_setup" />
+                </transformation>
+                <materials>
+                    <material id="darkblueMAT" />
+                    <material id="blackMAT" />
+                    <material id="metal" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="ring" />
+                </children>
+            </component>
+            <component id="ring32">
+                <transformation>
+                    <transformationref id="ring3_setup" />
+                </transformation>
+                <materials>
+                    <material id="metal" />
+                    <material id="darkblueMAT" />
+                    <material id="blackMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="ring" />
+                </children>
+            </component>        
+            <component id="tinysphere12">
+                <transformation>
+                    <transformationref id="tinysphere1_setup" />
+                </transformation>
+                <materials>
+                    <material id="orangeGLOSS" />
+                    <material id="cyanMAT" />
+                    <material id="pinkMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="tinysphere" />
+                </children>
+            </component>
+            <component id="tinysphere22">
+                <transformation>
+                    <transformationref id="tinysphere2_setup" />
+                </transformation>
+                <materials>
+                    <material id="pinkMAT" />
+                    <material id="pencilMAT" />
+                    <material id="cyanMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="tinysphere" />
+                </children>
+            </component>
+            <component id="tinysphere32">
+                <transformation>
+                    <transformationref id="tinysphere3_setup" />
+                </transformation>
+                <materials>
+                    <material id="cyanMAT" />
+                    <material id="pinkMAT" />
+                    <material id="pencilMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1"/>
+                <children>
+                    <primitiveref id="tinysphere" />
+                </children>
+            </component>
+
+
+
+            <!-- CUBEMAP -->
+            <component id="floor">
+                <transformation>
+                    <transformationref id="floor_setup"/>
+                </transformation>
+                <materials> 
+                    <material id="inherit" />
+                </materials>
+                    <texture id="floor" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="rect1">
+                <transformation>
+                    <translate x="-10" y="0" z="-10"/>
+                    <scale x="5" y="5" z="5"/>
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="inherit" length_s="4" length_t="4"/>
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="rect2">
+                <transformation>
+                    <translate x="-10" y="0" z="10"/>
+                    <scale x="5" y="5" z="5"/>
+                    <rotate axis="y" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="inherit" length_s="4" length_t="4"/>
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="rect3">
+                <transformation>
+                    <translate x="10" y="0" z="-10"/>
+                    <scale x="5" y="5" z="5"/>
+                    <rotate axis="y" angle="-90" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="inherit" length_s="4" length_t="4"/>
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="rect4">
+                <transformation>
+                    <translate x="-10" y="20" z="-10"/>
+                    <scale x="5" y="5" z="5"/>
+                    <rotate axis="x" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="inherit" length_s="4" length_t="4"/>
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="rect5">
+                <transformation>
+                    <translate x="10" y="0" z="10"/>
+                    <scale x="5" y="5" z="5"/>
+                    <rotate axis="y" angle="180" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="inherit" length_s="4" length_t="4"/>
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+
+
+            <!-- PENCIL -->
+            <component id="carbon_tip">
+                <transformation>
+                    <translate x="0" y="0" z="1.22" />
+                    <scale x="0.4" y="0.4" z="0.4" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="carbon" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="cone" />
+                </children>
+            </component>
+            <component id="tip">
+                <transformation>
+                    <translate x="0" y="-0.5" z="6" />
+                    <scale x="1.02" y="1.02" z="1.02" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="PENCIL_wood" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="cone" />
+                    <componentref id="carbon_tip" />
+                </children>
+            </component>
+            <component id="metal">
+                <transformation>
+                    <translate x="0" y="-0.5" z="-0.23" />
+                    <scale x="0.15" y="0.15" z="0.8" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="white_plas" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="torus" />
+                </children>
+            </component>
+            <component id="rubber_top">
+                <transformation>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="rubber" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="sphere" />
+                </children>
+            </component>
+            <component id="rubber">
+                <transformation>
+                    <translate x="0" y="-0.5" z="-1" />
+                    <scale x="0.45" y="0.45" z="0.2" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="rubber" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="cylinder" />
+                    <componentref id="rubber_top" />
+                </children>
+            </component>
+            <component id="body">
+                <transformation>
+                    <translate x="0" y="-0.5" z="0" />
+                </transformation>
+                <materials>
+                    <material id="pencilMAT" />
+                    <material id="limeMAT" />
+                    <material id="redMAT" />
+                    <material id="blueMAT" />
+                    <material id="purpleMAT" />
+                    <material id="greenMAT"/>
+                    <material id="bookMAT"/>
+                    <material id="pinkMAT"/>
+                    <material id="metalblue"/>
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="cylinder_prism" />
+                </children>
+            </component>
+
+
+            <!-- MUG-->
+            <component id="mug_holder">
+                <transformation>
+                    <transformationref id="mugholder_setup"/>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="white_plas" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="torus" />
+                </children>
+            </component>
+            <component id="main_cyl">
+                <transformation>
+                    <transformationref id="mugmaincyl_setup"/>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="laig" length_s="-1" length_t="-1" />
+                <children>
+                    <primitiveref id="cylinder_bothsides" />
+                </children>
+            </component>
+            <component id="coffee">
+                <transformation>
+                    <transformationref id="coffee_setup" />
+                </transformation>
+                <materials>
+                    <material id="bookMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="sphere" />
+                </children>
+            </component>
+
+
+            <!-- BOOK -->
+            <component id="cover0">
+                <transformation>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="abou" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="cover02">
+                <transformation>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="marega" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>        
+            <component id="cover1">
+                <transformation>
+                    <translate x="4" y="0" z="0" />
+                    <rotate axis="y" angle="180" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="cover12">
+                <transformation>
+                    <translate x="4" y="0" z="0" />
+                    <rotate axis="y" angle="180" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>        
+            <component id="back0">
+                <transformation>
+                    <translate x="4" y="0" z="-0.5" />
+                    <rotate axis="y" angle="180" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="rick" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="back01">
+                <transformation>
+                    <translate x="4" y="0" z="-0.5" />
+                    <rotate axis="y" angle="180" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="morty" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>        
+            <component id="back1">
+                <transformation>
+                    <translate x="0" y="0" z="-0.5" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="pages1">
+                <transformation>
+                    <scale x="0.95" y="0.95" z="0.12" />
+                    <translate x="4" y="0.1" z="0" />
+                    <rotate axis="y" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="pages" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="pages2">
+                <transformation>
+                    <translate x="4" y="0.1" z="0" />
+                    <rotate axis="z" angle="90" />
+                    <scale x="0.95" y="0.95" z="0.12" />
+                    <translate x="4" y="0.1" z="0" />
+                    <rotate axis="y" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="pages" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="pages3">
+                <transformation>
+                    <translate x="4" y="4" z="0" />
+                    <rotate axis="z" angle="180" />
+                    <translate x="4" y="0.1" z="0" />
+                    <rotate axis="z" angle="90" />
+                    <scale x="0.95" y="0.95" z="0.12" />
+                    <translate x="4" y="0.1" z="0" />
+                    <rotate axis="y" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="pages" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
+            <component id="side">
+                <transformation>
+                    <translate x="0" y="4" z="-0.22" />
+                    <scale x="0.2" y="1" z="0.3" />
+                    <rotate axis="x" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="4" />
+                <children>
+                    <primitiveref id="cylinder" />
+                </children>
+            </component>
+            <component id="book_top">
+                <transformation>
+                    <translate x="0" y="4" z="-0.22" />
+                    <scale x="0.2" y="0.05" z="0.3" />
+                    <rotate axis="x" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="sphere" />
+                </children>
+            </component>
+            <component id="book_bottom">
+                <transformation>
+                    <translate x="0" y="0" z="-0.22" />
+                    <scale x="0.2" y="0.05" z="0.3" />
+                    <rotate axis="x" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="sphere" />
+                </children>
+            </component>
+
+
+            <!-- PLATE -->
+            <component id="plate_base">
+                <transformation>
+                    <scale x="1" y="0.08" z="1" />
+                </transformation>
+                <materials>
+                    <material id="whiteMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="sphere" />
+                </children>
+            </component>
+            <component id="plate_edge">
+                <transformation>
+                    <translate x="0" y="0.05" z="0" />
+                    <scale x="0.5" y="0.8" z="0.5" />
+                    <rotate axis="x" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="metal" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="ring" />
+                </children>
+            </component>
+            <component id="donut">
+                <transformation>
+                    <translate x="0" y="0.1" z="0" />
+                    <scale x="0.5" y="0.6" z="0.5" />
+                    <rotate axis="x" angle="90" />
+                </transformation>
+                <materials>
+                    <material id="donutMAT" />
+                    <material id="bookMAT" />
+                    <material id="pinkMAT" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <primitiveref id="donut" />
+                </children>
+            </component>             
+
+
+            <!-- ATOM GROUP -->
+            <component id="ATOM1">
+                <transformation>
+                    <scale x="0.65" y="0.65" z="0.65" />
+                    <translate x="-6" y="5" z="-9" />
+                    <rotate axis="y" angle="-15" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="center_sph" />
+                    <componentref id="ring1" />
+                    <componentref id="ring2" />
+                    <componentref id="ring3" />
+                </children>
+            </component>
+            <component id="ATOM2">
+                <transformation>
+                    <scale x="0.65" y="0.65" z="0.65" />
+                    <translate x="6" y="5" z="-9" />
+                    <rotate axis="y" angle="-20" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="center_sph" />
+                    <componentref id="ring1" />
+                    <componentref id="ring2" />
+                    <componentref id="ring3" />
+                </children>
+            </component>
+            <component id="ATOM3">
+                <transformation>
+                    <scale x="0.65" y="0.65" z="0.65" />
+                    <translate x="-3" y="9" z="-9" />
+                    <rotate axis="y" angle="-20" />
+                </transformation>
+                <materials>
+                    <material id="metal" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="center_sph" />
+                    <componentref id="ring1" />
+                    <componentref id="ring2" />
+                    <componentref id="ring3" />
+                </children>
+            </component>
+            <component id="ATOM4">
+                <transformation>
+                    <scale x="0.65" y="0.65" z="0.65" />
+                    <translate x="3" y="9" z="-9" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="center_sph" />
+                    <componentref id="ring1" />
+                    <componentref id="ring2" />
+                    <componentref id="ring3" />
+                </children>
+            </component>
+            <component id="ATOM_CENTRAL">
+                <transformation>
+                    <scale x="0.65" y="0.65" z="0.65" />
+                    <translate x="0" y="12" z="-9" />
+                    <rotate axis="y" angle="-20" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                    <texture id="space" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="center_sph2" />
+                    <componentref id="ring12" />
+                    <componentref id="ring22" />
+                    <componentref id="ring32" />
+                    <componentref id="tinysphere12" />
+                    <componentref id="tinysphere22" />
+                    <componentref id="tinysphere32" />
+                </children>
+            </component> 
+            <component id="ATOM_SET">
+                <transformation>
+                    <translate x="0" y="-0.5" z="-1.5" />
+                    <scale x="0.4" y="0.4" z="0.4" />
+                </transformation>
+                <materials>
+                    <material id="metal" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="ATOM1" />
+                    <componentref id="ATOM2" />
+                    <componentref id="ATOM3" />
+                    <componentref id="ATOM4" />
+                    <componentref id="ATOM_CENTRAL" />
+                </children>
+            </component>
+
+            
+            
+            <!-- CUBEMAP -->
+            <component id="CUBEMAP">
+                <transformation>
+                    <scale x="0.45" y="0.45" z="0.45" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="sky" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="rect1" />
+                    <componentref id="rect2" />
+                    <componentref id="rect3" />
+                    <componentref id="rect4" />
+                    <componentref id="rect5" />
+                    <componentref id="floor" />
+                </children>
+            </component>
+
+
+            <!-- PENCIL -->
+            <component id="PENCIL">
+                <transformation>
+                    <transformationref id="pencil_setup" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="none" length_s="4" length_t="4" />
+                <children>
+                    <componentref id="body" />
+                    <componentref id="tip" />
+                    <componentref id="metal" />
+                    <componentref id="rubber" />
+                </children>
+            </component>
+
+            <!-- MUG -->
+            <component id="MUG">
+                <transformation>
+                    <transformationref id="mug_setup"/>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="none" length_s="2" length_t="2" />
+                <children>
+                    <componentref id="main_cyl" />
+                    <componentref id="mug_holder" />
+                    <componentref id="coffee" />
+                </children>
+            </component>
+
+
+            <!-- PLATE -->
+            <component id="PLATE">
+                <transformation>
+                    <translate x="-3.8" y="0" z="3" />
+                    <scale x="0.5" y="0.5" z="0.5" />
+                </transformation>
+                <materials>
+                    <material id="greyMAT" />
+                    <material id="whiteMAT" />
+                    <material id="pencilMAT" />
+                    <material id="pencilMAT" />
+                    <material id="greenMAT" />
+                    <material id="redMAT" />
+                    <material id="cyanMAT" />
+                    <material id="blueMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="plate_base" />
+                    <componentref id="plate_edge" />
+                    <componentref id="donut" />
+                </children>
+            </component>
+
+
+            <!-- BOOKS -->
+            <component id="BOOK1">
+                <transformation>
+                    <translate x="-4" y="0" z="-1.5" />
+                    <scale x="0.5" y="0.833" z="0.833" />
+                    <rotate axis="y" angle="45"/>
+                </transformation>
+                <materials>
+                    <material id="bookMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="cover0" />
+                    <componentref id="cover1" />
+                    <componentref id="back0" />
+                    <componentref id="back1" />
+                    <componentref id="pages1" />
+                    <componentref id="pages2" />
+                    <componentref id="pages3" />
+                    <componentref id="side" />
+                    <componentref id="book_top" />
+                    <componentref id="book_bottom" />
+                </children>
+            </component>
+            <component id="BOOK2">
+                <transformation>
+                    <translate x="3" y="0" z="-4" />
+                    <scale x="0.5" y="0.833" z="0.833" />
+                    <rotate axis="y" angle="-45"/>
+                </transformation>
+                <materials>
+                    <material id="bookMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="cover02" />
+                    <componentref id="cover12" />
+                    <componentref id="back01" />
+                    <componentref id="back1" />
+                    <componentref id="pages1" />
+                    <componentref id="pages2" />
+                    <componentref id="pages3" />
+                    <componentref id="side" />
+                    <componentref id="book_top" />
+                    <componentref id="book_bottom" />
+                </children>
+            </component>
+        
+
+
+            <!-- GAME TABLE -->
+            <component id="GAME_TABLE">
+                <transformation>
+                    <translate x="0" y="0" z="1" />
+                    <rotate axis="x" angle="90"/>
+                    <rotate axis="y" angle="180"/>
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="none" length_s="1" length_t="1" />
+                <children>
+                    <primitiveref id="gameTable" />
+                </children>
+            </component>
+
+
+
+            <component id="ROOT NODE">
+                <transformation>
+                    <scale x="3" y="3" z="3" />
+                </transformation>
+                <materials>
+                    <material id="defaultMAT" />
+                </materials>
+                    <texture id="default" length_s="1" length_t="1" />
+                <children>
+                    <componentref id="ATOM_SET" />
+                    <componentref id="CUBEMAP" />
+                    <componentref id="PENCIL" />
+                    <componentref id="MUG" />
+                    <componentref id="PLATE" />
+                    <componentref id="BOOK1" />
+                    <componentref id="BOOK2" />
+                    <componentref id="GAME_TABLE" />
+                </children>
+            </component>
+    </components>
+</lxs>
