@@ -772,13 +772,13 @@ parseKeyframe(keyframe, keyframeInstant)
                  primitiveType != 'cylinder2' &&
                  primitiveType != 'sphere'    &&
                  primitiveType != 'torus'     &&
-                 primitiveType != 'gametable' &&
+                 primitiveType != 'gameboard' &&
                  primitiveType != 'plane'     &&
                  primitiveType != 'patch')) return "Invalid primitive type";
     
-
             // Specifications for the current primitive.
             var primitiveType = grandChildren[0].nodeName;
+
 
             // Retrieves the primitive coordinates.
             if (primitiveType == 'rectangle')
@@ -806,8 +806,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 let rect = new MyRectangle(this.scene, primitiveID, x1, x2, y1, y2, bothSides);
                 this.primitives[primitiveID] = rect;
             }
-
-
+            // -----------------------------------------------------------------------------------------
             else if (primitiveType == 'triangle')
             {
                 let x1 = this.reader.getFloat(grandChildren[0], 'x1');
@@ -851,8 +850,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 let tri = new MyTriangle(this.scene, primitiveID, v1, v2, v3);
                 this.primitives[primitiveID] = tri;
             }
-
-
+            // -----------------------------------------------------------------------------------------
             else if (primitiveType == 'sphere')
             {
                 let radius = this.reader.getFloat(grandChildren[0], 'radius');
@@ -870,8 +868,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 let sph = new MySphere(this.scene, primitiveID, radius, slices, stacks);
                 this.primitives[primitiveID] = sph;
             }
-
-
+            // -----------------------------------------------------------------------------------------
             else if (primitiveType == 'torus')
             {
                 let inner = this.reader.getFloat(grandChildren[0], 'inner');
@@ -893,8 +890,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 let tor = new MyTorus(this.scene, primitiveID, slices, loops, inner, outer);
                 this.primitives[primitiveID] = tor;
             }
-
-
+            // -----------------------------------------------------------------------------------------
             else if (primitiveType == 'cylinder')
             {
                 let slices = this.reader.getInteger(grandChildren[0], 'slices');
@@ -924,8 +920,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 let cyli = new MyCylinder(this.scene, primitiveID, slices, stacks, base, top, height, bothSides);
                 this.primitives[primitiveID] = cyli;
             }
-
-
+            // -----------------------------------------------------------------------------------------
             else if (primitiveType == 'plane')
             {
                 let UDivs = this.reader.getInteger(grandChildren[0], 'npartsU');
@@ -939,7 +934,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 let plane = new Plane(this.scene, primitiveID, UDivs, VDivs);
                 this.primitives[primitiveID] = plane;
             }
-
+            // -----------------------------------------------------------------------------------------
             else if(primitiveType == 'patch')
             {
                 let UDivs = this.reader.getInteger(grandChildren[0], 'npartsU');
@@ -986,7 +981,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 var patch = new Patch(this.scene, primitiveID, nUControl, nVControl, UDivs, VDivs, parsedControl);
                 this.primitives[primitiveID] = patch;
             }
-
+            // -----------------------------------------------------------------------------------------
             else if (primitiveType == 'cylinder2') {
                 let slices = this.reader.getInteger(grandChildren[0], 'slices');
                 if (slices == null || isNaN(slices) || slices < 1)
@@ -1011,30 +1006,30 @@ parseKeyframe(keyframe, keyframeInstant)
                 let cyli2 = new MyCylinder2(this.scene, primitiveID, slices, stacks, base, top, height);
                 this.primitives[primitiveID] = cyli2;
             }
-
-            else if (primitiveType == 'gametable') {
+            // -----------------------------------------------------------------------------------------
+            else if (primitiveType == 'gameboard') {
                 let x = this.reader.getFloat(grandChildren[0], 'x');
                 if (x == null || isNaN(x))
-                    return "unable to parse x coord for game table | ID = " + primitiveID;
+                    return "unable to parse x coord for game board | ID = " + primitiveID;
 
                 let y = this.reader.getFloat(grandChildren[0], 'y');
                 if (y == null || isNaN(y))
-                    return "unable to parse x coord for game table | ID = " + primitiveID;
+                    return "unable to parse x coord for game board | ID = " + primitiveID;
 
                 let width = this.reader.getFloat(grandChildren[0], 'width');
                 if (width == null || isNaN(width) || width <= 0)
-                    return "unable to parse width for game table | ID = " + primitiveID;
+                    return "unable to parse width for game board | ID = " + primitiveID;
 
                 let height = this.reader.getFloat(grandChildren[0], 'height');
                 if (height == null || isNaN(height))
-                    return "unable to parse height for game table | ID = " + primitiveID; 
+                    return "unable to parse height for game board | ID = " + primitiveID; 
 
                 let depth = this.reader.getFloat(grandChildren[0], 'depth');
                 if (depth == null || isNaN(depth))
-                    return "unable to parse depth for game table | ID = " + primitiveID; 
+                    return "unable to parse depth for game board | ID = " + primitiveID; 
 
-                let gametable = new GameTable(this.scene, primitiveID, x, y, width, depth, height);
-                this.primitives[primitiveID] = gametable;
+                let board = new GameBoard(this.scene, primitiveID, x, y, width, depth, height);
+                this.primitives[primitiveID] = board;
             }            
 
             else console.warn("TO DO: Parse remaining primitives");
@@ -1379,10 +1374,10 @@ parseKeyframe(keyframe, keyframeInstant)
     // ==================================================================================================================================
     traverseGraph(component, parentMat, parentTex)
     {
-        var currentnode = component;
-        var children = currentnode.compchildren;
-        var leaves = currentnode.leaves;
-        var ls, lt, TEX, MATS; //to be passed on
+        let currentnode = component;
+        let children = currentnode.compchildren;
+        let leaves = currentnode.leaves;
+        let ls, lt, TEX, MATS; //to be passed on
         if (currentnode.texture.texture == "none"){
             TEX = null;
             ls = null;
@@ -1410,8 +1405,8 @@ parseKeyframe(keyframe, keyframeInstant)
             MATS = parentMat;
         }
 
-        var currentTexture = currentnode.texture.texture;
-        var currentMaterial = currentnode.materials.materials[currentnode.materials.current];
+        let currentTexture = currentnode.texture.texture;
+        let currentMaterial = currentnode.materials.materials[currentnode.materials.current];
 
         currentMaterial.setTexture(currentTexture);
         currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
@@ -1424,14 +1419,14 @@ parseKeyframe(keyframe, keyframeInstant)
             this.animations[currentnode.animationID].apply();
         }
 
-        for (var key in leaves)
+        for (let key in leaves)
         {
             this.scene.pushMatrix();
             leaves[key].display(ls, lt);
             this.scene.popMatrix();
         }
         
-        for(var key in children)
+        for(let key in children)
         {
             this.scene.pushMatrix();
             this.traverseGraph(children[key], MATS, TEX);

@@ -31,9 +31,9 @@ serialInclude(['../lib/CGF.js',
                'animations/KeyframeAnimation.js',
                'game/anim/Animator.js',
                'game/anim/PieceAnim.js',
-               'game/primitives/Tile.js',
+            //    'game/primitives/Tile.js',
                'game/primitives/Piece.js',
-               'game/primitives/GameTable.js',
+               'game/primitives/GameBoard.js',
                
 main=function()
 {

@@ -102,17 +102,15 @@ print_header_line(_).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Require your Prolog Files here
-
-:- consult('boardManip.pl').
-:- consult('input.pl').
-:- consult('logic.pl').
-:- consult('mainCycle.pl').
-:- consult('print.pl').
-:- consult('utility.pl').
+:- consult('main.pl').
 
 % TODO: adicionar aqui todos os comandos e respostas que se podem fazer ao server
-parse_input().
+parse_input(randomBoard(Board), NewBoard):-
+    randomBoard(NewBoard).
 
+
+
+% ===================================================================================================== %
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).

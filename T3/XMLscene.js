@@ -19,6 +19,7 @@ class XMLscene extends CGFscene
     init(application)
     {
         super.init(application);
+        this.fps = 60.0;
         this.MPress = false;
         this.displayAxis = true;
         this.sceneInited = false;
@@ -37,7 +38,7 @@ class XMLscene extends CGFscene
 
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(10); //100 fps
+        this.setUpdatePeriod(1000.0 / this.fps);
     }
 
     update(t)
@@ -184,9 +185,9 @@ class XMLscene extends CGFscene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
-        // UNCOMMENT LINE BELOW TO MOVE CAMERA
-        // this.interface.setActiveCamera(this.camera);
         this.camera = camera;
+        // UNCOMMENT LINE BELOW TO MOVE CAMERA
+        this.interface.setActiveCamera(this.camera);
 
 
 
@@ -200,7 +201,8 @@ class XMLscene extends CGFscene
         this.pushMatrix();
         
         if (this.sceneInited)
-        {    
+        {
+            this.setUpdatePeriod(1000.0 / this.fps);
             this.toggleLights();
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)

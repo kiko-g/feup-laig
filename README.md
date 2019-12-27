@@ -10,12 +10,10 @@
 > **Course** - *Graphical Interfaces and Applications Laboratory*: [LAIG Page (2019/20)](https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=436446)
 
 
-### Basic Project Description and Information
-> **1st Project** -
-> *Display Scene according to an XML file*\
-> **2nd Project** -
-> *Keyframe animations, Shaders and RenderToTexture (RTT)*\
-> **3rd Project** -
-> *Graphical Support and Interface for Prolog game Fuse previously programmed in [PLOG](https://sigarra.up.pt/feup/pt/UCURR_GERAL.FICHA_UC_VIEW?pv_ocorrencia_id=436444) class*
+### Project Description and Repository Info
+> **0th Project (T0)** - *Examples of all the matters lectured in this course*\
+> **1st Project (T1)** - *Display Scene according to an XML file*\
+> **2nd Project (T2)** - *Keyframe animations, Shaders and RenderToTexture (RTT)*\
+> **3rd Project (T3)** - *Graphical Support and Interface for Prolog game Fuse previously programmed in [PLOG](https://sigarra.up.pt/feup/pt/UCURR_GERAL.FICHA_UC_VIEW?pv_ocorrencia_id=436444) class*
 >
 > **[WebCGF]**: https://paginas.fe.up.pt/~ruirodrig/pub/sw/webcgf/docs/#
