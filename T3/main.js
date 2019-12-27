@@ -31,7 +31,7 @@ serialInclude(['../lib/CGF.js',
                'animations/KeyframeAnimation.js',
                'game/anim/Animator.js',
                'game/anim/PieceAnim.js',
-            //    'game/primitives/Tile.js',
+               'game/primitives/Tile.js',
                'game/primitives/Piece.js',
                'game/primitives/GameBoard.js',
                
@@ -39,14 +39,14 @@ main=function()
 {
 	// Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
-    var myInterface = new MyInterface();
-    var myScene = new XMLscene(myInterface);
+    var interface = new MyInterface();
+    var scene = new XMLscene(interface);
 
     app.init();
-    app.setScene(myScene);
-    app.setInterface(myInterface);
+    app.setScene(scene);
+    app.setInterface(interface);
 
-    myInterface.setActiveCamera(myScene.camera);
+    interface.setActiveCamera(scene.camera);
 
 	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
 	// or use "anim.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
@@ -55,7 +55,7 @@ main=function()
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors
-    var myGraph = new MySceneGraph(filename, myScene);
+    var scenegraph = new MySceneGraph(filename, scene);
 	
 	// start
     app.run();

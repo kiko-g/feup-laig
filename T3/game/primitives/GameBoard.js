@@ -21,6 +21,7 @@ class GameBoard extends CGFobject
         this.width = width;
         this.depth = depth;
         this.height = height;
+        this.tile = new Tile(scene);
         this.initBuffers();
 
         this.boardtex = new CGFtexture(this.scene, 'img/board.png');
@@ -72,6 +73,9 @@ class GameBoard extends CGFobject
         this.createTopFace();
         this.createSideFace();
         this.createBottomFace();
+
+        this.tileH = 0.2005;    //tile height
+        this.tilestep = 0.753;  //tile step used to translate tiles
     }
     
 
@@ -93,6 +97,16 @@ class GameBoard extends CGFobject
         this.side.display();
 
         this.scene.popMatrix();
+
+        for(let i=0; i<6; ++i)
+            for(let j=0; j<6; ++j)
+            {
+                this.scene.pushMatrix();
+                this.scene.translate(1.873-this.tilestep*i, 1.89-this.tilestep*j, this.tileH);
+                this.scene.scale(0.72, 0.72, 0.72);
+                this.tile.display();
+                this.scene.popMatrix();
+            }
         // ---------------------
     }
 }
