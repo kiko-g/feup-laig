@@ -21,18 +21,22 @@ class GameBoard extends CGFobject
         this.width = width;
         this.depth = depth;
         this.height = height;
-        this.alltiles = [];     //10x6 array all tiles
-        this.innertiles = [];   //6x6 array of inner tiles
-        this.outertiles = [];   //4x6 array of outer tiles
-        this.boardtiles = [];   //8x8 board array of tiles
+
+        this.prev_piece = {x: null, y: null, ID: null};
+
+        this.alltiles = [];     // 60x1 array with all tiles (60)
+        this.innertiles = [];   // 6x6  array of inner tiles (36)
+        this.outertiles = [];   // 4x6  array of outer tiles (24)
         
         this.texture = new CGFtexture(this.scene, 'img/board.png');
         
-        this.initBuffers();
+        this.createFaces();
+        this.initializeTiles();
     }
 
-
-    createTopFace() {
+    createFaces() 
+    {
+        //TOP FACE
         let points = [
             [[this.x + (this.width/2), this.y + (this.width/2), this.height, 1.0],
              [this.x + (this.width/2), this.y - (this.width/2), this.height, 1.0]],
@@ -42,27 +46,29 @@ class GameBoard extends CGFobject
         ];
         let surface = new CGFnurbsSurface(1, 1, points);
         this.top = new CGFnurbsObject(this.scene, this.divs, this.divs, surface);
-    }
-    createBottomFace() {
-        let points = [
+
+
+        //BOTTOM FACE
+        points = [
             [[this.x + (this.width/2), this.y - (this.width/2), 0.0, 1.0],
              [this.x + (this.width/2), this.y + (this.width/2), 0.0, 1.0]],
 
             [[this.x - (this.width/2), this.y - (this.width/2), 0.0, 1.0],
              [this.x - (this.width/2), this.y + (this.width/2), 0.0, 1.0]]
         ];
-        let surface = new CGFnurbsSurface(1, 1, points);
+        surface = new CGFnurbsSurface(1, 1, points);
         this.bottom = new CGFnurbsObject(this.scene, this.divs, this.divs, surface);
-    }
-    createSideFace() {
-        let points = [
+
+
+        //SIDE FACE
+        points = [
             [[this.x + (this.width/2), this.y - (this.width/2), 0.0, 1.0],
              [this.x - (this.width/2), this.y - (this.width/2), 0.0, 1.0]],
 
             [[this.x + (this.width/2), this.y - (this.width/2), this.height, 1.0],
              [this.x - (this.width/2), this.y - (this.width/2), this.height, 1.0]]
         ];
-        let surface = new CGFnurbsSurface(1, 1, points);
+        surface = new CGFnurbsSurface(1, 1, points);
         let sidedivs = Math.round((this.depth/this.height) * this.divs);
         this.side = new CGFnurbsObject(this.scene, sidedivs, this.divs, surface);
     }
@@ -97,22 +103,15 @@ class GameBoard extends CGFobject
             this.outertiles[i] = aux;
             this.alltiles.push(aux);
         }
-        
-        //build 8x8 board tiles
-        // this.boardtiles = this.buildBoard(); 
-    }
-
-    // -----------------------------------------------------------------------------
-    // -----------------------------------------------------------------------------
-
-    initBuffers() {
-        this.createTopFace();
-        this.createSideFace();
-        this.createBottomFace();
-        this.initializeTiles();
     }
 
     
+
+    // ========================================
+    // ======= PICKING FUNCTIONS START ========
+    // ========================================
+
+    /** @brief function for general picking*/
     picking()
     {
         if(this.scene.pickMode == false)
@@ -135,10 +134,129 @@ class GameBoard extends CGFobject
             }
     }
 
+    /** @brief function to clear all tiles picked*/
+    clearAllPicked() 
+    {
+        for(let i=0; i<10; i++)
+            for(let j=0; j<6; j++) 
+            {
+                if(i<6) this.innertiles[i][j].states.picked = false;
+                else this.outertiles[i-6][j].states.picked = false;
+            }
+    }
+
+    pickwhite()
+    {
+        if(this.scene.pickMode == false)
+            if(this.scene.pickResults != null && this.scene.pickResults.length > 0)
+                for(let i = 0; i < this.scene.pickResults.length; i++)
+                {
+                    if(this.scene.pickResults[i][0]) 
+                    {
+                        var ID = this.scene.pickResults[i][1];
+                        var x = parseInt((ID-1) / 6);
+                        var y = parseInt((ID-1) % 6);
+                        var p = this.alltiles[x][y];
+                        
+                        if (p.outer && p.pieceColor == this.scene.game.P.White) 
+                        {
+                            this.clearAllPicked();
+                            this.outertiles[x-6][y].states.picked = true;
+
+                            //save piece info
+                            this.prev_piece.x = x;
+                            this.prev_piece.y = y;
+                            this.prev_piece.ID = ID;
+    
+                            this.rightAvailable(ID, x, y);
+                            this.topAvailable(ID, x, y);
+                            this.leftAvailable(ID, x, y);
+                            this.bottomAvailable(ID, x, y);
+                        }
+                    }
+                }
+    }
+
+
+    pickblack()
+    {
+        if(this.scene.pickMode == false)
+            if(this.scene.pickResults != null && this.scene.pickResults.length > 0)
+                for(let i = 0; i < this.scene.pickResults.length; i++)
+                {
+                    if(this.scene.pickResults[i][0]) 
+                    {
+                        var ID = this.scene.pickResults[i][1];
+                        var x = parseInt((ID-1) / 6);
+                        var y = parseInt((ID-1) % 6);
+                        var p = this.alltiles[x][y];
+
+                        if (p.outer && p.pieceColor == this.scene.game.P.Black) 
+                        {
+                            this.clearAllPicked();
+                            this.outertiles[x-6][y].states.picked = true;
+
+                            //save piece info
+                            this.prev_piece.x = x;
+                            this.prev_piece.y = y;
+                            this.prev_piece.ID = ID;
+
+                            this.rightAvailable(ID, x, y);
+                            this.topAvailable(ID, x, y);
+                            this.leftAvailable(ID, x, y);
+                            this.bottomAvailable(ID, x, y);
+                        }
+                    }
+                }
+    }
+
+
+    rightAvailable(ID, x , y) {
+        if (ID >= 37 && ID <= 42)
+            for (let i=0; i<6; i++) 
+                if(!this.innertiles[6-x+i][y].hasPiece) {
+                    this.innertiles[6 - x + i][y].states.picked = true;
+                    this.innertiles[6 - x + i][y].states.available = true;
+                }
+    }
+
+    leftAvailable(ID, x, y) {
+        if (ID >= 49 && ID <= 54)
+            for (let i=0; i<6; i++) 
+                if(!this.innertiles[x-i-3][5-y].hasPiece) {
+                    this.innertiles[x-i-3][5-y].states.picked = true;
+                    this.innertiles[x-i-3][5-y].states.available = true;
+                }
+    }
+
+    topAvailable(ID, x, y) {
+        if (ID >= 43 && ID <= 48)
+            for (let i=0; i<6; i++) 
+                if(!this.innertiles[y][5-i].hasPiece) {
+                    this.innertiles[y][5-i].states.picked = true;
+                    this.innertiles[y][5-i].states.available = true;
+                }
+    }
+
+    bottomAvailable(ID, x, y) {
+        if (ID >= 55 && ID <= 60)
+            for (let i=0; i<6; i++) 
+                if(!this.innertiles[x-y-4][i].hasPiece) {
+                    this.innertiles[x-y-4][i].states.picked = true;
+                    this.innertiles[x-y-4][i].states.available = true;
+                }
+    }
+    // ================================================
+    // ======= END OF PICKING FUNCTIONS SECTION =======
+    // ================================================
+
 
     display() 
     {
-        this.picking();
+        // if(this.scene.game.whiteTurn) 
+        // else if(this.scene.game.blackTurn)
+        this.pickblack();
+        this.pickwhite();
         this.scene.logPicking();
         this.scene.pickResults.splice(0, this.scene.pickResults.length);
         this.scene.clearPickRegistration();

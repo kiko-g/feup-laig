@@ -42,16 +42,15 @@ class Game
         let R = this.RL;
         this.board = 
         [
-            [P.Null,  R[1][5], R[1][4], R[1][3], R[1][2], R[1][1], R[1][0],  P.Null],
-            [R[2][0], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][5]],
-            [R[2][1], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][4]],
-            [R[2][2], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][3]],
-            [R[2][3], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][2]],
-            [R[2][4], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][1]],
-            [R[2][5], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][0]],
-            [P.Null,  R[3][0], R[3][1], R[3][2], R[3][3], R[3][4], R[3][5],  P.Null],
-        ]
-        console.log(this.board);
+            [P.Null,  R[1][0], R[1][1], R[1][2], R[1][3], R[1][4], R[1][5],  P.Null],
+            [R[2][5], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][5]],
+            [R[2][4], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][4]],
+            [R[2][3], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][3]],
+            [R[2][2], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][2]],
+            [R[2][1], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][1]],
+            [R[2][0], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][0]],
+            [P.Null,  R[3][5], R[3][4], R[3][3], R[3][2], R[3][1], R[3][0],  P.Null],
+        ];
     }
 
 

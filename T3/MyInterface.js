@@ -20,6 +20,7 @@ class MyInterface extends CGFinterface
         this.settings.add(this.scene.securityPOV, 'active').name("Security Camera");
 
         this.initKeys();
+        this.gui.close();
         return true;
     }
     

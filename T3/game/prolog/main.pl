@@ -8,8 +8,5 @@
 :- consult('logic.pl').
 :- consult('checkInput.pl').
 
-clear:-
-    write('\33\[2J').
-
 fuse :- 
     menu.
