@@ -4,9 +4,7 @@ class LightingScene extends CGFscene
 	init(application)
 	{
 		super.init(application);
-
 		this.initCameras();
-
 		this.initLights();
 
 		this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
@@ -19,20 +17,27 @@ class LightingScene extends CGFscene
 
 		// Scene elements
 		
-		this.suzanne = new CGFOBJModel(this, 'models/suzanne.obj');
+        this.disc = new CGFOBJModel(this, 'models/tech_pedestal.obj');
 		this.male = new CGFOBJModel(this, 'models/male.obj');
-		this.navigator = new CGFOBJModel(this, 'models/navigator.obj', true);
+		this.suzanne = new CGFOBJModel(this, 'models/suzanne.obj');
+        this.navigator = new CGFOBJModel(this, 'models/navigator.obj');
 		
 		// Materials
-		this.materialDefault = new CGFappearance(this);
-
+		this.materialDefault = this.RGBMaterial(255, 128, 128);
 		this.enableTextures(true);
+    };
+    
+    RGBMaterial(r, g, b) {
+        let material = new CGFappearance(this);
+        material.setAmbient(r / 255, g / 255, b / 255, 1);
+        material.setDiffuse(r / 255, g / 255, b / 255, 1);
+        material.setSpecular(r / 255, g / 255, b / 255, 1);
+        material.setShininess(100);
 
-	};
+        return material;
+    }
 
-	initCameras() {
-		this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 15, 30), vec3.fromValues(0, 5, 0));
-	};
+	initCameras() { this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 15, 30), vec3.fromValues(0, 5, 0)); };
 
 	initLights() {
 		this.setGlobalAmbientLight(0, 0 ,0, 1);
@@ -101,11 +106,8 @@ class LightingScene extends CGFscene
 
 		// suzanne
 		this.pushMatrix();
-
 		this.translate(5, 5, 0);
-
-		this.suzanne.display();
-
+		// this.suzanne.display();
 		this.popMatrix();
 
 
@@ -114,7 +116,7 @@ class LightingScene extends CGFscene
 
 		this.scale(0.5, 0.5, 0.5);
 
-		this.male.display();
+		// this.male.display();
 
 		this.popMatrix();
 
@@ -122,12 +124,13 @@ class LightingScene extends CGFscene
 		// navigator
 		this.pushMatrix();
 
-		this.translate(-10, 0, 0);
-		this.scale(2, 2, 2);
-		this.translate(0, 3, 0);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+		// this.translate(-10, 0, 0);
+		this.scale(0.2, 0.2, 0.2);
+		// this.translate(0, 3, 0);
+		// this.rotate(-Math.PI/2, 1, 0, 0);
 
-		this.navigator.display();
+        // this.navigator.display();
+        this.disc.display();
 
 		this.popMatrix();
 

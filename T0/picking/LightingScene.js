@@ -29,7 +29,7 @@ class LightingScene extends CGFscene{
 			new CGFplane(this)
 		];
 		this.cylinder = new Cylinder(this, 1, 1, 10, 64, 64);
-		this.setPickEnabled(true);
+        this.setPickEnabled(true);
 	}
 	initLights() {
 		this.lights[0].setPosition(1, 1, 1, 1);
@@ -56,26 +56,22 @@ class LightingScene extends CGFscene{
 					var obj = this.pickResults[i][0];
 					if (obj) {
 						var customId = this.pickResults[i][1];
-						console.log("Picked object: " + obj + ", with pick id " + customId);						
+						console.log("Picked object: " + obj.id + ", with pick id " + customId);						
 					}
 				}
 				this.pickResults.splice(0, this.pickResults.length);
 			}
 		}
 	}
-	display() {
-        this.logPicking();
-		this.clearPickRegistration();
-		// Clear image and depth buffer every time we update the scene
+    display() 
+    {
+        // Clear image and depth buffer every time we update the scene
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 		this.gl.enable(this.gl.DEPTH_TEST);
-		// Initialize Model-View matrix as identity (no transformation
 		this.updateProjectionMatrix();
 		this.loadIdentity();
-		// Apply transformations corresponding to the camera position relative to the origin
-		this.applyViewMatrix();
-		//this.scale(5,5,5);
+        this.applyViewMatrix(); // Apply transformations corresponding to the camera position relative to the origin
 		// Update all lights used
 		this.lights[0].update();
 		// Draw axis
@@ -84,11 +80,13 @@ class LightingScene extends CGFscene{
 		this.rotate(Math.PI / 2.0, 1, 0, 0);
 		// draw objects
 		for (var i = 0; i < this.objects.length; i++) {
-			this.pushMatrix();
+            this.pushMatrix();
 			this.translate(i * 2, 0, 0);
-
+            
 			//Id for pickable objects must be >= 1
-			this.registerForPick(i + 1, this.objects[i]);
+            this.logPicking();
+            this.clearPickRegistration();
+            this.registerForPick(i + 1, this.objects[i]);
 			this.objects[i].display();
 			this.translate(0, 0, -2);
 			if (i != this.objects.length - 1)

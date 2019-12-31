@@ -1,9 +1,9 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="3"/>
     <views default="PLAYER1">
-        <perspective id="PLAYER1" near="0.1" far="500" angle="70">
-            <from x="0" y="9" z="18" />
-            <to x="0" y="-4" z="-12" />
+        <perspective id="PLAYER1" near="0.1" far="500" angle="60">
+            <from x="0" y="15" z="18" />
+            <to x="0" y="-4" z="-10" />
         </perspective>
         <perspective id="PLAYER2" near="0.1" far="500" angle="60">
             <from x="0" y="12" z="-10" />

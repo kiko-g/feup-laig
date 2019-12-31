@@ -24,21 +24,26 @@ class XMLscene extends CGFscene
         this.displayAxis = true;
         this.sceneInited = false;
         this.viewLightBoxes = true;
+        this.enableTextures(true);
+        this.setPickEnabled(true);
+        this.setUpdatePeriod(1000.0 / this.fps);
+        
+        //security camera
         this.RTT = new CGFtextureRTT(this, this.gl.canvas.width * 4, this.gl.canvas.height * 4);
         this.securityPOV = new MySecurityCamera(this, this.RTT);
-
-        //fov (radians), near, far, position, target 
+        this.securityPOV.active = false;
+        
+        //game
+        this.game = new Game(this);
+        this.axis = new CGFaxis(this);
+        this.appearance = new CGFappearance(this);
+        
+        //camera
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
-        this.enableTextures(true);
-
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
-
-        this.axis = new CGFaxis(this);
-        this.appearance = new CGFappearance(this);
-        this.setUpdatePeriod(1000.0 / this.fps);
     }
 
     update(t)
@@ -81,7 +86,7 @@ class XMLscene extends CGFscene
          }
        } 
        else return;
-       this.securitySelected = "CORNER1";
+       this.securitySelected = "CORNER2";
         
         this.camera = this.camerasInited[this.cameraSelected];
         this.securityCAM = this.camerasInited[this.securitySelected];
@@ -186,18 +191,11 @@ class XMLscene extends CGFscene
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
         this.camera = camera;
-        // UNCOMMENT LINE BELOW TO MOVE CAMERA
-        this.interface.setActiveCamera(this.camera);
-
-
-
+        this.interface.setActiveCamera(this.camera);    // COMMENT THIS LINE TO FREEZE CAMERA
 
         this.updateProjectionMatrix();  // Initialize Model-View matrix as identity (no transformation)
         this.loadIdentity();   
         this.applyViewMatrix(); // Apply transformations corresponding to the camera position relative to the origin
-
-
-
         this.pushMatrix();
         
         if (this.sceneInited)
@@ -215,14 +213,14 @@ class XMLscene extends CGFscene
     display()
     {
         if(!this.sceneInited) return;
-
+        
         this.RTT.attachToFrameBuffer();
         this.render(this.securityCAM);
         this.RTT.detachFromFrameBuffer();
         this.render(this.camerasInited[this.cameraSelected]);
 
         this.gl.disable(this.gl.DEPTH_TEST);
-        this.securityPOV.display();
+        if(this.securityPOV.active) this.securityPOV.display();
         this.gl.enable(this.gl.DEPTH_TEST);
     }
 
@@ -234,5 +232,14 @@ class XMLscene extends CGFscene
                 this.graph.cycleMaterial(this.graph.components[key]);
         }
         else if (!this.interface.isKeyPressed('KeyM')) this.MPress = false;
+    }
+
+    logPicking() 
+    {
+        if(this.pickMode == false)
+          if(this.pickResults != null && this.pickResults.length > 0)
+            for(var i = 0; i < this.pickResults.length; i++) 
+               if(this.pickResults[i][0]) 
+                 console.log("> " + this.pickResults[i][0].id + " " + this.pickResults[i][1]);
     }
 }

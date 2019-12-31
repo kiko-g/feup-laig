@@ -9,7 +9,8 @@ class Cylinder extends CGFobject {
 		this._topRadius = topRadius;
 		this._height = height;
 		this._slices = slices;
-		this._stacks = stacks;
+        this._stacks = stacks;
+        this.id = "cylinder"
 
 		this.initBuffers();
 	};

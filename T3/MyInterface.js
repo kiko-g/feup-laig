@@ -7,7 +7,7 @@ class MyInterface extends CGFinterface
     init(application)
     {
         super.init(application);
-        this.scene.displayAxis = false;
+        this.scene.displayAxis = true;
         this.scene.viewLightBoxes = false;
 
         this.gui = new dat.GUI();
@@ -17,6 +17,7 @@ class MyInterface extends CGFinterface
 
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
+        this.settings.add(this.scene.securityPOV, 'active').name("Security Camera");
 
         this.initKeys();
         return true;
