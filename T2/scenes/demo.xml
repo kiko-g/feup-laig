@@ -1,40 +1,40 @@
 <lxs>
     <scene root="ROOT NODE" axis_length="5"/>
-    <views default="CORNER">
-        <perspective id="DEFAULT" near="0.1" far="500" angle="50">
+    <views default="Corner">
+        <perspective id="Default" near="0.1" far="500" angle="50">
             <from x="-25" y="30" z="50" />
             <to x="0" y="3" z="-10" />
         </perspective>
-        <perspective id="CORNER" near="0.1" far="500" angle="70">
+        <perspective id="Corner" near="0.1" far="500" angle="70">
             <from x="-27.5" y="30" z="29.5" />
             <to x="30" y="0" z="-20" />
         </perspective>
-        <perspective id="LOW" near="0.1" far="500" angle="45">
+        <perspective id="Low" near="0.1" far="500" angle="45">
             <from x="0" y="6" z="30" />
             <to x="0" y="3" z="-20" />
         </perspective>
-        <perspective id="CENTRAL ATOM" near="0.1" far="500" angle="60">
+        <perspective id="Central atom" near="0.1" far="500" angle="60">
             <from x="0" y="35" z="-5" />
             <to x="0" y="27" z="-20" />
         </perspective>
-        <perspective id="LEFT ATOM" near="0.1" far="500" angle="60">
+        <perspective id="Left atom" near="0.1" far="500" angle="60">
             <from x="-15" y="25" z="-10" />
             <to x="-15" y="15" z="-20" />
         </perspective>        
-        <perspective id="BACK" near="0.1" far="500" angle="50">
+        <perspective id="Back" near="0.1" far="500" angle="50">
             <from x="5" y="40" z="-60" />
             <to x="0" y="-10" z="30" />
         </perspective>
-        <perspective id="SECRET" near="0.1" far="500" angle="80">
+        <perspective id="Secret" near="0.1" far="500" angle="80">
             <from x="-28" y="30" z="-28" />
             <to x="-20" y="20" z="-20" />
         </perspective>
-        <ortho id="ORTHO SIDE" near="0.1" far="500" left="-50.0" right="50.0" top="30" bottom="-30">
+        <ortho id="Ortho side" near="0.1" far="500" left="-50.0" right="50.0" top="30" bottom="-30">
             <from x="30" y="30" z="30" />
             <to x="-20" y="0" z="-20" />
             <up x="-20" y="0" z="-20" />
         </ortho>
-        <ortho id="ORTHO FRONT" near="0.1" far="500" left="-35.0" right="35.0" top="40" bottom="-6">
+        <ortho id="Ortho front" near="0.1" far="500" left="-35.0" right="35.0" top="40" bottom="-6">
             <from x="0" y="5" z="30" />
             <to x="0" y="0" z="0" />
             <up x="0" y="0.1" z="-1" />
@@ -88,25 +88,25 @@
 
 
     <textures>
-        <texture id="default"       file="img/default.jpg" />
-        <texture id="pickle"        file="img/rm2.jpg" />
-        <texture id="wubba"         file="img/rm3.png" />
-        <texture id="morty"         file="img/morty.jpg" />
-        <texture id="rick"          file="img/rick.jpg" />
-        <texture id="darkm"         file="img/darkmatter.png" />
-        <texture id="space"         file="img/space.jpg" />
-        <texture id="matter"        file="img/spherematter.png" />
-        <texture id="floor"         file="img/floor.jpg" />
-        <texture id="sky"           file="img/sky.jpg" />
-        <texture id="PENCIL_wood"   file="img/PENCIL_tip.jpg" />
-        <texture id="carbon"        file="img/carbon.jpg" />
-        <texture id="white_plas"    file="img/white_plast.jpg" />
-        <texture id="rubber"        file="img/rubber.png" />
-        <texture id="laig"          file="img/LAIG_3.png" />
-        <texture id="pages"         file="img/pages.png" />
-        <texture id="portugal"      file="img/portugal.png" />
-        <texture id="sheet"         file="img/papersheet.png" />
-        <texture id="marega"        file="img/marega.jpg" />
+        <texture id="default"       file="scenes/img/default.jpg" />
+        <texture id="pickle"        file="scenes/img/rm2.jpg" />
+        <texture id="wubba"         file="scenes/img/rm3.png" />
+        <texture id="morty"         file="scenes/img/morty.jpg" />
+        <texture id="rick"          file="scenes/img/rick.jpg" />
+        <texture id="darkm"         file="scenes/img/darkmatter.png" />
+        <texture id="space"         file="scenes/img/space.jpg" />
+        <texture id="matter"        file="scenes/img/spherematter.png" />
+        <texture id="floor"         file="scenes/img/floor.jpg" />
+        <texture id="sky"           file="scenes/img/sky.jpg" />
+        <texture id="PENCIL_wood"   file="scenes/img/PENCIL_tip.jpg" />
+        <texture id="carbon"        file="scenes/img/carbon.jpg" />
+        <texture id="white_plas"    file="scenes/img/white_plast.jpg" />
+        <texture id="rubber"        file="scenes/img/rubber.png" />
+        <texture id="laig"          file="scenes/img/LAIG_3.png" />
+        <texture id="pages"         file="scenes/img/pages.png" />
+        <texture id="portugal"      file="scenes/img/portugal.png" />
+        <texture id="sheet"         file="scenes/img/papersheet.png" />
+        <texture id="marega"        file="scenes/img/marega.jpg" />
     </textures>
 
 

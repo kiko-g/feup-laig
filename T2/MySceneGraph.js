@@ -1433,5 +1433,5 @@ parseKeyframe(keyframe, keyframeInstant)
      * Callback to be executed on any message.
      * @param {string} message
      */
-    log(message) { console.log(">>> " + message); }
+    log(message) { console.log("✔️ " + message); }
 }

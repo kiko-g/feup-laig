@@ -24,9 +24,8 @@ class MySceneGraph
     constructor(filename, scene)
     {
         this.scene = scene;
-        scene.graph = this;     // Establish bidirectional references between scene and graph.
-        this.nodes = [];        // unused
-        this.idRoot = null;     // The id of the root element.
+        this.scene.graph = this;        // Bidirectional references between scene and graph
+        this.idRoot = null;             // The id of the root element.
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -43,6 +42,10 @@ class MySceneGraph
         this.reader.open('scenes/' + filename, this);
     }
 
+    cycleMaterial(component) {
+        component.materials.current++;
+        component.materials.current = (component.materials.current % component.materials.materials.length);
+    }
 
     // Callback to be executed after successful reading
     onXMLReady()
@@ -57,7 +60,9 @@ class MySceneGraph
         /**
          * As the graph loaded ok, signal the scene so that any
          * additional initialization depending on the graph can take place */
-        this.scene.onGraphLoaded();
+        this.scene.graphlist.push(this);
+        console.log("☑️ Graph " + this.scene.graphlist.length + " loaded");
+        if(this.scene.graphlist.length == 2) this.scene.onGraphLoaded();
     }
 
 
@@ -169,13 +174,8 @@ class MySceneGraph
             if ((error = this.parseComponents(nodes[index])) != null) return error;
             //Parse components block
         }
-
-        this.log("ALL BLOCKS PARSED");
     }
 
-
-
-    // ==========================================================
 
 
 
@@ -338,7 +338,7 @@ class MySceneGraph
         if (!Array.isArray(color)) return color;
         else this.background = color;
 
-        this.log("Parsed globals (ambient)");
+        this.log("Parsed ambient");
 
         return null;
     }
@@ -662,76 +662,73 @@ class MySceneGraph
     }
 
 
-
-
-
-parseAnimations(animationNode)
-{
-    var children = animationNode.children;
-    var grandChildren = [];      //keyframes
-    this.animations = [];
-
-    for (var i = 0; i < children.length; i++)
+    parseAnimations(animationNode)
     {
-        let keyframes = [];
-        if (children[i].nodeName != "animation") {
-            this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
-            continue;
-        }
+        var children = animationNode.children;
+        var grandChildren = [];      //keyframes
+        this.animations = [];
 
-        // Get id of the current material.
-        var animationID = this.reader.getString(children[i], "id");
-        if (animationID == null) return "no ID defined for animation";
-
-        // Checks for repeated IDs.
-        if (this.animations[animationID] != null)
-            return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
-
-        grandChildren = children[i].children;
-        if(grandChildren.length == 0) return "no keyframes defined for animation " + children[i];
-        for (var j = 0; j < grandChildren.length; j++)
+        for (var i = 0; i < children.length; i++)
         {
-            if (grandChildren[j].nodeName != "keyframe") {
-                this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
+            let keyframes = [];
+            if (children[i].nodeName != "animation") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
             }
 
-            var keyframeInstant = this.reader.getFloat(grandChildren[j], "instant");
-            if (keyframeInstant == null) return "no instant defined for keyframe";
-            
-            keyframes.push(this.parseKeyframe(grandChildren[j], keyframeInstant));
+            // Get id of the current material.
+            var animationID = this.reader.getString(children[i], "id");
+            if (animationID == null) return "no ID defined for animation";
+
+            // Checks for repeated IDs.
+            if (this.animations[animationID] != null)
+                return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
+
+            grandChildren = children[i].children;
+            if(grandChildren.length == 0) return "no keyframes defined for animation " + children[i];
+            for (var j = 0; j < grandChildren.length; j++)
+            {
+                if (grandChildren[j].nodeName != "keyframe") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
+                    continue;
+                }
+
+                var keyframeInstant = this.reader.getFloat(grandChildren[j], "instant");
+                if (keyframeInstant == null) return "no instant defined for keyframe";
+                
+                keyframes.push(this.parseKeyframe(grandChildren[j], keyframeInstant));
+            }
+            this.animations[animationID] = new KeyframeAnimation(this.scene, animationID, keyframes);
         }
-        this.animations[animationID] = new KeyframeAnimation(this.scene, animationID,keyframes);
+            this.log("Parsed animations");
+            return null;
     }
-        this.log("Parsed animations");
-        return null;
-}
 
 
-parseKeyframe(keyframe, keyframeInstant)
-{
-    //keyframe: 0 -> translate, 1-> rotate, 2 -> scale
-    var translate = []; 
-    var rotate = []; 
-    var scale = [];
+    parseKeyframe(keyframe, keyframeInstant)
+    {
+        //keyframe: 0 -> translate, 1-> rotate, 2 -> scale
+        var translate = []; 
+        var rotate = []; 
+        var scale = [];
 
-    var T = keyframe.getElementsByTagName("translate");
-    translate.push(parseFloat(T[0].getAttribute("x")));
-    translate.push(parseFloat(T[0].getAttribute("y")));
-    translate.push(parseFloat(T[0].getAttribute("z")));
+        var T = keyframe.getElementsByTagName("translate");
+        translate.push(parseFloat(T[0].getAttribute("x")));
+        translate.push(parseFloat(T[0].getAttribute("y")));
+        translate.push(parseFloat(T[0].getAttribute("z")));
 
-    var R = keyframe.getElementsByTagName("rotate");
-    rotate.push(parseFloat(R[0].getAttribute("angle_x")));
-    rotate.push(parseFloat(R[0].getAttribute("angle_y")));
-    rotate.push(parseFloat(R[0].getAttribute("angle_z")));    
+        var R = keyframe.getElementsByTagName("rotate");
+        rotate.push(parseFloat(R[0].getAttribute("angle_x")));
+        rotate.push(parseFloat(R[0].getAttribute("angle_y")));
+        rotate.push(parseFloat(R[0].getAttribute("angle_z")));    
 
-    var S = keyframe.getElementsByTagName("scale");
-    scale.push(parseFloat(S[0].getAttribute("x")));
-    scale.push(parseFloat(S[0].getAttribute("y")));
-    scale.push(parseFloat(S[0].getAttribute("z")));
+        var S = keyframe.getElementsByTagName("scale");
+        scale.push(parseFloat(S[0].getAttribute("x")));
+        scale.push(parseFloat(S[0].getAttribute("y")));
+        scale.push(parseFloat(S[0].getAttribute("z")));
 
-    return new MyKeyframe(translate, rotate, scale, keyframeInstant);
-}
+        return new MyKeyframe(translate, rotate, scale, keyframeInstant);
+    }
 
 
     /**
@@ -773,6 +770,7 @@ parseKeyframe(keyframe, keyframeInstant)
                  primitiveType != 'sphere'    &&
                  primitiveType != 'torus'     &&
                  primitiveType != 'gameboard' &&
+                 primitiveType != 'painting'  &&
                  primitiveType != 'plane'     &&
                  primitiveType != 'patch')) return "Invalid primitive type";
     
@@ -1030,7 +1028,32 @@ parseKeyframe(keyframe, keyframeInstant)
 
                 let board = new GameBoard(this.scene, primitiveID, x, y, width, depth, height);
                 this.primitives[primitiveID] = board;
-            }            
+            }
+            // -----------------------------------------------------------------------------------------
+            else if (primitiveType == 'painting') {
+                let x = this.reader.getFloat(grandChildren[0], 'x');
+                if (x == null || isNaN(x))
+                    return "unable to parse x coord for painting | ID = " + primitiveID;
+
+                let y = this.reader.getFloat(grandChildren[0], 'y');
+                if (y == null || isNaN(y))
+                    return "unable to parse x coord for painting | ID = " + primitiveID;
+
+                let width = this.reader.getFloat(grandChildren[0], 'width');
+                if (width == null || isNaN(width) || width <= 0)
+                    return "unable to parse width for painting | ID = " + primitiveID;
+
+                let height = this.reader.getFloat(grandChildren[0], 'height');
+                if (height == null || isNaN(height))
+                    return "unable to parse height for painting | ID = " + primitiveID;
+
+                let depth = this.reader.getFloat(grandChildren[0], 'depth');
+                if (depth == null || isNaN(depth))
+                    return "unable to parse depth for painting | ID = " + primitiveID;
+
+                let paint = new Painting(this.scene, primitiveID, x, y, width, depth, height);
+                this.primitives[primitiveID] = paint;
+            }
 
             else console.warn("TO DO: Parse remaining primitives");
         }
@@ -1163,7 +1186,7 @@ parseKeyframe(keyframe, keyframeInstant)
                 lt = this.reader.getFloat(textureNode, "length_t");
             }
             else if(texID == "none") { 
-                tex = null; 
+                tex = null;
                 ls = this.reader.getFloat(textureNode, "length_s");
                 lt = this.reader.getFloat(textureNode, "length_t");
             }
@@ -1224,7 +1247,33 @@ parseKeyframe(keyframe, keyframeInstant)
 
 
 
-    // ==========================================================
+    /**
+     * Originally Implemented
+     * Parse the color components from a node
+     * @param {block element} node
+     * @param {message to be displayed in case of error} messageError
+     */
+    parseColor(node, messageError) {
+        var color = [];
+        var r = this.reader.getFloat(node, 'r');
+        if (!(r != null && !isNaN(r) && r >= 0 && r <= 1))
+        return "unable to parse R component of the " + messageError;
+
+        var g = this.reader.getFloat(node, 'g');
+        if (!(g != null && !isNaN(g) && g >= 0 && g <= 1))
+        return "unable to parse G component of the " + messageError;
+        
+        var b = this.reader.getFloat(node, 'b');
+        if (!(b != null && !isNaN(b) && b >= 0 && b <= 1))
+        return "unable to parse B component of the " + messageError;
+
+        var a = this.reader.getFloat(node, 'a');
+        if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
+        return "unable to parse A component of the " + messageError;
+        
+        color.push(...[r, g, b, a]);
+        return color;
+    }
 
     /**
      * Originally Implemented
@@ -1248,7 +1297,6 @@ parseKeyframe(keyframe, keyframeInstant)
         return position;
     }
 
-
     /**
      * Originally Implemented
      * Parse the coordinates from a node with ID = id
@@ -1268,8 +1316,7 @@ parseKeyframe(keyframe, keyframeInstant)
         position.push(w);
         return position;
     }
-    
-    //TRANSFORMATIONS HELPFUL PARSING FUNCTIONS    
+      
     parseTranslate(matrix, transformation, transformationID) {
         var args = this.parseCoordinates3D(transformation, transformationID); //parse translate arguments
         if (!Array.isArray(args)) {
@@ -1306,36 +1353,6 @@ parseKeyframe(keyframe, keyframeInstant)
         return matrix;
     }
     
-    /**
-     * Originally Implemented
-     * Parse the color components from a node
-     * @param {block element} node
-     * @param {message to be displayed in case of error} messageError
-     */
-    parseColor(node, messageError)
-    {
-        var color = [];
-        var r = this.reader.getFloat(node, 'r');
-        if (!(r != null && !isNaN(r) && r >= 0 && r <= 1))
-        return "unable to parse R component of the " + messageError;
-
-        var g = this.reader.getFloat(node, 'g');
-        if (!(g != null && !isNaN(g) && g >= 0 && g <= 1))
-        return "unable to parse G component of the " + messageError;
-        
-        var b = this.reader.getFloat(node, 'b');
-        if (!(b != null && !isNaN(b) && b >= 0 && b <= 1))
-        return "unable to parse B component of the " + messageError;
-
-        var a = this.reader.getFloat(node, 'a');
-        if (!(a != null && !isNaN(a) && a >= 0 && a <= 1))
-        return "unable to parse A component of the " + messageError;
-        
-        color.push(...[r, g, b, a]);
-        return color;
-    }
-    
-
     parseAttenuationValues(node, msg){
         var values = [];
         var constant = this.reader.getFloat(node, 'constant');
@@ -1355,23 +1372,11 @@ parseKeyframe(keyframe, keyframeInstant)
     }
 
 
-    cycleMaterial(component){
-        component.materials.current++;
-        component.materials.current = (component.materials.current % component.materials.materials.length);
-    }
+
+    /** Displays the scene, processing each node, starting in the root node. */
+    displayScene() { this.traverseGraph(this.components[this.idRoot], this.components[this.idRoot].materials, this.components[this.idRoot].texture); }
 
 
-
-
-    /**
-     * Displays the scene, processing each node, starting in the root node.
-     */
-    displayScene()
-    {
-        this.traverseGraph(this.components[this.idRoot], this.components[this.idRoot].materials, this.components[this.idRoot].texture);
-    }
-
-    // ==================================================================================================================================
     traverseGraph(component, parentMat, parentTex)
     {
         let currentnode = component;
@@ -1438,13 +1443,10 @@ parseKeyframe(keyframe, keyframeInstant)
 
 
     /**
-     * =================================================
-     * ========= DEALING WITH ERRORS FUNCTIONS =========
-     * =================================================
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
      */
-    onXMLError(message) { console.error("XML Loading Error: " + message); this.loadedOk = false; }
+    onXMLError(message) { console.error("❌ XML Loading Error: " + message); this.loadedOk = false; }
 
 
 
@@ -1452,12 +1454,12 @@ parseKeyframe(keyframe, keyframeInstant)
      * Callback to be executed on any minor error, showing a warning on the console.
      * @param {string} message
      */
-    onXMLMinorError(message) { console.warn("Warning: " + message); }
+    onXMLMinorError(message) { console.warn("⚠️ Warning: " + message); }
 
 
     /**
      * Callback to be executed on any message.
      * @param {string} message
      */
-    log(message) { console.log(">>> " + message); }
+    log(message) { console.log("✔️ " + message + ""); }
 }

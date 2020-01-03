@@ -45,7 +45,7 @@ class XMLscene extends CGFscene
     update(t)
     {
         this.mySecurityCam.updateTimeFactor(t / 1500 % 2000);
-
+  
         this.prev || 0.0;
         this.current || 0.0;
         this.timeDif || 0.0;
@@ -55,7 +55,7 @@ class XMLscene extends CGFscene
         this.prev = t;
         for(let key in this.graph.animations)
             if(!this.graph.animations[key].animationDone)
-               this.graph.animations[key].update(this.timeDif);
+            this.graph.animations[key].update(this.timeDif);
     }
 
     // Use camera with default ID if it exists

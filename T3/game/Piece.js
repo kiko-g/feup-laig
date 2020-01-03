@@ -1,12 +1,38 @@
 class Piece extends CGFobject {
     constructor(scene, appearance, color) {
         super(scene);
-        this.appearance = appearance;
         this.color = color;
+        this.appearance = appearance;
         
+        this.step = 1.5;
         this.picked = false;
         this.body = new MyCylinder(scene, "piece", 30, 30, 0.3, 0.3, 0.1, true);
         this.top = new MySphere(scene, "piece-top", 0.3, 30, 30);
+    }
+
+    translateRight(n) {
+        let keyframes = [];
+        keyframes.push(new MyKeyframe([0, 2, 0], [0, 0, 0], [3, 3, 3], 1));
+        // this.scene.graph.animations["right"] = new KeyframeAnimation(this.scene, "piece-anim", keyframes);
+        // this.scene.graph.animations["right"].apply();
+    }
+    
+    translateTop(n) {
+        this.scene.pushMatrix();
+        this.scene.translate(0, this.step * n, 0);
+        this.scene.popMatrix();
+    }
+
+    translateLeft(n) {
+        this.scene.pushMatrix();
+        this.scene.translate(0, this.step * n, 0);
+        this.scene.popMatrix();
+    }
+
+    translateBottom(n) {
+        this.scene.pushMatrix();
+        this.scene.translate(0, this.step * n, 0);
+        this.scene.popMatrix();
     }
 
     display() {

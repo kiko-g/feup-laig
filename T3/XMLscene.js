@@ -1,35 +1,37 @@
 var DEGREE_TO_RAD = Math.PI / 180;
-/**
- * XMLscene class, representing the scene that is to be rendered.
- */
+/** XMLscene class, representing the scene that is to be rendered. */
 class XMLscene extends CGFscene 
 {
     /**
      * @constructor
-     * @param {MyInterface} myinterface
-     */
-    constructor(myinterface)
+     * @param {MyInterface} Interface */
+    constructor(Interface)
     {
         super();
-        this.interface = myinterface;
-    }
+        this.interface = Interface;
+        
+        this.graphlist = [];
+        this.graphid = 1;
+        this.activeSceneString = "Original";
 
-    /** Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
-     *  @param {CGFApplication} application */
-    init(application)
-    {
-        super.init(application);
         this.fps = 60.0;
         this.MPress = false;
         this.displayAxis = true;
         this.sceneInited = false;
         this.viewLightBoxes = true;
+    }
+    
+    /** Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
+     *  @param {CGFApplication} application */
+    init(application)
+    {
+        super.init(application);
         this.enableTextures(true);
         this.setPickEnabled(true);
         this.setUpdatePeriod(1000.0 / this.fps);
         
         //security camera
-        this.RTT = new CGFtextureRTT(this, this.gl.canvas.width * 4, this.gl.canvas.height * 4);
+        this.RTT = new CGFtextureRTT(this, this.gl.canvas.width * 3, this.gl.canvas.height * 3);
         this.securityPOV = new MySecurityCamera(this, this.RTT);
         this.securityPOV.active = false;
         
@@ -37,7 +39,7 @@ class XMLscene extends CGFscene
         this.game = new Game(this);
         this.axis = new CGFaxis(this);
         this.appearance = new CGFappearance(this);
-        
+
         //camera
         this.camera = new CGFcamera(20*DEGREE_TO_RAD, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
         this.gl.clearDepth(100.0);
@@ -59,60 +61,54 @@ class XMLscene extends CGFscene
         this.prev = t;
         for(let key in this.graph.animations)
             if(!this.graph.animations[key].animationDone)
-               this.graph.animations[key].update(this.timeDif);
+                this.graph.animations[key].update(this.timeDif);
     }
 
-    // Use camera with default ID if it exists
+    /** @brief Use camera with default ID if it exists */
     initCameras()
     {
-       this.viewNames = [];
-       this.camerasInited = [];
-       if(this.graph.defaultViewDefined)
-       {
-          for (let key in this.graph.views)
-          {
-            this.viewNames.push(key);
-            var V = this.graph.views[key];
-                
-           if(V.id == this.graph.defaultViewID){ 
-                 this.cameraSelected = V.id;
-           }
+        this.viewNames = [];
+        this.camerasInited = [];
+        if(this.graph.defaultViewDefined)
+        {
+            for (let key in this.graph.views)
+            {
+                this.viewNames.push(key);
+                var V = this.graph.views[key];
+                    
+            if(V.id == this.graph.defaultViewID){ 
+                    this.cameraSelected = V.id;
+            }
 
-           if (V.type == "perspective")
-           this.camerasInited[V.id]=new CGFcamera(DEGREE_TO_RAD * V.angle, V.near, V.far, V.from, V.to);
-                
-           else if (V.type == "ortho")
-           this.camerasInited[V.id]=new CGFcameraOrtho(V.left,V.right,V.bottom,V.top,V.near,V.far,V.from,V.to,V.up);
-         }
-       } 
-       else return;
-       this.securitySelected = "CORNER2";
+            if (V.type == "perspective")
+            this.camerasInited[V.id]=new CGFcamera(DEGREE_TO_RAD * V.angle, V.near, V.far, V.from, V.to);
+                    
+            else if (V.type == "ortho")
+            this.camerasInited[V.id]=new CGFcameraOrtho(V.left,V.right,V.bottom,V.top,V.near,V.far,V.from,V.to,V.up);
+            }
+        } 
+        else return;
         
+        this.securitySelected = "Corner";
         this.camera = this.camerasInited[this.cameraSelected];
         this.securityCAM = this.camerasInited[this.securitySelected];
     }
     
-    onViewChanged()
-    {
-        this.camera = this.graph.views[this.cameraSelected];
+    onViewChanged() { this.camera = this.graph.views[this.cameraSelected]; }
+    onSecurityChanged() { this.securityCAM = this.camerasInited[this.securitySelected]; }
+    onSceneChanged() { 
+        this.graphid++;
+        this.graph = this.graphlist[this.graphid % this.graphlist.length];
     }
 
-    onSecurityChanged()
-    {
-        this.securityCAM = this.camerasInited[this.securitySelected];
-    }
-    
-
-    //Initializes the scene lights with the values read from the XML file
+    /** @brief Initializes the scene lights with the values read from the XML file */
     initLights()
     {
         var i = 0;  // Lights index.
         // Reads the lights from the scene graph.
-        for (let key in this.graph.lights)
-        {
+        for (let key in this.graph.lights) {
             if (i >= 8) break; // Only eight lights allowed by WebGL.
-            if (this.graph.lights.hasOwnProperty(key))
-            {
+            if (this.graph.lights.hasOwnProperty(key)) {
                 var light = this.graph.lights[key];
 
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
@@ -136,8 +132,7 @@ class XMLscene extends CGFscene
         }
     }
     
-    toggleLights() 
-    {
+    toggleLights() {
         var i = 0;
         for (let key in this.graph.lights)
         {
@@ -170,15 +165,16 @@ class XMLscene extends CGFscene
      *  As loading is asynchronous, this may be called already after the application has started the run loop */
     onGraphLoaded()
     {
+        // console.log(this.graph);
         this.axis = new CGFaxis(this, this.graph.referenceLength);
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
-        
+
         this.initLights();
         this.initCameras();
+        this.interface.sceneInterface();
         this.interface.lightsInterface();
-        this.interface.viewsInterface();
-        this.interface.securityInterface();
+        this.interface.optionsInterface();
         
         this.sceneInited = true;
     }
@@ -238,8 +234,10 @@ class XMLscene extends CGFscene
     {
         if(this.pickMode == false)
           if(this.pickResults != null && this.pickResults.length > 0)
-            for(var i = 0; i < this.pickResults.length; i++) 
-               if(this.pickResults[i][0]) 
-                 console.log("> " + this.pickResults[i][0].id + " " + this.pickResults[i][1]);
+          {
+              for(var i = 0; i < this.pickResults.length; i++) 
+                 if(this.pickResults[i][0]) 
+                   console.log("⛏️ " + this.pickResults[i][0].id + " " + this.pickResults[i][1]);
+          }
     }
 }

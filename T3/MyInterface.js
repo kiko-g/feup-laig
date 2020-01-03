@@ -1,52 +1,53 @@
-/**
-* MyInterface class, creating a GUI interface.
-*/
+/** MyInterface class, creating a GUI interface. */
 class MyInterface extends CGFinterface
 {
     constructor() { super(); }
     init(application)
     {
         super.init(application);
-        this.scene.displayAxis = true;
+        this.scene.displayAxis = false;
         this.scene.viewLightBoxes = false;
 
         this.gui = new dat.GUI();
         this.lights = this.gui.addFolder("Lighting");
-        this.settings = this.gui.addFolder("General Settings");
-        this.settings.open();
-
+        
+        this.sceneset = this.gui.addFolder("Scene");
+        this.sceneset.open();
+        
+        this.settings = this.gui.addFolder("Settings");
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
         this.settings.add(this.scene.securityPOV, 'active').name("Security Camera");
+
 
         this.initKeys();
         this.gui.close();
         return true;
     }
     
-    lightsInterface(){
+    lightsInterface() {
         for(let key in this.scene.graph.lights)
             this.lights.add(this.scene.graph.lights[key], 0).name(key);
     }
 
-    viewsInterface(){
-        this.gui.add(this.scene, "cameraSelected", this.scene.viewNames).
-        onChange(this.scene.onViewChanged.bind(this.scene)).name("Perspective");
+    sceneInterface() { 
+        this.sceneset.add(this.scene, "activeSceneString", ["Room", "Original"]).onChange(this.scene.onSceneChanged.bind(this.scene)).name("Scene"); 
+        this.sceneset.add(this.scene, "cameraSelected", this.scene.viewNames).onChange(this.scene.onViewChanged.bind(this.scene)).name("Perspective");
+        this.sceneset.add(this.scene, "securitySelected", this.scene.viewNames).onChange(this.scene.onSecurityChanged.bind(this.scene)).name("Security Cam");
     }
 
-    securityInterface(){
-        this.gui.add(this.scene, "securitySelected", this.scene.viewNames).
-        onChange(this.scene.onSecurityChanged.bind(this.scene)).name("Security Camera");
+    optionsInterface() {
+        this.options = this.gui.addFolder("Game Options");
+        this.options.open();
+        this.options.add(this.scene.game, "startGame").name("Start Game");
+        this.options.add(this.scene.game, "undoPlay").name("Undo Play");
+        this.options.add(this.scene.game, "resetAndQuit").name("Reset Game");
+        this.options.add(this.scene.game, "generateGameMovie").name("Watch Movie");
     }
 
-    initKeys()
-    {
-        this.scene.gui = this;
-        this.processKeyboard = function(){};
-        this.activeKeys = {};
-    }
-
-    processKeyDown(event){ this.activeKeys[event.code] = true; }
-    processKeyUp(event){ this.activeKeys[event.code] = false; }
+    //keys
+    initKeys() { this.scene.gui = this; this.processKeyboard = function(){}; this.activeKeys = {}; }
+    processKeyDown(event) { this.activeKeys[event.code] = true; }
+    processKeyUp(event)   { this.activeKeys[event.code] = false; }
     isKeyPressed(keyCode) { return this.activeKeys[keyCode] || false; }
 }

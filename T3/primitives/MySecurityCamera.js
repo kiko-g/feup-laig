@@ -15,7 +15,7 @@ class MySecurityCamera extends CGFobject
         super(scene);
         this.RTT = RTT;
         
-        this.securityrec = new MyRectangle(scene, "security_rect", -1, -0.75, 0.75, 1, false, true);
+        this.securityrec = new MyRectangle(scene, "security_rect", -1, -2/3, 2/3, 1, false, true);
         this.shader = new CGFshader(scene.gl, "shaders/security.vert", "shaders/security.frag");
         this.shader.setUniformsValues({ timeFactor: 0 });
         

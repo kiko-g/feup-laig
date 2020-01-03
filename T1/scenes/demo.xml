@@ -85,23 +85,23 @@
 
 
     <textures>
-        <texture id="default"       file="img/default.jpg" />
-        <texture id="pickle"        file="img/rm2.jpg" />
-        <texture id="wubba"         file="img/rm3.png" />
-        <texture id="morty"         file="img/morty.jpg" />
-        <texture id="rick"          file="img/rick.jpg" />
-        <texture id="darkm"         file="img/darkmatter.png" />
-        <texture id="space"         file="img/space.jpg" />
-        <texture id="matter"        file="img/spherematter.png" />
-        <texture id="floor"         file="img/floor.jpg" />
-        <texture id="sky"           file="img/sky.jpg" />
-        <texture id="PENCIL_wood"   file="img/PENCIL_tip.jpg" />
-        <texture id="carbon"        file="img/carbon.jpg" />
-        <texture id="white_plas"    file="img/white_plast.jpg" />
-        <texture id="rubber"        file="img/rubber.png" />
-        <texture id="laig"          file="img/LAIG_3.png" />
-        <texture id="pages"         file="img/pages.png" />
-        <texture id="portugal"      file="img/portugal.png" />
+        <texture id="default"       file="scenes/img/default.jpg" />
+        <texture id="pickle"        file="scenes/img/rm2.jpg" />
+        <texture id="wubba"         file="scenes/img/rm3.png" />
+        <texture id="morty"         file="scenes/img/morty.jpg" />
+        <texture id="rick"          file="scenes/img/rick.jpg" />
+        <texture id="darkm"         file="scenes/img/darkmatter.png" />
+        <texture id="space"         file="scenes/img/space.jpg" />
+        <texture id="matter"        file="scenes/img/spherematter.png" />
+        <texture id="floor"         file="scenes/img/floor.jpg" />
+        <texture id="sky"           file="scenes/img/sky.jpg" />
+        <texture id="PENCIL_wood"   file="scenes/img/PENCIL_tip.jpg" />
+        <texture id="carbon"        file="scenes/img/carbon.jpg" />
+        <texture id="white_plas"    file="scenes/img/white_plast.jpg" />
+        <texture id="rubber"        file="scenes/img/rubber.png" />
+        <texture id="laig"          file="scenes/img/LAIG_3.png" />
+        <texture id="pages"         file="scenes/img/pages.png" />
+        <texture id="portugal"      file="scenes/img/portugal.png" />
     </textures>
 
 
