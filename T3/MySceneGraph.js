@@ -62,7 +62,10 @@ class MySceneGraph
          * additional initialization depending on the graph can take place */
         this.scene.graphlist.push(this);
         console.log("☑️ Graph " + this.scene.graphlist.length + " loaded");
-        if(this.scene.graphlist.length == 2) this.scene.onGraphLoaded();
+        if(this.scene.graphlist.length == 2) {
+            this.scene.onGraphLoaded();
+            this.scene.graph = this.scene.graphlist[this.scene.graphid];
+        } 
     }
 
 
@@ -456,6 +459,8 @@ class MySceneGraph
         return null;
     }
 
+
+
     /**
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
@@ -567,6 +572,7 @@ class MySceneGraph
     }
 
     
+
     /**
      * Parses the <transformations> block.
      * @param {transformations block element} transformationsNode
@@ -615,6 +621,7 @@ class MySceneGraph
     }
 
     
+
     /**
      * Parses the <transformations> block.
      * @param {transformations block element} transformationsNode
@@ -771,6 +778,7 @@ class MySceneGraph
                  primitiveType != 'torus'     &&
                  primitiveType != 'gameboard' &&
                  primitiveType != 'painting'  &&
+                 primitiveType != 'plant'  &&
                  primitiveType != 'plane'     &&
                  primitiveType != 'patch')) return "Invalid primitive type";
     
@@ -1054,6 +1062,10 @@ class MySceneGraph
                 let paint = new Painting(this.scene, primitiveID, x, y, width, depth, height);
                 this.primitives[primitiveID] = paint;
             }
+            else if(primitiveType == 'plant') {
+                let plant = new Plant(this.scene);
+                this.primitives[primitiveID] = plant;
+            }
 
             else console.warn("TO DO: Parse remaining primitives");
         }
@@ -1062,9 +1074,6 @@ class MySceneGraph
         return null;
     }
     
-
-
-
     
     
     /**
@@ -1419,7 +1428,7 @@ class MySceneGraph
         if(currentTexture != null) 
             currentTexture.bind();
         this.scene.multMatrix(currentnode.transfMatrix);
-        if(currentnode.animationID != null){
+        if(currentnode.animationID != null) {
             // apply animation matrix if node has animation
             this.animations[currentnode.animationID].apply();
         }

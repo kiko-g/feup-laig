@@ -8,12 +8,12 @@ class XMLscene extends CGFscene
     constructor(Interface)
     {
         super();
-        this.interface = Interface;
-        
+        this.interface = Interface;        
         this.graphlist = [];
-        this.graphid = 1;
-        this.activeSceneString = "Original";
-
+        
+        this.graphid = 0; //starting graph
+        this.determine_graph();
+        
         this.fps = 60.0;
         this.MPress = false;
         this.displayAxis = true;
@@ -52,17 +52,24 @@ class XMLscene extends CGFscene
     {
         this.securityPOV.updateTimeFactor(t/1500 % 2000);
 
-        this.prev || 0.0;
-        this.current || 0.0;
-        this.timeDif || 0.0;
+        if(this.prev == undefined) this.prev = 0.0;
+        if(this.current == undefined) this.current = 0.0;
+        if(this.timeDif == undefined) this.timeDif = 0.0;
         
         this.timeDif = (t - this.prev) / 1000.0;
         this.current = (this.current + this.timeDif);
         this.prev = t;
+        if(this.timeDif > 1) this.current = 0;
+        
         for(let key in this.graph.animations)
-            if(!this.graph.animations[key].animationDone)
+            if(!this.graph.animations[key].animationDone) 
                 this.graph.animations[key].update(this.timeDif);
+
+        // for(let key in this.graph.animations)
+        //     if(!this.graph.animations[key].animationDone) 
+        //         this.graph.animations[key].update(this.timeDif);        
     }
+
 
     /** @brief Use camera with default ID if it exists */
     initCameras()
@@ -94,12 +101,12 @@ class XMLscene extends CGFscene
         this.securityCAM = this.camerasInited[this.securitySelected];
     }
     
+
+    //INTERFACES
     onViewChanged() { this.camera = this.graph.views[this.cameraSelected]; }
     onSecurityChanged() { this.securityCAM = this.camerasInited[this.securitySelected]; }
-    onSceneChanged() { 
-        this.graphid++;
-        this.graph = this.graphlist[this.graphid % this.graphlist.length];
-    }
+    onSceneChanged() { this.graphid++; this.graph = this.graphlist[this.graphid % this.graphlist.length]; }
+
 
     /** @brief Initializes the scene lights with the values read from the XML file */
     initLights()
@@ -132,6 +139,7 @@ class XMLscene extends CGFscene
         }
     }
     
+    
     toggleLights() {
         var i = 0;
         for (let key in this.graph.lights)
@@ -160,12 +168,21 @@ class XMLscene extends CGFscene
         this.setShininess(10.0);
     }
 
+
+    determine_graph() {
+        if (this.graphid == 0) this.activeSceneString = "Room";
+        else if (this.graphid == 1) this.activeSceneString = "Original";
+        else {
+            this.graphid = 0;
+            this.activeSceneString = "Room";
+        }
+    }
+
     
     /** Handler called when the graph is finally loaded. 
      *  As loading is asynchronous, this may be called already after the application has started the run loop */
     onGraphLoaded()
     {
-        // console.log(this.graph);
         this.axis = new CGFaxis(this, this.graph.referenceLength);
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);

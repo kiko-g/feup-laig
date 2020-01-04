@@ -4,8 +4,8 @@ class Timer extends CGFobject {
 
         this.numbers = numbers;
 
-        this.base = new MyQuad(this.scene, -1.0, -0.5, 0.0, 0.5);
-        this.texture = new CGFtexture(this.scene, 'scenes/images/timer.png')
+        this.base = new MyRectangle(this.scene, "timer", -1.0, -0.5, 0.0, 0.5);
+        this.texture = new CGFtexture(this.scene, 'scenes/images/timer.png');
     }
 
     display(){

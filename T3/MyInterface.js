@@ -10,18 +10,17 @@ class MyInterface extends CGFinterface
 
         this.gui = new dat.GUI();
         this.lights = this.gui.addFolder("Lighting");
-        
-        this.sceneset = this.gui.addFolder("Scene");
-        this.sceneset.open();
-        
+                
         this.settings = this.gui.addFolder("Settings");
         this.settings.add(this.scene, 'displayAxis').name("Axis");
         this.settings.add(this.scene, 'viewLightBoxes').name("Light Boxes");
         this.settings.add(this.scene.securityPOV, 'active').name("Security Camera");
-
+        
+        this.sceneset = this.gui.addFolder("Scene");
+        this.sceneset.open();
 
         this.initKeys();
-        this.gui.close();
+        // this.gui.close();
         return true;
     }
     
@@ -31,9 +30,9 @@ class MyInterface extends CGFinterface
     }
 
     sceneInterface() { 
-        this.sceneset.add(this.scene, "activeSceneString", ["Room", "Original"]).onChange(this.scene.onSceneChanged.bind(this.scene)).name("Scene"); 
         this.sceneset.add(this.scene, "cameraSelected", this.scene.viewNames).onChange(this.scene.onViewChanged.bind(this.scene)).name("Perspective");
         this.sceneset.add(this.scene, "securitySelected", this.scene.viewNames).onChange(this.scene.onSecurityChanged.bind(this.scene)).name("Security Cam");
+        this.sceneset.add(this.scene, "activeSceneString", ["Room", "Original"]).onChange(this.scene.onSceneChanged.bind(this.scene)).name("Scene");
     }
 
     optionsInterface() {
@@ -43,6 +42,8 @@ class MyInterface extends CGFinterface
         this.options.add(this.scene.game, "undoPlay").name("Undo Play");
         this.options.add(this.scene.game, "resetAndQuit").name("Reset Game");
         this.options.add(this.scene.game, "generateGameMovie").name("Watch Movie");
+        this.options.add(this.scene.game, "changeTurn").name("Change Turn");
+        this.options.add(this.scene.game, "cameraAnimation").name("Rotate");
     }
 
     //keys

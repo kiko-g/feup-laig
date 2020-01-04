@@ -77,7 +77,6 @@ class Painting extends CGFobject
         this.top.display();
         
         this.material.apply();
-        this.bottom.display();
         this.scene.pushMatrix();
         this.side.display();
         this.scene.rotate(Math.PI, 0, 0, 1);

@@ -50,7 +50,7 @@ class KeyframeAnimation extends Animation
     }
 
     update(time) { this.generateAniMatrix(time); }
-    apply() {  this.scene.multMatrix(this.aniMatrix); }
+    apply() {  this.scene.multMatrix(this.aniMatrix); return false; }
     determineTransformation()
     {
         mat4.identity(this.aniMatrix);

@@ -15,31 +15,51 @@ class Game
             'PvC med':  3,
             'CvC':      4,
         });
+        this.currentState = this.states.MENU;
 
         this.initialize();
         this.P = P;
-        this.whiteTurn = true;
-        this.blackTurn = false;
+        this.turns = Object.freeze({
+            'W': 0,
+            'B': 1,
+        });
+        this.turn = this.turns.W;
         this.difficulty = 'Easy';
+        this.time = 0.0;
     }
 
 
     startGame() {
+        console.log("Work In Progress");
         return false;
     }
 
     undoPlay() {
+        console.log("Work In Progress");
         return false;
     }
 
     generateGameMovie() {
+        console.log("Work In Progress");
         return false;
     }
 
     resetAndQuit() {
+        console.log("Work In Progress");
         return false;
     }
 
+    changeTurn() {
+        if(this.turn == this.turns.W) this.turn = this.turns.B;
+        else this.turn = this.turns.W;
+
+        this.scene.board.clearAllPicked();
+    }
+
+    cameraAnimation() { 
+        console.log("Work In Progress");
+        return false;
+    }
 
 
     initialize() 
@@ -73,8 +93,6 @@ class Game
             [P.Null,  R[3][0], R[3][1], R[3][2], R[3][3], R[3][4], R[3][5],  P.Null],
         ];
     }
-
-
 
 
     /**

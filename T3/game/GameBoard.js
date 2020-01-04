@@ -14,6 +14,7 @@ class GameBoard extends CGFobject
     constructor(scene, id, x, y, width, depth, height) 
     {
         super(scene);
+        this.scene.board = this;
         this.x = x;
         this.y = y;
         this.id = id;
@@ -21,9 +22,7 @@ class GameBoard extends CGFobject
         this.width = width;
         this.depth = depth;
         this.height = height;
-        this.available = 0;
-
-        this.prev_piece = {x: null, y: null, ID: null};
+        this.available = [];
 
         this.alltiles = [];     // 60x1 array with all tiles (60)
         this.innertiles = [];   // 6x6  array of inner tiles (36)
@@ -84,7 +83,7 @@ class GameBoard extends CGFobject
 
         //inner tiles
         for (let i=0; i<6; i++) {
-            let aux = [];
+            var aux = [];
             for (let j=0; j<6; j++) {
                 //scene, isOuter, hasPiece, pieceColor
                 let tile = new Tile(this.scene, false, false, undefined);
@@ -96,7 +95,7 @@ class GameBoard extends CGFobject
 
         //outer tiles
         for (let i=0; i<4; i++) {
-            let aux = [];
+            var aux = [];
             for (let j=0; j<6; j++) {
                 let tile = new Tile(this.scene, true, true, game.RL[i][j]);
                 aux.push(tile);
@@ -107,10 +106,7 @@ class GameBoard extends CGFobject
     }
 
     
-
-    // ========================================
     // ======= PICKING FUNCTIONS START ========
-    // ========================================
 
     /** @brief function for general picking*/
     picking()
@@ -166,7 +162,7 @@ class GameBoard extends CGFobject
                         {
                             this.clearAllPicked();
                             this.outertiles[x-6][y].states.picked = true;
-                            this.prev_piece.x = x; this.prev_piece.y = y; this.prev_piece.ID = ID;
+                            this.outertiles[x-6][y].states.available = false;
                             this.rightAvailable(ID, x, y);
                             this.topAvailable(ID, x, y);
                             this.leftAvailable(ID, x, y);
@@ -195,7 +191,6 @@ class GameBoard extends CGFobject
                         {
                             this.clearAllPicked();
                             this.outertiles[x-6][y].states.picked = true;
-                            this.prev_piece.x = x; this.prev_piece.y = y; this.prev_piece.ID = ID;
                             this.rightAvailable(ID, x, y);
                             this.topAvailable(ID, x, y);
                             this.leftAvailable(ID, x, y);
@@ -209,27 +204,36 @@ class GameBoard extends CGFobject
     /** @brief function to display available tiles after white/black pick*/
     rightAvailable(ID, x , y) 
     {
-        this.available = 0;
-        if (ID >= 37 && ID <= 42)
-            for (let i=0; i<6; i++) 
-                if(!this.innertiles[6 - x + i][y].hasPiece) this.available++;
+        var aux = 0;
+        this.available = [];
 
-        for (let i=0; i<this.available; i++) { 
+        if (ID >= 37 && ID <= 42)
+            for (let i=0; i<6; i++) {
+                if(this.innertiles[6 - x + i][y].hasPiece) aux++;
+            }
+        else return; 
+
+        for (let i=0; i<6-aux; i++) {
+            this.available.push({x: 6-x+i, y: y}); 
             this.innertiles[6 - x + i][y].states.picked = true;
             this.innertiles[6 - x + i][y].states.available = true;
         }
-        this.outertiles[x-6][y].piece.translateRight(2);
     }
 
 
     leftAvailable(ID, x, y) 
     {
-        this.available = 0;
-        if (ID >= 49 && ID <= 54)
-            for (let i=0; i<6; i++) 
-                if(!this.innertiles[x - i - 3][5 - y].hasPiece) this.available++;
+        this.available = [];
+        var aux = 0;
 
-        for (let i=0; i<this.available; i++) {
+        if (ID >= 49 && ID <= 54)
+            for (let i=0; i<6; i++) {
+                if(this.innertiles[x - i - 3][5 - y].hasPiece) aux++;
+            }
+        else return;
+
+        for (let i=0; i<(6-aux); i++) {
+            this.available.push({x: x-i-3, y: 5-y});
             this.innertiles[x - i - 3][5 - y].states.picked = true;
             this.innertiles[x - i - 3][5 - y].states.available = true;
         }
@@ -238,12 +242,17 @@ class GameBoard extends CGFobject
 
     topAvailable(ID, x, y) 
     {
-        this.available = 0;
-        if (ID >= 43 && ID <= 48)
-            for (let i=0; i<6; i++) 
-                if(!this.innertiles[y][5 - i].hasPiece) this.available++;
+        this.available = [];
+        var aux = 0;
 
-        for (let i=0; i<this.available; i++) { 
+        if (ID >= 43 && ID <= 48)
+            for (let i=0; i<6; i++) {
+                if(this.innertiles[y][5 - i].hasPiece) aux++;
+            }
+        else return;
+
+        for (let i=0; i<6-aux; i++) { 
+            this.available.push({x: y, y: 5-i});
             this.innertiles[y][5 - i].states.picked = true;
             this.innertiles[y][5 - i].states.available = true;
         }
@@ -252,24 +261,29 @@ class GameBoard extends CGFobject
 
     bottomAvailable(ID, x, y) 
     {
-        this.available = 0;
+        this.available = [];
+        var aux = 0;
+
         if (ID >= 55 && ID <= 60) 
-            for (let i=0; i<6; i++) 
-                if(!this.innertiles[x - y - 4][i].hasPiece) this.available++;
+            for (let i=0; i<6; i++) {
+                if(this.innertiles[x - y - 4][i].hasPiece) aux++;
+            }
+        else return;
         
-        for (let i=0; i<this.available; i++) {
+        for (let i=0; i<6-aux; i++) {
+            this.available.push({x: x-y-4, y: i});
             this.innertiles[x - y - 4][i].states.picked = true;
             this.innertiles[x - y - 4][i].states.available = true;
         }
     } 
-// ======= END OF PICKING FUNCTIONS SECTION =======
+    // ======= END OF PICKING FUNCTIONS SECTION =======
 
 
     display() 
     {
         let game = this.scene.game;
-        if(game.blackTurn) this.pickblack();
-        if(game.whiteTurn) this.pickwhite();
+        if(game.turn == game.turns.W) this.pickwhite();
+        if(game.turn == game.turns.B) this.pickblack();
         this.scene.logPicking();
         this.scene.pickResults.splice(0, this.scene.pickResults.length);
         this.scene.clearPickRegistration();
@@ -313,6 +327,9 @@ class GameBoard extends CGFobject
             this.scene.translate(-this.tilestep, 0, this.tilestep * i);
             this.scene.registerForPick(i + 37, this.outertiles[0][i]);
             this.outertiles[0][i].display();
+            if(this.outertiles[0][i].states.picked && this.outertiles[0][i].hasPiece) {
+                this.outertiles[0][i].piece.animation.apply();
+            } 
             if(this.outertiles[0][i].hasPiece) this.outertiles[0][i].piece.display();
             this.scene.popMatrix();
         }

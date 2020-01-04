@@ -17,13 +17,13 @@ class LightingScene extends CGFscene
 
 		// Scene elements
 		
-        this.disc = new CGFOBJModel(this, 'models/tech_pedestal.obj');
+        this.aqua = new CGFOBJModel(this, 'models/aquarium.obj');
 		this.male = new CGFOBJModel(this, 'models/male.obj');
 		this.suzanne = new CGFOBJModel(this, 'models/suzanne.obj');
         this.navigator = new CGFOBJModel(this, 'models/navigator.obj');
 		
 		// Materials
-		this.materialDefault = this.RGBMaterial(255, 128, 128);
+        this.materialDefault = this.RGBMaterial(255, 255, 255);
 		this.enableTextures(true);
     };
     
@@ -130,7 +130,6 @@ class LightingScene extends CGFscene
 		// this.rotate(-Math.PI/2, 1, 0, 0);
 
         // this.navigator.display();
-        this.disc.display();
 
 		this.popMatrix();
 

@@ -1,6 +1,6 @@
 <lxs>
     <scene root="root" axis_length="3"/>
-    <views default="Player 2">
+    <views default="Player 1">
         <perspective id="Player 1" near="0.1" far="500" angle="75">
             <from x="0" y="11" z="20" />
             <to x="0" y="0" z="-20" />
@@ -26,32 +26,23 @@
 
 
     <lights>
-        <omni id="Main Light (Center)" enabled="1">
-            <location x="0"  y="30.0" z="0" w="1.0" />
+        <omni id="Main Light 1" enabled="1">
+            <location x="0"  y="16.0" z="-8" w="1.0" />
             <ambient  r="0.0" g="0.0" b="0.0" a="0.0" />
             <diffuse  r="0.4" g="0.4" b="0.4" a="0.0" />
             <specular r="0.1" g="0.1" b="0.1" a="0.0" />
             <attenuation constant="1.0" linear="0.0" quadratic="0" />
         </omni>
-        <spot id="Spot Light 1" enabled="1" angle="15" exponent="5">
-            <location x="25"  y="2"  z="-25" w="1.0" />
-            <target   x="-24" y="5"  z="-24"  w="1.0" />
-            <ambient  r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="1.0" quadratic="0" />
-        </spot>
-        <spot id="Spot Light 2" enabled="1" angle="15" exponent="5">
-            <location x="-25" y="2"  z="-25" w="1.0" />
-            <target   x="-24" y="10" z="-24"  w="1.0" />
-            <ambient  r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="1.0" quadratic="0" />
-        </spot>
-        <spot id="Spot Light 3" enabled="1" angle="15" exponent="5">
-            <location x="0"   y="32"  z="-22" w="1.0" />
-            <target   x="0"   y="30"  z="-25" w="1.0" />
+        <omni id="Main Light 2" enabled="1">
+            <location x="0"  y="16.0" z="8" w="1.0" />
+            <ambient  r="0.0" g="0.0" b="0.0" a="0.0" />
+            <diffuse  r="0.25" g="0.25" b="0.25" a="0.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="0.0" />
+            <attenuation constant="1.0" linear="0.0" quadratic="0" />
+        </omni>        
+        <spot id="Spot Light" enabled="1" angle="15" exponent="5">
+            <location x="0"   y="20"  z="-22" w="1.0" />
+            <target   x="0"   y="15"  z="-25" w="1.0" />
             <ambient  r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -72,6 +63,7 @@
         <texture id="space"         file="scenes/img/space.jpg" />
         <texture id="matter"        file="scenes/img/spherematter.png" />
         <texture id="floor"         file="scenes/img/floor.jpg" />
+        <texture id="rug"           file="scenes/img/rug.jpg" />
         <texture id="sky"           file="scenes/img/sky.jpg" />
         <texture id="PENCIL_wood"   file="scenes/img/PENCIL_tip.jpg" />
         <texture id="carbon"        file="scenes/img/carbon.jpg" />
@@ -106,7 +98,7 @@
             <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
         <material id="pencilMAT" shininess="3" >
-            <emission r="0.0" g="0.0" b="0.0" a="0" />
+            <emission r="0.1" g="0.1" b="0.1" a="0" />
             <ambient  r="1.0" g="0.67" b="0.18" a="1" />
             <diffuse  r="1.0" g="0.5" b="0.1" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />
@@ -176,12 +168,6 @@
             <ambient  r="1.0" g="0.0" b="0.0" a="1" />
             <diffuse  r="0.6" g="0.1" b="0.1" a="1" />
             <specular r="1.0" g="1.0" b="1.0" a="1" />        
-        </material>        
-        <material id="whiteMAT" shininess="10">
-            <emission r="0.0" g="0.0" b="0.0" a="1" />
-            <ambient  r="1.0" g="1.0" b="1.0" a="1" />
-            <diffuse  r="1.0" g="1.0" b="1.0" a="1" />
-            <specular r="1.0" g="1.0" b="1.0" a="1" />
         </material>
         <material id="metal" shininess="50">
             <emission r="0.3" g="0.3" b="0.3" a="1" />
@@ -201,12 +187,6 @@
             <diffuse  r="0.38" g="0.2" b="0.07" a="1" />
             <specular r="0.38" g="0.2" b="0.07" a="1" />
         </material>
-        <material id="orangeGLOSS" shininess="10">
-            <emission r="0.1" g="0.1" b="0.1" a="0" />
-            <ambient  r="1.0" g="0.67" b="0.1" a="1" />
-            <diffuse  r="1.0" g="0.5" b="0.1" a="1" />
-            <specular r="1.0" g="1.0" b="1.0" a="1" />
-        </material>        
     </materials>
 
 
@@ -275,13 +255,6 @@
 
 
     <animations>
-        <animation id="atom_rotate1">
-            <keyframe instant="20">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="2160" angle_y="1800" angle_z="0" />
-                <scale x="1" y="1" z="1" />                
-            </keyframe>
-        </animation>        
     </animations>
 
 
@@ -300,6 +273,9 @@
                 <controlpoint xx="1.5"  yy="-2.5"    zz="0.0" />
             </patch>
         </primitive>
+        <primitive id="plant" >
+            <plant/>
+        </primitive>        
         <primitive id="painting">
             <painting x="0" y="0" width="6.0" depth="4.0" height="0.2" />
         </primitive>        
@@ -504,7 +480,7 @@
                 <transformationref id="tinysphere1_setup" />
             </transformation>
             <materials>
-                <material id="orangeGLOSS" />
+                <material id="pencilMAT" />
                 <material id="cyanMAT" />
                 <material id="pinkMAT" />
             </materials>
@@ -550,9 +526,9 @@
                 <transformationref id="floor_setup"/>
             </transformation>
             <materials> 
-                <material id="inherit" />
+                <material id="defaultMAT" />
             </materials>
-                <texture id="floor" length_s="1" length_t="1" />
+                <texture id="rug" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -940,7 +916,7 @@
                 <scale x="1" y="0.08" z="1" />
             </transformation>
             <materials>
-                <material id="whiteMAT" />
+                <material id="defaultMAT" />
             </materials>
                 <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -983,7 +959,7 @@
         <component id="ATOM1">
             <transformation>
                 <scale x="0.65" y="0.65" z="0.65" />
-                <translate x="-6" y="5" z="-9" />
+                <translate x="-12" y="7" z="-9" />
                 <rotate axis="y" angle="-15" />
             </transformation>
             <materials>
@@ -1000,8 +976,8 @@
         <component id="ATOM2">
             <transformation>
                 <scale x="0.65" y="0.65" z="0.65" />
-                <translate x="6" y="5" z="-9" />
-                <rotate axis="y" angle="-20" />
+                <translate x="12" y="7" z="-9" />
+                <rotate axis="y" angle="-50" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1017,7 +993,7 @@
         <component id="ATOM3">
             <transformation>
                 <scale x="0.65" y="0.65" z="0.65" />
-                <translate x="-3" y="9" z="-9" />
+                <translate x="-6" y="10" z="-9" />
                 <rotate axis="y" angle="-20" />
             </transformation>
             <materials>
@@ -1034,7 +1010,8 @@
         <component id="ATOM4">
             <transformation>
                 <scale x="0.65" y="0.65" z="0.65" />
-                <translate x="3" y="9" z="-9" />
+                <translate x="6" y="10" z="-9" />
+                <rotate axis="y" angle="-30" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1069,7 +1046,7 @@
         </component> 
         <component id="ATOM_SET">
             <transformation>
-                <translate x="0" y="2.5" z="-1.5" />
+                <translate x="0" y="3" z="-1.5" />
                 <scale x="0.4" y="0.4" z="0.4" />
             </transformation>
             <materials>
@@ -1149,7 +1126,7 @@
             </transformation>
             <materials>
                 <material id="greyMAT" />
-                <material id="whiteMAT" />
+                <material id="defaultMAT" />
                 <material id="pencilMAT" />
                 <material id="pencilMAT" />
                 <material id="greenMAT" />
@@ -1263,6 +1240,47 @@
             </children>
         </component> 
 
+        <component id="plant1">
+            <transformation>
+                <translate x="2" y="0" z="0" />
+                <scale x="0.5" y="0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plant" />
+            </children>
+        </component> 
+
+        <component id="plant2">
+            <transformation>
+                <translate x="-2" y="0" z="0" />
+                <scale x="0.5" y="0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plant" />
+            </children>
+        </component> 
+
+        <component id="PLANTS">
+            <transformation>
+                <translate x="0" y="0" z="-3.7" />
+            </transformation>
+            <materials>
+                <material id="defaultMAT" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="plant1" />
+                <componentref id="plant2" />
+            </children>
+        </component> 
 
         <component id="root">
             <transformation>
@@ -1282,6 +1300,7 @@
                 <componentref id="BOOK2" />
                 <componentref id="PAINT1" />
                 <componentref id="PAINT2" />
+                <componentref id="PLANTS" />
                 <componentref id="GAME_BOARD" />
             </children>
         </component>
