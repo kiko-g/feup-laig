@@ -72,7 +72,6 @@
         <texture id="rubber"        file="scenes/img/rubber.png" />
         <texture id="laig"          file="scenes/img/LAIG_3.png" />
         <texture id="pages"         file="scenes/img/pages.png" />
-        <texture id="marega"        file="scenes/img/marega.jpg" />
         <texture id="rug"           file="scenes/img/rug2.jpg" />
         <texture id="wall2"         file="scenes/img/wall3.jpg" />
     </textures>
@@ -286,6 +285,9 @@
                 <controlpoint xx="1.5"  yy="2.5"     zz="0.0" />
                 <controlpoint xx="1.5"  yy="-2.5"    zz="0.0" />
             </patch>
+        </primitive>
+        <primitive id="drawer" >
+            <drawer />
         </primitive>
         <primitive id="plant" >
             <plant/>
@@ -763,7 +765,7 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-                <texture id="marega" length_s="4" length_t="4" />
+                <texture id="abou" length_s="4" length_t="4" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -1159,29 +1161,6 @@
         <!-- BOOKS -->
         <component id="BOOK1">
             <transformation>
-                <translate x="-4" y="0" z="-1.5" />
-                <scale x="0.5" y="0.833" z="0.833" />
-                <rotate axis="y" angle="45"/>
-            </transformation>
-            <materials>
-                <material id="bookMAT" />
-            </materials>
-                <texture id="none" length_s="1" length_t="1" />
-            <children>
-                <componentref id="cover0" />
-                <componentref id="cover1" />
-                <componentref id="back0" />
-                <componentref id="back1" />
-                <componentref id="pages1" />
-                <componentref id="pages2" />
-                <componentref id="pages3" />
-                <componentref id="side" />
-                <componentref id="book_top" />
-                <componentref id="book_bottom" />
-            </children>
-        </component>
-        <component id="BOOK2">
-            <transformation>
                 <translate x="3" y="0" z="-4" />
                 <scale x="0.5" y="0.833" z="0.833" />
                 <rotate axis="y" angle="-45"/>
@@ -1263,7 +1242,7 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-                <texture id="window4" length_s="1" length_t="1" />
+                <texture id="window1" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="painting" />
             </children>
@@ -1328,6 +1307,19 @@
             </children>
         </component> 
 
+        <component id="DRAWERS">
+            <transformation>
+                <translate x="0" y="0" z="-3.7" />
+            </transformation>
+            <materials>
+                <material id="donutMAT" />
+            </materials>
+                <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="drawer" />
+            </children>
+        </component>
+
         <component id="root">
             <transformation>
                 <scale x="3" y="3" z="3" />
@@ -1341,12 +1333,11 @@
                 <componentref id="CUBEMAP" />
                 <componentref id="PENCIL" />
                 <componentref id="BOOK1" />
-                <componentref id="BOOK2" />
                 <componentref id="PAINT1" />
                 <componentref id="PAINT2" />
                 <componentref id="PAINT3" />
                 <componentref id="PAINT4" />
-                <componentref id="PLANTS" />
+                <componentref id="DRAWERS" />
                 <componentref id="GAME_BOARD" />
             </children>
         </component>

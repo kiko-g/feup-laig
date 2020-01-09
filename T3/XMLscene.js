@@ -22,9 +22,6 @@ class XMLscene extends CGFscene
         this.rotateCamera = false;      // used for rotating camera (180 degrees)
         this.angle_cnt = 0;             // angle increment counter
         this.sceneInited = false;
-
-        //models
-        // this.W = new CGFOBJModel(this, 'primitives/obj/models/piano.obj');
     }
     
     /** Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.

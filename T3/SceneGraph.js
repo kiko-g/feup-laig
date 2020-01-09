@@ -778,8 +778,9 @@ class MySceneGraph
                  primitiveType != 'torus'     &&
                  primitiveType != 'gameboard' &&
                  primitiveType != 'painting'  &&
-                 primitiveType != 'plant'  &&
+                 primitiveType != 'plant'     &&
                  primitiveType != 'plane'     &&
+                 primitiveType != 'drawer'    &&
                  primitiveType != 'patch')) return "Invalid primitive type";
     
             // Specifications for the current primitive.
@@ -1065,6 +1066,10 @@ class MySceneGraph
             else if(primitiveType == 'plant') {
                 let plant = new Plant(this.scene);
                 this.primitives[primitiveID] = plant;
+            }
+            else if(primitiveType == 'drawer') {
+                let drawers = new Drawers(this.scene);
+                this.primitives[primitiveID] = drawers;
             }
 
             else console.warn("TO DO: Parse remaining primitives");
@@ -1410,7 +1415,6 @@ class MySceneGraph
             lt = currentnode.texture.lt;
         }
 
-
         if (currentnode.materials.materials != "inherit"){
             MATS = currentnode.materials;
         }
@@ -1425,8 +1429,7 @@ class MySceneGraph
         currentMaterial.setTexture(currentTexture);
         currentMaterial.setTextureWrap('REPEAT', 'REPEAT');
         currentMaterial.apply();
-        if(currentTexture != null) 
-            currentTexture.bind();
+        if(currentTexture != null) currentTexture.bind();
         this.scene.multMatrix(currentnode.transfMatrix);
         if(currentnode.animationID != null) {
             // apply animation matrix if node has animation

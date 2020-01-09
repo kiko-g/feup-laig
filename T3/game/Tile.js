@@ -1,13 +1,12 @@
 class Tile extends CGFobject
 {
-    constructor(scene, outer, hasPiece, pieceColor = undefined, x = null, y = null) 
+    constructor(scene, outer, pieceColor = undefined, x = null, y = null) 
     {
         super(scene);
         this.id = "TILE";
         this.x = x+1;       //used for prolog
         this.y = y+1;       //used for prolog
         this.outer = outer;
-        this.hasPiece = hasPiece;
         this.pieceColor = pieceColor;
         this.quad = new Plane(scene, "tile", 1, 1);
         this.states = {picked: false, available: false, move: false};
@@ -44,15 +43,14 @@ class Tile extends CGFobject
         //initialize Piece
         if (this.pieceColor == this.scene.game.P.Black) 
             this.piece = new Piece(this.scene, this.black, this.scene.game.P.Black);
-
         else if (this.pieceColor == this.scene.game.P.White) 
             this.piece = new Piece(this.scene, this.white, this.scene.game.P.White);
+        else this.piece = null;            
         }
     
     
     movePiece(x, y) {
-        // this.hasPiece = false;
-        // this.scene.board.innertiles[x][y].hasPiece = true;
+        // this.scene.board.innertiles[x][y].piece = null;
         // this.piece = this.scene.board.outertiles[x][y].piece;
     }
 

@@ -6,7 +6,7 @@ class Game
     constructor(scene)
     {
         this.scene = scene;
-        this.started = true;
+        this.started = false;
         this.gamemode = 'PVP';
         this.animActive = false;
         
@@ -43,29 +43,54 @@ class Game
             [R[2][5], P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, R[0][0]],
             [P.Null,  R[3][0], R[3][1], R[3][2], R[3][3], R[3][4], R[3][5],  P.Null],
         ];
-        this.initialboard = this.board;
+
+        this.boardtest = [
+            [P.Null,  P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty,  P.Null],
+            [P.Empty, P.Empty, P.White, P.White, P.Black, P.Black, P.Black, P.Empty],
+            [P.White, P.White, P.White, P.Black, P.Black, P.White, P.White, P.Empty],
+            [P.White, P.Empty, P.White, P.Black, P.Black, P.Empty, P.White, P.Empty],
+            [P.White, P.Empty, P.White, P.Black, P.Black, P.Empty, P.White, P.Empty],
+            [P.Empty, P.Empty, P.Empty, P.Empty, P.Black, P.Empty, P.White, P.Empty],
+            [P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty],
+            [P.Null,  P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty,  P.Null],
+        ];        
+        this.initialboard = this.boardtest;
     }
 
     update(time) {
         // if(this.scene.sceneInited)
             // for(let i=0; i<6; i++) {
             //     for(let j=0; j<6; j++)
-            //         if(this.scene.gameboard.innertiles[i][j].hasPiece) 
+            //         if(this.scene.gameboard.innertiles[i][j].piece != null) 
             // }
     }
 
     startGame() {
-        if (this.started) console.log("📈 Game in progress already");
+        if (this.started) {
+            console.log("📈 Game in progress already");
+            return false;
+        } 
         else console.log("🎲 Started Game");
+
+        this.scene.gameboard.timer.resetCount();
         this.started = true;
 
         return true;
+    }
+
+    stopTimer() {
+        this.scene.gameboard.timer.stopCount();
+    }
+
+    resetTimer() {
+        this.scene.gameboard.timer.resetCount();
     }
 
     quitGame() {
         if(!this.started) console.log("📈 No game session in progress!");
         else console.log("🚪 Exited Game");
         this.started = false;
+        this.scene.gameboard.timer.stopCount();
         this.scene.gameboard.initializeTiles();
 
         return true;
@@ -310,3 +335,185 @@ class Game
 
 }
 function handleReply(data){ document.querySelector("#query_result").innerHTML=data.target.response; }
+
+/** @brief determine winner functions using flood fill methods*/
+function floodFill(data, x0, y0, newValue) {
+    let minX = x0, maxX = x0;
+    let minY = y0, maxY = y0;
+    let R = {value: 0, color: undefined };
+
+    // perform a deep clone, copying data to newData
+    let newData = [];
+    for (let i = 0; i < data.length; i++)
+        newData[i] = data[i].slice();
+
+    // from now on we make modifications to newData, not data
+    let target = newData[x0][y0];
+    if(target!="white" && target!="black") return null;
+
+    R.color = target;
+    function flow(x,y) {
+        if (x >= 0 && x < newData.length && y >= 0 && y < newData[x].length) {
+            if (newData[x][y] === target) {
+                minX = Math.min(x, minX);
+                maxX = Math.max(x, maxX);
+                minY = Math.min(y, minY);
+                maxY = Math.max(y, maxY);
+
+                newData[x][y] = newValue;
+                R.value++;
+                flow(x-1, y);
+                flow(x+1, y);
+                flow(x, y-1);
+                flow(x, y+1);
+            }
+        }
+    }
+    flow(x0,y0);
+    return R;
+}
+
+function getWinner(board) 
+{
+    let max = {white: {value: 0, color: "white"}, black: {value: 0, color: "black"}};
+
+    for(let i=1; i<7; i++)
+        for(let j=1; j<7; j++)
+        {
+            let res = floodFill(board, i, j, 0);
+            if(res == null) continue;
+            
+            if(res.color == "white" && res.value > max.white.value) max.white = res;
+            if(res.color == "black" && res.value > max.black.value) max.black = res;
+        }
+    return max;
+}
+
+
+/** Auxiliar functions
+ * @brief Coordinates translation
+ */
+function convertID(id) 
+{
+    if(id == 1) return {x: 0, y: 0};
+    if(id == 2) return {x: 0, y: 1};
+    if(id == 3) return {x: 0, y: 2};
+    if(id == 4) return {x: 0, y: 3};
+    if(id == 5) return {x: 0, y: 4};
+    if(id == 6) return {x: 0, y: 5};
+    if(id == 7) return {x: 1, y: 0};
+    if(id == 8) return {x: 1, y: 1};
+    if(id == 9) return {x: 1, y: 2};
+    if(id == 10) return {x: 1, y: 3};
+    if(id == 11) return {x: 1, y: 4};
+    if(id == 12) return {x: 1, y: 5};
+    if(id == 13) return {x: 2, y: 0};
+    if(id == 14) return {x: 2, y: 1};
+    if(id == 15) return {x: 2, y: 2};
+    if(id == 16) return {x: 2, y: 3};
+    if(id == 17) return {x: 2, y: 4};
+    if(id == 18) return {x: 2, y: 5};
+    if(id == 19) return {x: 3, y: 0};
+    if(id == 20) return {x: 3, y: 1};
+    if(id == 21) return {x: 3, y: 2};
+    if(id == 22) return {x: 3, y: 3};
+    if(id == 23) return {x: 3, y: 4};
+    if(id == 24) return {x: 3, y: 5};
+    if(id == 25) return {x: 4, y: 0};
+    if(id == 26) return {x: 4, y: 1};
+    if(id == 27) return {x: 4, y: 2};
+    if(id == 28) return {x: 4, y: 3};
+    if(id == 29) return {x: 4, y: 4};
+    if(id == 30) return {x: 4, y: 5};
+    if(id == 31) return {x: 5, y: 0};
+    if(id == 32) return {x: 5, y: 1};
+    if(id == 33) return {x: 5, y: 2};
+    if(id == 34) return {x: 5, y: 3};
+    if(id == 35) return {x: 5, y: 4};
+    if(id == 36) return {x: 5, y: 5};
+    //outer
+    if(id == 37) return {x: 0, y: 0};
+    if(id == 38) return {x: 0, y: 1};
+    if(id == 39) return {x: 0, y: 2};
+    if(id == 40) return {x: 0, y: 3};
+    if(id == 41) return {x: 0, y: 4};
+    if(id == 42) return {x: 0, y: 5};
+    if(id == 43) return {x: 1, y: 0};
+    if(id == 44) return {x: 1, y: 1};
+    if(id == 45) return {x: 1, y: 2};
+    if(id == 46) return {x: 1, y: 3};
+    if(id == 47) return {x: 1, y: 4};
+    if(id == 48) return {x: 1, y: 5};
+    if(id == 49) return {x: 2, y: 0};
+    if(id == 50) return {x: 2, y: 1};
+    if(id == 51) return {x: 2, y: 2};
+    if(id == 52) return {x: 2, y: 3};
+    if(id == 53) return {x: 2, y: 4};
+    if(id == 54) return {x: 2, y: 5};
+    if(id == 55) return {x: 3, y: 0};
+    if(id == 56) return {x: 3, y: 1};
+    if(id == 57) return {x: 3, y: 2};
+    if(id == 58) return {x: 3, y: 3};
+    if(id == 59) return {x: 3, y: 4};
+    if(id == 60) return {x: 3, y: 5};                
+}
+
+function convertPOS(pos, outer) 
+{
+    if(outer > 36) outer = true;
+    else outer = false;
+
+    if(outer) {
+        if (pos.x == 0) for (let i=0; i<6; i++) if (pos.y == i) return (37 + i);
+        if (pos.x == 1) for (let i=0; i<6; i++) if (pos.y == i) return (43 + i);
+        if (pos.x == 2) for (let i=0; i<6; i++) if (pos.y == i) return (49 + i);
+        if (pos.x == 3) for (let i=0; i<6; i++) if (pos.y == i) return (55 + i);
+    }
+
+    else {
+        if (pos.x == 0) for (let i=0; i<6; i++) if (pos.y == i) return (1 + i);
+        if (pos.x == 1) for (let i=0; i<6; i++) if (pos.y == i) return (7 + i);
+        if (pos.x == 2) for (let i=0; i<6; i++) if (pos.y == i) return (13 + i);
+        if (pos.x == 3) for (let i=0; i<6; i++) if (pos.y == i) return (19 + i);
+        if (pos.x == 4) for (let i=0; i<6; i++) if (pos.y == i) return (25 + i);
+        if (pos.x == 5) for (let i=0; i<6; i++) if (pos.y == i) return (31 + i);
+    }
+}
+
+function PLtoPOS(PL) 
+{
+    if(PL.x == 8){ for (let i=2; i<8; i++) if (PL.y == i) return {x: 0, y: 7-i}; }
+    else if(PL.y == 1){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 1, y: 7-i}; }
+    else if(PL.x == 1){ for (let i=2; i<8; i++) if (PL.y == i) return {x: 2, y: i-2}; }
+    else if(PL.y == 8){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 3, y: i-2}; }
+    else {
+        var X, Y;
+        for(let i=1; i<9; i++) {
+            if(PL.x == i) X = 7-i;
+        } 
+        for(let i=1; i<9; i++) if(PL.y == i) Y = 7-i;
+        
+        return {x: X, y: Y};
+    }
+}
+
+function POStoPL(pos, outer) 
+{
+    if (Number.isInteger() && outer>36) outer = true;
+    else if (Number.isInteger() && outer<=36) outer = false;
+
+    if(outer) {
+        if (pos.x == 0) for (let i=0; i<6; i++) if (pos.y == i) return {x: 8, y: 7-i};
+        if (pos.x == 1) for (let i=0; i<6; i++) if (pos.y == i) return {x: 7-i, y: 1};
+        if (pos.x == 2) for (let i=0; i<6; i++) if (pos.y == i) return {x: 1, y: 2+i};
+        if (pos.x == 3) for (let i=0; i<6; i++) if (pos.y == i) return {x: 2+i, y: 8};
+    }
+    else {
+        if (pos.x == 0) for (let i=0; i<6; i++) if (pos.y == i) return {x: 7, y: 7-i};
+        if (pos.x == 1) for (let i=0; i<6; i++) if (pos.y == i) return {x: 6, y: 7-i};
+        if (pos.x == 2) for (let i=0; i<6; i++) if (pos.y == i) return {x: 5, y: 7-i};
+        if (pos.x == 3) for (let i=0; i<6; i++) if (pos.y == i) return {x: 4, y: 7-i};
+        if (pos.x == 4) for (let i=0; i<6; i++) if (pos.y == i) return {x: 3, y: 7-i};
+        if (pos.x == 5) for (let i=0; i<6; i++) if (pos.y == i) return {x: 2, y: 7-i};
+    }
+}
