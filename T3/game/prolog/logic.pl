@@ -44,61 +44,57 @@ printWinner(B, W):-
 
 
 mainLoop(Player1, Player2, Board):-
-     game_over(Board);
-        valid_moves(Board, Player1, ListOfMoves),
-        length(ListOfMoves, Size1),
+    game_over(Board);
+    valid_moves(Board, Player1, ListOfMoves),
+    length(ListOfMoves, Size1),
+    write(ListOfMoves),
+    (   Size1 \= 0 ->
+        write('> White Player\'s turn...\n'),
+        askCoordsWhite(Player1, Board, NewBoard),
+        display_game(NewBoard)
+        ;
+        write('No valid plays for white player...\n'),
+        copy(Board, NewBoard)
+    ),
 
-         (  Size1 \= 0 ->
-                write('> White Player\'s turn...\n'),
-                askCoordsWhite(Player1, Board, NewBoard),
-                display_game(NewBoard)
-                ;
-                write('No valid plays for white player...\n'),
-                copy(Board, NewBoard)
-         ),
-
-         valid_moves(NewBoard, Player2, ListOfMoves2),
-         length(ListOfMoves2, Size2),
-         (
-            Size2 \= 0 ->
-            write('> Black Player\'s turn...\n'),
-            askCoordsBlack(Player2, NewBoard, FinalBoard),
-            display_game(FinalBoard)
-            ;
-            write('No valid plays...\n'),
-            copy(NewBoard, FinalBoard)
-         ),
+    valid_moves(NewBoard, Player2, ListOfMoves2),
+    length(ListOfMoves2, Size2),
+    (
+        Size2 \= 0 ->
+        write('> Black Player\'s turn...\n'),
+        askCoordsBlack(Player2, NewBoard, FinalBoard),
+        display_game(FinalBoard)
+        ;
+        write('No valid plays...\n'),
+        copy(NewBoard, FinalBoard)
+    ),
 
      mainLoop(Player1, Player2, FinalBoard).
 
 mainLoop2(Player1, CPU, Board, Level):-
-     game_over(Board);
-     valid_moves(Board, Player1, ListOfMoves),
-        length(ListOfMoves, Size1),
-
-         (  Size1 \= 0 ->
-                
-                write('> White Player\'s turn...\n'),
-                askCoordsWhite(Player1, Board, NewBoard)
-                ;
-                write('No valid plays for white player...\n'),
-                copy(Board, NewBoard)
-         ),
+    game_over(Board);
+    valid_moves(Board, Player1, ListOfMoves),
+    length(ListOfMoves, Size1),
+    (  Size1 \= 0 ->
+        write('> White Player\'s turn...\n'),
+        askCoordsWhite(Player1, Board, NewBoard)
+        ;
+        write('No valid plays for white player...\n'),
+        copy(Board, NewBoard)
+    ),
 
      
     valid_moves(NewBoard, CPU, ListOfMoves2),
-         length(ListOfMoves2, Size2),
-
-          ( Size2 \= 0 ->
-
-                write('> Black Player\'s turn...\n'),
-                choose_move(CPU, Level, ListOfMoves2, NewBoard, FinalBoard),
-                display_game(FinalBoard)
-                ;
-                write('No valid plays...\n'),
-                copy(NewBoard, FinalBoard)
-         ),
-
+    length(ListOfMoves2, Size2),
+    ( 
+        Size2 \= 0 ->
+        write('> Black Player\'s turn...\n'),
+        choose_move(CPU, Level, ListOfMoves2, NewBoard, FinalBoard),
+        display_game(FinalBoard)
+        ;
+        write('No valid plays...\n'),
+        copy(NewBoard, FinalBoard)
+    ),
      mainLoop2(Player1, CPU, FinalBoard, Level).
 
 
@@ -136,8 +132,16 @@ mainLoop2(Player1, CPU, Board, Level):-
 
 
 valid_moves(Board, Player, ListOfMoves):-
-    findall([R,C,N], findall_aux(Board, R, C, N, Player), ListOfMoves).
+    findall([R,C,N], findall_aux(Board, R, C, N, Player), TempList),
+    remove_duplicates(TempList, ListOfMoves).
 
+remove_duplicates([],[]).
+remove_duplicates([H | T], List) :-
+     member(H, T),
+     remove_duplicates(T, List).
+remove_duplicates([H | T], [H|T1]) :-
+      \+member(H, T),
+      remove_duplicates( T, T1).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    GAME OVER    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

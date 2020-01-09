@@ -11,14 +11,20 @@ class XMLscene extends CGFscene
         this.interface = Interface;        
         this.graphlist = [];
         
-        this.graphid = 0; //starting graph
+        this.graphid = 1; //starting graph
         this.determine_graph();
         
-        this.fps = 60.0;
-        this.MPress = false;
-        this.displayAxis = true;
+        this.fps = 60.0;                // frames per second
+        this.MPress = false;            // letter M key pressed bool
+        this.displayAxis = true;        // gui bool for axis
+        this.viewLightBoxes = true;     // gui bool for ligh boxes
+        this.freezeCamera = false;  // used for freezing camera
+        this.rotateCamera = false;      // used for rotating camera (180 degrees)
+        this.angle_cnt = 0;             // angle increment counter
         this.sceneInited = false;
-        this.viewLightBoxes = true;
+
+        //models
+        // this.W = new CGFOBJModel(this, 'primitives/obj/models/piano.obj');
     }
     
     /** Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
@@ -46,30 +52,33 @@ class XMLscene extends CGFscene
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
+
+        this.pianoMAT = new CGFappearance(this);
+        this.pianoMAT.setAmbient(70/255, 74/255, 77/255, 1);
+        this.pianoMAT.setDiffuse(70/255, 74/255, 77/255, 1);
+        this.pianoMAT.setSpecular(1, 1, 1, 1);
+        this.pianoMAT.setShininess(10);
     }
 
     update(t)
     {
         this.securityPOV.updateTimeFactor(t/1500 % 2000);
 
-        if(this.prev == undefined) this.prev = 0.0;
-        if(this.current == undefined) this.current = 0.0;
-        if(this.timeDif == undefined) this.timeDif = 0.0;
+        this.prev = this.prev || 0.0;
+        this.current = this.current || 0.0;
+        this.timeDif = this.timeDif || 0.0;
         
         this.timeDif = (t - this.prev) / 1000.0;
         this.current = (this.current + this.timeDif);
         this.prev = t;
-        if(this.timeDif > 1) this.current = 0;
-        
+        if(this.timeDif > 1) this.timeDif = 0.0;
+
         for(let key in this.graph.animations)
             if(!this.graph.animations[key].animationDone) 
                 this.graph.animations[key].update(this.timeDif);
 
-        // for(let key in this.graph.animations)
-        //     if(!this.graph.animations[key].animationDone) 
-        //         this.graph.animations[key].update(this.timeDif);        
+        this.game.update(this.timeDif);
     }
-
 
     /** @brief Use camera with default ID if it exists */
     initCameras()
@@ -100,10 +109,11 @@ class XMLscene extends CGFscene
         this.camera = this.camerasInited[this.cameraSelected];
         this.securityCAM = this.camerasInited[this.securitySelected];
     }
-    
+
+
 
     //INTERFACES
-    onViewChanged() { this.camera = this.graph.views[this.cameraSelected]; }
+    onViewChanged() { this.camera = this.graph.views[this.cameraSelected]; if(this.cameraSelected == 'Perspective') this.gui.close(); }
     onSecurityChanged() { this.securityCAM = this.camerasInited[this.securitySelected]; }
     onSceneChanged() { this.graphid++; this.graph = this.graphlist[this.graphid % this.graphlist.length]; }
 
@@ -168,7 +178,7 @@ class XMLscene extends CGFscene
         this.setShininess(10.0);
     }
 
-
+    /** @brief determines what graph to display */
     determine_graph() {
         if (this.graphid == 0) this.activeSceneString = "Room";
         else if (this.graphid == 1) this.activeSceneString = "Original";
@@ -179,7 +189,7 @@ class XMLscene extends CGFscene
     }
 
     
-    /** Handler called when the graph is finally loaded. 
+    /** @brief Handler called when the graph is finally loaded. 
      *  As loading is asynchronous, this may be called already after the application has started the run loop */
     onGraphLoaded()
     {
@@ -194,17 +204,24 @@ class XMLscene extends CGFscene
         this.interface.optionsInterface();
         
         this.sceneInited = true;
+        this.piano = new CGFOBJModel(this, 'primitives/obj/models/piano.obj');
     }
 
-
-    // Displays the scene
+    /** @brief Displays the scene */
     render(camera)
     {
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-    
         this.camera = camera;
-        this.interface.setActiveCamera(this.camera);    // COMMENT THIS LINE TO FREEZE CAMERA
+        if(!this.freezeCamera) {
+            this.camera = camera;
+            this.interface.setActiveCamera(this.camera); 
+        } else {
+            this.camera = this.camerasInited['Player'];
+            this.interface.setActiveCamera(null);
+        }
+
+        if(this.cameraSelected == 'Perspective') this.gui.close();
 
         this.updateProjectionMatrix();  // Initialize Model-View matrix as identity (no transformation)
         this.loadIdentity();   
@@ -217,7 +234,13 @@ class XMLscene extends CGFscene
             this.toggleLights();
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)
+            this.displayPiano();
             if(this.displayAxis) this.axis.display();
+            if(this.rotateCamera) {
+                this.angle_cnt++;
+                this.camera.orbit(CGFcameraAxis.y, 3*DEGREE_TO_RAD);
+                if(this.angle_cnt == 120) { this.angle_cnt = 0; this.rotateCamera = false; } 
+            } 
             this.updateMAT();
         }
         this.popMatrix();
@@ -253,8 +276,18 @@ class XMLscene extends CGFscene
           if(this.pickResults != null && this.pickResults.length > 0)
           {
               for(var i = 0; i < this.pickResults.length; i++) 
-                 if(this.pickResults[i][0]) 
-                   console.log("⛏️ " + this.pickResults[i][0].id + " " + this.pickResults[i][1]);
+                if(this.pickResults[i][0]) {
+                    let pickID = this.pickResults[i][1];
+                    let objID = this.pickResults[i][0].id;
+                    let x = this.pickResults[i][0].x;
+                    let y = this.pickResults[i][0].y;
+
+                    console.log("⛏️ " + objID + " " + pickID + " ("+x+", "+y+")");
+                    this.latestID = objID;
+                }
           }
     }
+
+    //display functions for obj models
+    displayPiano() { this.pushMatrix(); this.pianoMAT.apply(); this.translate(0, 0, -4); this.scale(0.001, 0.001, 0.001); this.piano.display(); this.popMatrix(); }
 }

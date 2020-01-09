@@ -11,14 +11,11 @@ function getUrlVars() {
     return vars;
 }	 
 //Include additional files here
-serialInclude(['../lib/CGF.js', 
-               'Server.js',
+serialInclude(['../lib/CGF.js',
                'XMLscene.js',
-               'MyMaterial.js',
-               'MyComponent.js',
-               'MyInterface.js',
-               'MySceneGraph.js',
-
+               'Interface.js',
+               'SceneGraph.js',
+               
                'primitives/Patch.js',
                'primitives/Plane.js',
                'primitives/MyTorus.js',
@@ -29,21 +26,20 @@ serialInclude(['../lib/CGF.js',
                'primitives/MyRectangle.js',
                'primitives/MySecurityCamera.js',
                'primitives/Plant.js',
-               'primitives/Timer.js',
                'primitives/Painting.js',
 	           'primitives/obj/CGFOBJModel.js',
                'primitives/obj/CGFResourceReader.js',
-
+               
                'animations/Animation.js',
                'animations/MyKeyframe.js',
                'animations/KeyframeAnimation.js',
-               'animations/Animator.js',
-               'animations/PieceAnim.js',
                
                'game/Tile.js',
                'game/Piece.js',
+               'game/Timer.js',
                'game/Game.js',
                'game/GameBoard.js',
+               'game/Animator.js',
                
 main=function()
 {

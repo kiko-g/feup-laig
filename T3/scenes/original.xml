@@ -1,17 +1,17 @@
 <lxs>
     <scene root="root" axis_length="3"/>
-    <views default="Player 1">
-        <perspective id="Player 1" near="0.1" far="500" angle="75">
-            <from x="0" y="11" z="20" />
-            <to x="0" y="0" z="-20" />
-        </perspective>
-        <perspective id="Player 2" near="0.1" far="500" angle="75">
-            <from x="0" y="12" z="-12" />
-            <to x="0" y="0" z="20" />
+    <views default="Corner">
+        <perspective id="Player" near="0.1" far="500" angle="75">
+            <from x="0" y="15" z="2" />
+            <to x="0" y="0" z="-5" />
         </perspective>
         <perspective id="Corner" near="0.1" far="500" angle="60">
-            <from x="13" y="20" z="13" />
-            <to x="0" y="-5" z="-10" />
+            <from x="15" y="12" z="10" />
+            <to x="-5" y="3" z="-20" />
+        </perspective>
+        <perspective id="Perspective" near="0.1" far="500" angle="70">
+            <from x="0" y="18" z="15" />
+            <to x="0" y="5" z="-12" />
         </perspective>
     </views>
 
@@ -56,7 +56,6 @@
         <texture id="default"       file="scenes/img/default.jpg" />
         <texture id="window1"       file="scenes/img/window1.jpg" />
         <texture id="window2"       file="scenes/img/window2.jpg" />
-        <texture id="abou"          file="scenes/img/abou.png" />
         <texture id="morty"         file="scenes/img/morty.jpg" />
         <texture id="rick"          file="scenes/img/rick.jpg" />
         <texture id="darkm"         file="scenes/img/darkmatter.png" />
@@ -71,7 +70,8 @@
         <texture id="rubber"        file="scenes/img/rubber.png" />
         <texture id="laig"          file="scenes/img/LAIG_3.png" />
         <texture id="pages"         file="scenes/img/pages.png" />
-        <texture id="marega"        file="scenes/img/marega.jpg" />
+        <texture id="cover"          file="scenes/img/cover.jpg" />
+        <texture id="euro"          file="scenes/img/euro.png" />
         <texture id="wall"          file="scenes/img/wall.jpg" />
     </textures>
 
@@ -738,7 +738,7 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-                <texture id="abou" length_s="4" length_t="4" />
+                <texture id="cover" length_s="4" length_t="4" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -749,7 +749,7 @@
             <materials>
                 <material id="defaultMAT" />
             </materials>
-                <texture id="marega" length_s="4" length_t="4" />
+                <texture id="euro" length_s="4" length_t="4" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -1285,6 +1285,7 @@
         <component id="root">
             <transformation>
                 <scale x="3" y="3" z="3" />
+                <translate x="0" y="0" z="-3" />
             </transformation>
             <materials>
                 <material id="defaultMAT" />

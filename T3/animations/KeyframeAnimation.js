@@ -109,3 +109,8 @@ class KeyframeAnimation extends Animation
         this.aniMatrix = mat4.scale(this.aniMatrix, this.aniMatrix, this.scale);
     }
 }
+
+
+class PieceAnim extends KeyframeAnimation {
+
+}

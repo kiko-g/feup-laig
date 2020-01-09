@@ -5,12 +5,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                        Server                                                   %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % To run, enter 'server.' on sicstus command line after consulting this file.
 % You can test requests to this server by going to http://localhost:8081/<request>.
 % Go to http://localhost:8081/quit to close server.
-
 % Made by Luis Reis (ei12085@fe.up.pt) for LAIG course at FEUP.
+
+
 
 port(8081).
 
@@ -105,15 +105,25 @@ print_header_line(_).
 :- consult('main.pl').
 
 % TODO: adicionar aqui todos os comandos e respostas que se podem fazer ao server
-parse_input(randomBoard(Board), NewBoard):-
-    randomBoard(NewBoard).
-
-
 
 % ===================================================================================================== %
-parse_input(handshake, handshake).
+parse_input(handshake, ola).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
+
+parse_input(valid_moves(Board, Player), ListOfMoves):-
+    valid_moves(Board, Player, ListOfMoves).
+
+parse_input(choose_move(CPU, Level, ListOfMoves, NewBoard), FinalBoard):-
+    choose_move(CPU, Level, ListOfMoves, NewBoard, FinalBoard).
+
+parse_input(game_over(Board), Answer):-
+    game_over(Board);
+    Answer is 0.
+
+parse_input(game_over(Board), Answer):-
+    game_over(Board),
+    Answer is 1.
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).

@@ -10,16 +10,13 @@
 * and optimized to reduce vertex duplication
 */
 
-class CGFOBJModel extends CGFobject{
+class CGFOBJModel extends CGFobject {
 
 	constructor(scene, url, wireframe) 
 	{
-		super(scene);
-		
-		this.url = url;
-		
-		// false for triangles, true for lines (wireframe)
-		this.wireframe = wireframe || false;
+        super(scene);
+        this.url = url;
+		this.wireframe = wireframe || false; // false for triangles, true for lines (wireframe)
 		
 		// init with empty object, so that there are no problems while the data is being loaded
 		this.vertices = [];

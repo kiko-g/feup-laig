@@ -1,9 +1,11 @@
 class Tile extends CGFobject
 {
-    constructor(scene, outer, hasPiece, pieceColor = undefined) 
+    constructor(scene, outer, hasPiece, pieceColor = undefined, x = null, y = null) 
     {
         super(scene);
         this.id = "TILE";
+        this.x = x+1;       //used for prolog
+        this.y = y+1;       //used for prolog
         this.outer = outer;
         this.hasPiece = hasPiece;
         this.pieceColor = pieceColor;
@@ -20,7 +22,6 @@ class Tile extends CGFobject
         material.setDiffuse(r / 255, g / 255, b / 255, 1);
         material.setSpecular(1, 1, 1, 1);
         material.setShininess(10);
-
         return material;
     }
 
@@ -34,6 +35,7 @@ class Tile extends CGFobject
         this.lime  = this.RGBMaterial(100, 255, 150);    //available tile color
         this.white = this.RGBMaterial(255, 255, 255);    //white color
         this.black = this.RGBMaterial(0, 0, 0);          //black color
+        this.purp = this.RGBMaterial(204, 149, 232);     //movement material
 
         //other tile materials
         this.red = this.RGBMaterial(255, 0, 0);          //incorrect processing color
@@ -46,19 +48,6 @@ class Tile extends CGFobject
         else if (this.pieceColor == this.scene.game.P.White) 
             this.piece = new Piece(this.scene, this.white, this.scene.game.P.White);
         }
-    
-    /** @brief converts ID of inner tiles - used to make plays */
-    convertID(id) {
-        let pos = {x: 0, y: 0};
-        return pos;
-    }
-
-
-    /** @brief converts POS coming from prolog - used to make CPU plays */
-    convertPOS(pos) {
-        let id = 0;
-        return id;
-    }
     
     
     movePiece(x, y) {
@@ -77,8 +66,11 @@ class Tile extends CGFobject
         else {
             if(this.states.available) this.activeMAT = this.lime;
             else this.activeMAT = this.pink;
-            this.activeMAT.apply();
+
+            if(this.states.move) this.activeMAT = this.purp;
         }
+
+        this.activeMAT.apply();
         this.quad.display();
         this.scene.popMatrix();
     }

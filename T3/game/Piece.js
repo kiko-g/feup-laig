@@ -5,13 +5,8 @@ class Piece extends CGFobject {
         this.appearance = appearance;
         
         this.step = 1.5;
-        this.picked = false;
         this.body = new MyCylinder(scene, "piece", 30, 30, 0.3, 0.3, 0.1, true);
         this.top = new MySphere(scene, "piece-top", 0.3, 30, 30);
-        let keyframes = [];
-        keyframes.push(new MyKeyframe([0, 2, 0], [0, 0, 0], [1, 1, 1], 5));
-        keyframes.push(new MyKeyframe([1, 1, 1], [0, 1, 0], [2, 2, 2], 6));
-        this.animation = new KeyframeAnimation(scene, "idddd", keyframes);
     }
 
     display() {
