@@ -31,7 +31,6 @@ class Timer extends CGFobject {
 
         this.countStart = 0;
         this.counting = true;
-        this.maxTime = 60;
 	}
 
     display() 
@@ -84,7 +83,7 @@ class Timer extends CGFobject {
 
     update() {
         if(this.counting) {
-            this.time = this.maxTime - Math.floor((performance.now() - this.countStart)/1000);
+            this.time = this.scene.game.timePerPlay - Math.floor((performance.now() - this.countStart)/1000);
             if(this.time <= 0) { this.counting = false; this.board.timeOut(); }
         }
     }

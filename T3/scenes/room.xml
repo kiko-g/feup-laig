@@ -1,6 +1,6 @@
 <lxs>
-    <scene root="root" axis_length="3"/>
-    <views default="Corner">
+    <scene root="root" axis_length="6"/>
+    <views default="Player">
         <perspective id="Player" near="0.1" far="500" angle="75">
             <from x="0" y="15" z="2" />
             <to x="0" y="0" z="-5" />

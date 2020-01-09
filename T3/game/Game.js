@@ -47,21 +47,17 @@ class Game
     }
 
     update(time) {
-        for(let key in this.animations) 
-            if(!this.animations[key].animationDone) 
-                this.animations[key].update(time);
+        // if(this.scene.sceneInited)
+            // for(let i=0; i<6; i++) {
+            //     for(let j=0; j<6; j++)
+            //         if(this.scene.gameboard.innertiles[i][j].hasPiece) 
+            // }
     }
 
     startGame() {
         if (this.started) console.log("📈 Game in progress already");
         else console.log("🎲 Started Game");
         this.started = true;
-        
-        switch (this.gamemode) {
-            case 'PVP': this.handle_PvP();
-            case 'PVC': this.handle_PvCPU();
-            case 'CVC': this.handle_CPUvCPU();
-        }
 
         return true;
     }
@@ -99,18 +95,6 @@ class Game
 
         this.scene.gameboard.clearAllPicked();
         return true;
-    }
-
-    handle_PvP() {
-
-    }
-
-    handle_PvCPU() {
-
-    }
-
-    handle_CPUvCPU() {
-
     }
 
 

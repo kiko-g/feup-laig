@@ -203,8 +203,21 @@ class XMLscene extends CGFscene
         this.interface.lightsInterface();
         this.interface.optionsInterface();
         
-        this.sceneInited = true;
+        this.TVtex = new CGFtexture(this, 'scenes/img/desktop.png');
+        this.tvMAT = new CGFappearance(this);
+        this.tvMAT.setAmbient(1, 1, 1, 1);
+        this.tvMAT.setDiffuse(1, 1, 1, 1);
+        this.tvMAT.setSpecular(1, 1, 1, 1);
+        this.tvMAT.setEmission(0.3, 0.3, 0.3, 1);
+        this.tvMAT.setShininess(10);
+        this.tvMAT.setTexture(this.TVtex);
+        this.tvMAT.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.screen = new Plane(this, 'desktop', 40, 40);
         this.piano = new CGFOBJModel(this, 'primitives/obj/models/piano.obj');
+        this.tv = new CGFOBJModel(this, 'primitives/obj/models/tv.obj');
+
+        this.sceneInited = true;
     }
 
     /** @brief Displays the scene */
@@ -221,7 +234,7 @@ class XMLscene extends CGFscene
             this.interface.setActiveCamera(null);
         }
 
-        if(this.cameraSelected == 'Perspective') this.gui.close();
+        // if(this.cameraSelected == 'Perspective') this.gui.close();
 
         this.updateProjectionMatrix();  // Initialize Model-View matrix as identity (no transformation)
         this.loadIdentity();   
@@ -235,11 +248,15 @@ class XMLscene extends CGFscene
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)
             this.displayPiano();
+            this.displayTV();
+
             if(this.displayAxis) this.axis.display();
             if(this.rotateCamera) {
                 this.angle_cnt++;
-                this.camera.orbit(CGFcameraAxis.y, 3*DEGREE_TO_RAD);
-                if(this.angle_cnt == 120) { this.angle_cnt = 0; this.rotateCamera = false; } 
+                let inc = 3;
+                if(this.cameraSelected == 'Corner') inc = 1.5;
+                this.camera.orbit(CGFcameraAxis.y, inc*DEGREE_TO_RAD);
+                if(this.angle_cnt == 120) { this.angle_cnt = 0; this.rotateCamera = false; }
             } 
             this.updateMAT();
         }
@@ -289,5 +306,25 @@ class XMLscene extends CGFscene
     }
 
     //display functions for obj models
-    displayPiano() { this.pushMatrix(); this.pianoMAT.apply(); this.translate(0, 0, -4); this.scale(0.001, 0.001, 0.001); this.piano.display(); this.popMatrix(); }
+    displayPiano() { 
+        this.pushMatrix();
+        this.pianoMAT.apply();
+        this.translate(-3.5, 0, 1.5);
+        this.rotate(Math.PI/2, 0, 1, 0);
+        this.scale(0.001, 0.001, 0.001);
+        this.piano.display();
+        this.popMatrix(); 
+    }
+    displayTV() { 
+        this.pushMatrix();
+        this.translate(0, 0, -5.5);
+        this.scale(0.7, 0.7, 0.7); 
+        this.tv.display();
+        this.translate(0, 1.61, 2.05);
+        this.scale(3.1, 1.87, 1);
+        this.rotate(74.5*DEGREE_TO_RAD, 1, 0, 0);
+        this.tvMAT.apply();
+        this.screen.display();
+        this.popMatrix(); 
+    }
 }
