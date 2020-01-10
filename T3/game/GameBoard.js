@@ -24,7 +24,7 @@ class GameBoard extends CGFobject
         this.available = [];
 
         this.timer = new Timer(this.scene, this);
-        this.scoreboard = new Scoreboard(this.scene, this.scene.game.boardtest, this);
+        this.scoreboard = new Scoreboard(this.scene, this.scene.game.board, this);
 
         this.texture = new CGFtexture(this.scene, 'scenes/img/board.png');
         this.whitesideTEX = new CGFtexture(this.scene, 'scenes/img/numbers/white-side.png');
@@ -32,6 +32,7 @@ class GameBoard extends CGFobject
         
         this.scene.gameboard = this;
         this.game = this.scene.game;
+        this.readyToPick = false;
         
         this.createFaces();
         this.initializeTiles();
@@ -93,7 +94,7 @@ class GameBoard extends CGFobject
             for (let j=0; j<6; j++) 
             {
 
-                let tile = new Tile(this.scene, false, B[i+1][j+1], j+1, i+1); 
+                let tile = new Tile(this.scene, false, B[i+1][j+1], i+1, j+1); 
                 aux.push(tile);
 
             }
@@ -106,10 +107,10 @@ class GameBoard extends CGFobject
             var aux = [];
             for (let j=0; j<6; j++) {
                 let tile;
-                if(i==0) tile = new Tile(this.scene, true, B[6-j][7],   7,  6-j);
-                if(i==1) tile = new Tile(this.scene, true, B[0][6-j], 6-j,    0);
-                if(i==2) tile = new Tile(this.scene, true, B[j+1][0],   0,  j+1);
-                if(i==3) tile = new Tile(this.scene, true, B[7][j+1], j+1,    7);
+                if(i==0) tile = new Tile(this.scene, true, B[6-j][7], 6-j,   7);
+                if(i==1) tile = new Tile(this.scene, true, B[0][6-j],   0, 6-j);
+                if(i==2) tile = new Tile(this.scene, true, B[j+1][0], j+1,   0);
+                if(i==3) tile = new Tile(this.scene, true, B[7][j+1],   7, j+1);
                 aux.push(tile);
             }
             this.outertiles[i] = aux;
@@ -118,11 +119,7 @@ class GameBoard extends CGFobject
     }
 
 
-    updateTiles() {
-        if(this.game.boardready) { }
-    }
-
-
+    /**@brief used to change turn AKA timeout */
     timeOut() 
     {
         if(this.game.gamemode === 'PVP') {
@@ -145,8 +142,11 @@ class GameBoard extends CGFobject
             if(this.game.turn.color === this.turns.W) this.game.turn = {color: this.game.turns.B, player: this.game.turns.CPU };
             else this.game.turn = {color: this.game.turns.W, player: this.game.turns.CPU };
         }
-        this.scene.game.cameraAnimation();
-        this.timer.resetCount();
+
+        this.clearAllPicked();
+        setTimeout(() => { this.scene.game.cameraAnimation(); }, 500);
+        setTimeout(() => { this.timer.resetCount(); }, 1500);
+        
     }
 
 
@@ -190,33 +190,39 @@ class GameBoard extends CGFobject
     }
 
 
+    pickcpu(color) {
+
+    }
+
     /** @brief function for white player turn*/
     pickwhite()
     {
         if(this.scene.pickMode == false)
-            if(this.scene.pickResults != null && this.scene.pickResults.length > 0)
-                for(let i = 0; i < this.scene.pickResults.length; i++)
+        if(this.scene.pickResults != null && this.scene.pickResults.length > 0)
+            for(let i = 0; i < this.scene.pickResults.length; i++)
+            {
+                if(this.scene.pickResults[i][0]) 
                 {
-                    if(this.scene.pickResults[i][0]) 
+                    var ID = this.scene.pickResults[i][1];
+                    var x = parseInt((ID-1) / 6);
+                    var y = parseInt((ID-1) % 6);
+                    var p = this.alltiles[x][y];
+                    if(x > 5) this.move = {a: x-6, b: y };
+
+                    if (p.outer && p.pieceColor==this.game.P.White && p.piece!=null) 
                     {
-                        var ID = this.scene.pickResults[i][1];
-                        var x = parseInt((ID-1) / 6);
-                        var y = parseInt((ID-1) % 6);
-                        var p = this.alltiles[x][y];
-                        
-                        if (p.outer && p.pieceColor == this.game.P.White) 
-                        {
-                            this.available = [];
-                            this.clearAllPicked();
-                            this.outertiles[x-6][y].states.picked = true;
-                            this.outertiles[x-6][y].states.available = false;
-                            this.rightAvailable(ID, x, y);
-                            this.topAvailable(ID, x, y);
-                            this.leftAvailable(ID, x, y);
-                            this.bottomAvailable(ID, x, y);
-                        }
+                        this.available = [];
+                        this.clearAllPicked();
+                        this.outertiles[x-6][y].states.picked = true;
+                        this.outertiles[x-6][y].states.available = false;
+                        this.readyToPick = true;
+                        this.rightAvailable(ID, x, y);
+                        this.topAvailable(ID, x, y);
+                        this.leftAvailable(ID, x, y);
+                        this.bottomAvailable(ID, x, y);
                     }
                 }
+            }
     }
 
 
@@ -224,28 +230,30 @@ class GameBoard extends CGFobject
     pickblack()
     {
         if(this.scene.pickMode == false)
-            if(this.scene.pickResults != null && this.scene.pickResults.length > 0)
-                for(let i = 0; i < this.scene.pickResults.length; i++)
-                {
-                    if(this.scene.pickResults[i][0]) 
-                    {
-                        var ID = this.scene.pickResults[i][1];
-                        var x = parseInt((ID-1) / 6);
-                        var y = parseInt((ID-1) % 6);
-                        var p = this.alltiles[x][y];
+        if(this.scene.pickResults != null && this.scene.pickResults.length > 0)
+        for(let i = 0; i < this.scene.pickResults.length; i++)
+        {
+            if(this.scene.pickResults[i][0]) 
+            {
+                var ID = this.scene.pickResults[i][1];
+                var x = parseInt((ID-1) / 6);
+                var y = parseInt((ID-1) % 6);
+                var p = this.alltiles[x][y];
 
-                        if (p.outer && p.pieceColor == this.game.P.Black) 
-                        {
-                            this.available = [];
-                            this.clearAllPicked();
-                            this.outertiles[x-6][y].states.picked = true;
-                            this.rightAvailable(ID, x, y);
-                            this.topAvailable(ID, x, y);
-                            this.leftAvailable(ID, x, y);
-                            this.bottomAvailable(ID, x, y);
-                        }
-                    }
+                if (p.outer && p.pieceColor == this.game.P.Black && p.piece!=null) 
+                {
+                    this.available = [];
+                    this.clearAllPicked();
+                    this.outertiles[x-6][y].states.picked = true;
+                    this.outertiles[x-6][y].states.available = false;
+                    this.readyToPick = true;
+                    this.rightAvailable(ID, x, y);
+                    this.topAvailable(ID, x, y);
+                    this.leftAvailable(ID, x, y);
+                    this.bottomAvailable(ID, x, y);
                 }
+            }
+        }
     }
 
 
@@ -256,15 +264,14 @@ class GameBoard extends CGFobject
         var aux = 0;
         if (ID >= 37 && ID <= 42)
             for (let i=0; i<6; i++) {
-                if(this.innertiles[5-y][i].piece != null) aux++;
+                if(this.innertiles[5-y][5-i].piece != null) aux++;
             }
         else return;
-        // console.log(x, y);
 
         for (let i=0; i<6-aux; i++) {
-            this.available.push({x: 5-y, y: i});
-            this.innertiles[5-y][i].states.picked = true;
-            this.innertiles[5-y][i].states.available = true;
+            this.available.push({x: 5-y, y: 5-i});
+            this.innertiles[5-y][5-i].states.picked = true;
+            this.innertiles[5-y][5-i].states.available = true;
         }
     }
 
@@ -278,7 +285,6 @@ class GameBoard extends CGFobject
                 if(this.innertiles[y][i].piece != null) aux++;
             }
         else return;
-        // console.log(x, y);
 
         for (let i=0; i<(6-aux); i++) {
             this.available.push({x: y, y: i});
@@ -298,7 +304,6 @@ class GameBoard extends CGFobject
                 if(this.innertiles[i][5-y].piece != null) aux++;
             }
         else return;
-        // console.log(x, y);
 
         for (let i=0; i<6-aux; i++) { 
             this.available.push({x: i, y: 5-y});
@@ -314,15 +319,14 @@ class GameBoard extends CGFobject
         var aux = 0;
         if (ID >= 55 && ID <= 60) 
             for (let i=0; i<6; i++) {
-                if(this.innertiles[i][y].piece != null) aux++;
+                if(this.innertiles[5-i][y].piece != null) aux++;
             }
         else return;
-        // console.log(x, y);
 
         for (let i=0; i<6-aux; i++) {
-            this.available.push({x: i, y: y});
-            this.innertiles[i][y].states.picked = true;
-            this.innertiles[i][y].states.available = true;
+            this.available.push({x: 5-i, y: y});
+            this.innertiles[5-i][y].states.picked = true;
+            this.innertiles[5-i][y].states.available = true;
         }
     } 
 
@@ -330,6 +334,7 @@ class GameBoard extends CGFobject
     /** @brief used for human to pick available tile to move piece in game */
     pickAvailable() 
     {
+        if(!this.readyToPick) return;
         if(this.scene.pickMode == false)
           if(this.scene.pickResults != null && this.scene.pickResults.length > 0)
           {
@@ -339,18 +344,53 @@ class GameBoard extends CGFobject
                     let ID = this.scene.pickResults[i][1];
                     var x = parseInt((ID - 1) / 6);
                     var y = parseInt((ID - 1) % 6);
+                    if(x < 6) {
+                        this.move.c = x;
+                        this.move.d = y;
+                    }
 
+                    //check if there's a position locked already (purple)
+                    for (let j = 0; j < this.available.length; j++) {
+                        let a = this.available[j].x;
+                        let b = this.available[j].y;
+                        if (this.innertiles[a][b].states.move) return;
+                    }
+
+                    //movePiece upon click
                     for(let j=0; j<this.available.length; j++) {
                         let a = this.available[j].x;
                         let b = this.available[j].y;
-                        if(x==a && y==b) this.innertiles[a][b].states.move = true;
+                        if(x==a && y==b) {
+                            this.innertiles[a][b].states.move = true;
+                            this.movePiece();
+                            this.readyToPick = false;
+                        } 
                     }
-
                 }
           }
     }
 
+    movePiece() {
+        let pos1 = {x: this.move.a, y: this.move.b};
+        let pos2 = {x: this.move.c, y: this.move.d};
+        console.log(pos1);
+        console.log(pos2);
+        let a = POStoPL(pos1, true);
+        let b = POStoPL(pos2, false);
 
+        // if(this.game.animations[this.game.moves.length].animationDone) 
+        this.updateBoardStatus(pos1, pos2, a, b);
+        console.log(this.game.board);
+    }
+
+    updateBoardStatus(pos1, pos2, a, b) {
+        let color = this.game.board[a.x-1][a.y-1];
+        this.game.board[a.x-1][a.y-1] = "empty";
+        this.game.board[b.x-1][b.y-1] = color;
+        this.innertiles[pos2.x][pos2.y].piece = this.outertiles[pos1.x][pos1.y].piece;
+        this.outertiles[pos1.x][pos1.y].piece = null;
+        setTimeout(() => { this.timeOut() }, 100);
+    }
 
     /**@brief Log result to console upon gameover */
     handleGameOver() 
@@ -457,12 +497,11 @@ class GameBoard extends CGFobject
     displayPVP() 
     {
         if (this.game.started && this.game.gamemode === 'PVP') {
-            this.scene.logPicking();
+            // this.scene.logPicking();
             if(this.game.turn.color === this.game.turns.W) this.pickwhite();
             if(this.game.turn.color === this.game.turns.B) this.pickblack();
             this.pickAvailable();
             this.handleGameOver();
-
             this.scene.pickResults.splice(0, this.scene.pickResults.length);
             this.scene.clearPickRegistration();
 
@@ -478,7 +517,7 @@ class GameBoard extends CGFobject
     {
         if (this.game.started && this.game.gamemode === 'PVC') 
         {
-            this.scene.logPicking();
+            // this.scene.logPicking();
             if(this.game.turn.color === this.game.turns.W) this.pickwhite();
             this.pickAvailable();
             this.handleGameOver();
@@ -498,7 +537,12 @@ class GameBoard extends CGFobject
 
     displayCVC()
     {
-        if (this.game.started && this.game.gamemode === 'CVC') {
+        if (this.game.started && this.game.gamemode === 'CVC') 
+        {
+            if (this.game.turn.color === this.game.turns.W) this.pickcpu(this.game.turns.W);
+            if (this.game.turn.color === this.game.turns.B) this.pickcpu(this.game.turns.B);
+            this.handleGameOver();
+
             this.timer.display();
             this.scoreboard.display();
             this.displayInnerTiles();

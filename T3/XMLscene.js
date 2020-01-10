@@ -295,8 +295,7 @@ class XMLscene extends CGFscene
                     let objID = this.pickResults[i][0].id;
                     let x = this.pickResults[i][0].x;
                     let y = this.pickResults[i][0].y;
-
-                    console.log("⛏️ " + objID + " " + pickID + " ("+x+", "+y+")");
+                    console.log("⛏️ " + objID + " " + pickID + " ["+x+", "+y+"]");
                     this.latestID = objID;
                 }
           }

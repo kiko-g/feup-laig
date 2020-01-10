@@ -8,7 +8,7 @@ class Game
         this.scene = scene;
         this.started = false;
         this.gamemode = 'PVP';
-        this.animActive = false;
+        this.initialize();
         
         this.gameover = undefined;      //gameover is read from server
         this.board_ready = false;       //new board after cpu play
@@ -24,9 +24,9 @@ class Game
         this.whiteValidMoves = [];      // white valid moves array
         this.blackValidMoves = [];      // black valid moves array
         this.valid_moves_str  = '';     // valid moves string, prolog
+        this.moves = [];                // moves array (holds the plays)
+        this.getValidMoves(this.turns.W);
         
-        this.time = 0;
-        this.initialize();
     }
 
     initialize() 
@@ -53,16 +53,14 @@ class Game
             [P.Empty, P.Empty, P.Empty, P.Empty, P.Black, P.Empty, P.White, P.Empty],
             [P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty],
             [P.Null,  P.Empty, P.Empty, P.Empty, P.Empty, P.Empty, P.Empty,  P.Null],
-        ];        
-        this.initialboard = this.boardtest;
+        ];
+        this.initialboard = this.board;
+        // this.initialboard = this.boardtest;
+        // this.board = this.boardtest;
     }
 
     update(time) {
         // if(this.scene.sceneInited)
-            // for(let i=0; i<6; i++) {
-            //     for(let j=0; j<6; j++)
-            //         if(this.scene.gameboard.innertiles[i][j].piece != null) 
-            // }
     }
 
     startGame() {
@@ -72,8 +70,10 @@ class Game
         } 
         else console.log("🎲 Started Game");
 
+        this.turn.color = this.turns.W;
         this.scene.gameboard.timer.resetCount();
         this.started = true;
+        console.log(this.whiteValidMoves);
 
         return true;
     }
@@ -91,7 +91,9 @@ class Game
         else console.log("🚪 Exited Game");
         this.started = false;
         this.scene.gameboard.timer.stopCount();
+        this.initialize();
         this.scene.gameboard.initializeTiles();
+        this.scene.gameboard.scoreboard.board = this.board;
 
         return true;
     }
@@ -99,10 +101,6 @@ class Game
     undoPlay() {
         if(!this.started) return false;
         return true;
-    }
-
-    gameMovie() {
-
     }
 
     cameraAnimation() { this.scene.rotateCamera = true; }
@@ -113,15 +111,6 @@ class Game
 
         return true;
     }
-
-    changeTurn() {
-        if(this.turn == this.turns.W) this.turn = this.turns.B;
-        else this.turn = this.turns.W;
-
-        this.scene.gameboard.clearAllPicked();
-        return true;
-    }
-
 
     compareBoards() {
         let found = false;
@@ -277,14 +266,16 @@ class Game
             function(data) {
                 let board_str = data.target.response;
                 thisgame.valid_moves_str = board_str;
-
+                
                 if(color === "white") thisgame.whiteValidMoves = JSON.parse(board_str);
                 else if(color === "black") thisgame.blackValidMoves = JSON.parse(board_str);
-                else console.log("❌ Bad Request: Invalid piece color");
+                else{ console.log("❌ Bad Request: Invalid piece color"); return; }
+
+                thisgame.validmoves_ready = true;
             }
         );
 
-        setTimeout(() => { this.validmoves_ready = true; }, 3000);
+        setTimeout(() => { this.validmoves_ready = true; }, 2000);
     }
 
     getCPUMove(color) {
@@ -486,34 +477,23 @@ function PLtoPOS(PL)
     else if(PL.y == 1){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 1, y: 7-i}; }
     else if(PL.x == 1){ for (let i=2; i<8; i++) if (PL.y == i) return {x: 2, y: i-2}; }
     else if(PL.y == 8){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 3, y: i-2}; }
-    else {
-        var X, Y;
-        for(let i=1; i<9; i++) {
-            if(PL.x == i) X = 7-i;
-        } 
-        for(let i=1; i<9; i++) if(PL.y == i) Y = 7-i;
-        
-        return {x: X, y: Y};
-    }
+    else for(let i=0; i<6; i++) if (pos.y == i) return {x: PL.x-2, y: i-2};
 }
 
 function POStoPL(pos, outer) 
 {
-    if (Number.isInteger() && outer>36) outer = true;
-    else if (Number.isInteger() && outer<=36) outer = false;
+    if(typeof outer != "boolean") {
+        if (Number.isInteger(outer) && outer>36) outer = true;
+        else if (Number.isInteger(outer) && outer<=36) outer = false;
+        else console.log("ERROR in POS to PL");
+    }
+
 
     if(outer) {
-        if (pos.x == 0) for (let i=0; i<6; i++) if (pos.y == i) return {x: 8, y: 7-i};
-        if (pos.x == 1) for (let i=0; i<6; i++) if (pos.y == i) return {x: 7-i, y: 1};
-        if (pos.x == 2) for (let i=0; i<6; i++) if (pos.y == i) return {x: 1, y: 2+i};
-        if (pos.x == 3) for (let i=0; i<6; i++) if (pos.y == i) return {x: 2+i, y: 8};
+        if (pos.x == 0) for (let i=0; i<6; i++) if (pos.y == i) return {x: 7-i, y:   8};
+        if (pos.x == 1) for (let i=0; i<6; i++) if (pos.y == i) return {x: 1,   y: 7-i};
+        if (pos.x == 2) for (let i=0; i<6; i++) if (pos.y == i) return {x: i+2, y:   1};
+        if (pos.x == 3) for (let i=0; i<6; i++) if (pos.y == i) return {x:   8, y: i+2};
     }
-    else {
-        if (pos.x == 0) for (let i=0; i<6; i++) if (pos.y == i) return {x: 7, y: 7-i};
-        if (pos.x == 1) for (let i=0; i<6; i++) if (pos.y == i) return {x: 6, y: 7-i};
-        if (pos.x == 2) for (let i=0; i<6; i++) if (pos.y == i) return {x: 5, y: 7-i};
-        if (pos.x == 3) for (let i=0; i<6; i++) if (pos.y == i) return {x: 4, y: 7-i};
-        if (pos.x == 4) for (let i=0; i<6; i++) if (pos.y == i) return {x: 3, y: 7-i};
-        if (pos.x == 5) for (let i=0; i<6; i++) if (pos.y == i) return {x: 2, y: 7-i};
-    }
+    else return {x: pos.x+2, y: pos.y+2};
 }

@@ -38,9 +38,9 @@ class Scoreboard extends CGFobject
         this.update();
         this.MAT.apply();
         
-        //black score
+        //white score
         this.scene.pushMatrix();
-        this.MAT.setTexture(this.numberTEX[Math.floor(this.blackScore / 10)]);
+        this.MAT.setTexture(this.numberTEX[Math.floor(this.whiteScore / 10)]);
         this.scene.translate(2.22, -2.5, 0.6);
         this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.scale(0.7 * 0.8, 0.8, 0.8);
@@ -48,7 +48,7 @@ class Scoreboard extends CGFobject
         this.square.display();
         this.scene.popMatrix();
         this.scene.pushMatrix();
-        this.MAT.setTexture(this.numberTEX[this.blackScore % 10]);
+        this.MAT.setTexture(this.numberTEX[this.whiteScore % 10]);
         this.scene.translate(1.66, -2.5, 0.6);
         this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.scale(0.7 * 0.8, 0.8, 0.8);
@@ -65,9 +65,9 @@ class Scoreboard extends CGFobject
         this.square.display();
         this.scene.popMatrix();
 
-        //white score
+        //black score
         this.scene.pushMatrix();
-        this.MAT.setTexture(this.numberTEX[Math.floor(this.whiteScore / 10)]);
+        this.MAT.setTexture(this.numberTEX[Math.floor(this.blackScore / 10)]);
         this.scene.translate(-2.22, 2.5, 0.6);
         this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.rotate(Math.PI, 0, 0, 1);
@@ -76,7 +76,7 @@ class Scoreboard extends CGFobject
         this.square.display();
         this.scene.popMatrix();
         this.scene.pushMatrix();
-        this.MAT.setTexture(this.numberTEX[this.whiteScore % 10]);
+        this.MAT.setTexture(this.numberTEX[this.blackScore % 10]);
         this.scene.translate(-1.66, 2.5, 0.6);
         this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.rotate(Math.PI, 0, 0, 1);
@@ -92,7 +92,6 @@ class Scoreboard extends CGFobject
         this.MAT.apply();
         this.square.display();
         this.scene.popMatrix();
-
     }
 
     update() 
