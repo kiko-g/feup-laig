@@ -151,7 +151,7 @@ class CGFOBJModel extends CGFobject {
 		  }
 		}
 	  }
-	  console.log("Loaded mesh "+ this.url +" with " + this.vcount + " vertices / "+ this.fcount + " faces");
+	//   console.log("Loaded mesh "+ this.url +" with " + this.vcount + " vertices / "+ this.fcount + " faces");
 
 		if (this.texcoords.length==0)
 			this.texcoords=null;

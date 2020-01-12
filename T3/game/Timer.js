@@ -29,14 +29,16 @@ class Timer extends CGFobject {
         this.MAT.setSpecular(1.0, 1.0, 1.0, 1.0);
         this.MAT.setShininess(100);
         this.MAT.setEmission(0.2, 0.2, 0.2, 1.0);
-
-        this.countStart = 0;
-        this.counting = true;
+        
+        this.movesReq = false;      //vvalid moves request
+        this.chosenReq = false;     //move chosen request
+        this.countStart = 0;        //count start
+        this.counting = true;       //timer is counting
 	}
 
     display() 
     {
-        this.update();
+        if(this.counting) this.update();
         this.MAT.apply();
         
         this.scene.pushMatrix();
@@ -101,14 +103,26 @@ class Timer extends CGFobject {
         this.scene.popMatrix();
     }
 
-    update() {
-        if(this.counting) {
-            this.time = this.scene.game.timePerPlay - Math.floor((performance.now() - this.countStart)/1000);
-            if(this.time <= 0) { this.counting = false; this.board.timeOut(); }
+    update() 
+    {
+        if(this.scene.game.ended) this.stopCount();
+        this.time = this.scene.game.timePerPlay - Math.floor((performance.now() - this.countStart)/1000);
+
+        if(this.time <= this.scene.game.timePerPlay-0.01 && !this.movesReq)
+        {
+            this.scene.game.getValidMoves("white");
+            this.scene.game.getValidMoves("black");
+            this.movesReq = true;
+        }
+
+        if(this.time <= 0) { 
+            this.counting = false;
+            this.scene.gameboard.clearAllPicked();
+            this.board.timeOut();
         }
     }
 
-    resetCount() { this.countStart = performance.now(); this.counting = true; }
-    stopCount() { this.counting = false; }
+    resetCount() { this.countStart = performance.now(); this.counting = true; this.movesReq = false; this.chosenReq = false; }
+    stopCount() { this.counting = false; this.movesReq = false; this.chosenReq = false; }
 }
 

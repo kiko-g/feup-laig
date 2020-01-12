@@ -734,7 +734,7 @@ class MySceneGraph
         scale.push(parseFloat(S[0].getAttribute("y")));
         scale.push(parseFloat(S[0].getAttribute("z")));
 
-        return new MyKeyframe(translate, rotate, scale, keyframeInstant);
+        return new Keyframe(translate, rotate, scale, keyframeInstant);
     }
 
 

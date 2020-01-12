@@ -400,8 +400,6 @@ move(Player, Board, NewBoard, Row, Column, Number):-
     ).
 
 
-
-
 askCoordsWhite(Player, Board, NewBoard):-
     askRow(NewRow),
     nl,
@@ -635,6 +633,24 @@ checkValidStepUp(Row, Column, Board, Steps, Counter) :-
 checkValidStepUp(_, _, _, Steps, Counter) :-
     \+ (Steps >  Counter).
 
+
+get_elem_chosen(Lev, ValidList, E):-
+    length(ValidList, Size),
+    (
+        Size == 1 ->        %%avoid random(1, 1, R)
+        R is 1
+        ;
+        random(1, Size, R)
+    ),
+    (
+        Lev == 0 ->
+        nth1(1, ValidList, Elem)
+        ;
+        nth1(R, ValidList, Elem)
+    ),
+    E = Elem,
+    nl.
+
 choose_move(CPU, Level, ListOfOutputs, Board, NewBoard):-
     length(ListOfOutputs, Size),
     (
@@ -667,11 +683,9 @@ choose_move(CPU, Level, ListOfOutputs, Board, NewBoard):-
     write('Column: '), write(Column), nl,
     write('Blocks: '), write(Number), nl.
 
+
 choose_move(CPU, ListOfOutputs, Board, NewBoard):-
     choose_move(CPU, ListOfOutputs, Board, NewBoard).
-
-
-
 
 %%%%% DETERMINE WINNER BELOW %%%%%
 traverseBoard(_, 9, _, _, Score, ScoreAux) :-

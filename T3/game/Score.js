@@ -96,6 +96,7 @@ class Scoreboard extends CGFobject
 
     update() 
     {
+        this.board = this.scene.game.board;
         let score = getWinner(this.board);
         this.whiteScore = score.white.value;
         this.blackScore = score.black.value;

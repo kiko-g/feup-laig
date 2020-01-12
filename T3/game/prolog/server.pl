@@ -117,6 +117,9 @@ parse_input(valid_moves(Board, Player), ListOfMoves):-
 parse_input(choose_move(CPU, Level, ListOfMoves, NewBoard), FinalBoard):-
     choose_move(CPU, Level, ListOfMoves, NewBoard, FinalBoard).
 
+parse_input(get_elem_chosen(Level, ValidMovesList), Chosen):-
+    get_elem_chosen(Level, ValidMovesList, Chosen).
+
 parse_input(game_over(Board), Answer):-
     game_over(Board);
     Answer is 0.

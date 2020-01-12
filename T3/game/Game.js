@@ -7,30 +7,47 @@ class Game
     {
         this.scene = scene;
         this.started = false;
-        this.gamemode = 'PVP';
-        this.initialize();
+        this.gamemode = 'CVC';
+        this.ended = false;
         
         this.gameover = undefined;      //gameover is read from server
-        this.board_ready = false;       //new board after cpu play
+        this.board_ready = true;        //new board after cpu play
+        this.cpuplay_ready = false;     //cpu play is ready
         this.validmoves_ready = false;  //valid moves reply is stored
         this.difficulty = {number: 1, name: 'Medium'};
-        this.timePerPlay = 60;
+        this.timePerPlay = 30;
 
         this.P = P;
         this.turns = Object.freeze({ W: 'white', B: 'black', });
         this.players = Object.freeze({ human: 'human', CPU: 'computer', });
-        this.turn = { color: this.turns.W, player: this.players.human };
+        this.initialize();
         
         this.whiteValidMoves = [];      // white valid moves array
         this.blackValidMoves = [];      // black valid moves array
-        this.valid_moves_str  = '';     // valid moves string, prolog
-        this.moves = [];                // moves array (holds the plays)
-        this.getValidMoves(this.turns.W);
         
+        this.moves = [];                // moves array (holds the plays)
+        this.cpuplay = [];              // cpu play array (white/black)
+        this.valid_moves_str = []; 
+
+        this.whiteValidMoves.push(0);
+        this.blackValidMoves.push(1);
     }
 
+
+
+
+    /**
+     * @brief Initialize game, generate random board
+     */
     initialize() 
     {
+        if(this.gamemode == 'PVP' || this.gamemode == 'PVC')
+            this.turn = { color: this.turns.W, player: this.players.human };
+        else if(this.gamemode == 'CVC')
+            this.turn = { color: this.turns.W, player: this.players.CPU };
+
+
+
         this.RL = this.generateRandomBoard();
         let R = this.RL;
         this.board = [
@@ -59,125 +76,100 @@ class Game
         // this.board = this.boardtest;
     }
 
-    update(time) {
-        // if(this.scene.sceneInited)
-    }
 
-    startGame() {
+
+
+
+
+    /**
+     * @brief Start Game function used in GUI
+     */
+    startGame() 
+    {
         if (this.started) {
             console.log("📈 Game in progress already");
             return false;
-        } 
-        else console.log("🎲 Started Game");
+        } else console.log("🎲 Started Game");
 
-        this.turn.color = this.turns.W;
-        this.scene.gameboard.timer.resetCount();
+        if(this.gamemode == 'PVP' || this.gamemode == 'PVC')
+            this.turn = { color: this.turns.W, player: this.players.human };
+        else if(this.gamemode == 'CVC')
+            this.turn = { color: this.turns.W, player: this.players.CPU };
+
+        this.gameboard.timer.resetCount();
         this.started = true;
-        console.log(this.whiteValidMoves);
 
         return true;
     }
 
-    stopTimer() {
-        this.scene.gameboard.timer.stopCount();
-    }
 
-    resetTimer() {
-        this.scene.gameboard.timer.resetCount();
-    }
 
-    quitGame() {
+    /**
+     * @brief Exit Game session function used in GUI
+     */
+    quitGame() 
+    {
         if(!this.started) console.log("📈 No game session in progress!");
-        else console.log("🚪 Exited Game");
-        this.started = false;
-        this.scene.gameboard.timer.stopCount();
-        this.initialize();
-        this.scene.gameboard.initializeTiles();
-        this.scene.gameboard.scoreboard.board = this.board;
+        else {
+            this.started = false;
+            this.gameover = false 
+            this.ended = false;
 
-        return true;
+            this.whiteValidMoves.push(0);
+            this.blackValidMoves.push(1);
+            this.gameboard.timer.stopCount();
+            
+            this.initialize();
+            this.gameboard.initializeTiles();
+            this.gameboard.scoreboard.board = this.board;
+
+            
+            console.clear();
+            console.log("🚪 Exited Game");
+            return true;
+        } 
     }
 
-    undoPlay() {
-        if(!this.started) return false;
-        return true;
+
+
+
+    stopTimer() { this.gameboard.timer.stopCount(); }     // Stop Timer function used in GUI
+    resetTimer() { this.gameboard.timer.resetCount(); }   // Reset Timer to Timer Per Play (GUI controlled value)
+    cameraAnimation() { this.scene.rotateCamera = true; }       // Rotate Camera Function
+
+
+    /**
+     * @brief Travel back to previous play
+     * Allow to go back to initial game state because it saves all moves done
+     */
+    undoPlay() 
+    {
+        console.log("🚧 Work in progress - to be implemented in the future");
+        return false;
     }
 
-    cameraAnimation() { this.scene.rotateCamera = true; }
+    watchMovie() 
+    {
+        console.log("🚧 Work in progress - to be implemented in the future");
+        return false;        
+    }
+
     
-    changeDifficulty() {
+
+    /**
+     * @brief Change computer difficulty in GUI
+     */
+    changeDifficulty() 
+    {
         if(this.difficulty.name == 'Easy') this.difficulty.number = 0;
         else this.difficulty = {number: 1, name: 'Medium'};
 
         return true;
     }
 
-    compareBoards() {
-        let found = false;
-        let pos = {x: -1, y: -1, len: -1};
 
-        for(let i=0; i<4; i++) {
-            if(found) break;
-            for(let j=0; j<6; j++) {
-                if(i==0 && this.board[1+j][7] != this.prevboard[1+j][7]) {
-                    pos.x = 8;
-                    pos.y = 2+j;
-                    found = true;
-                    break;
-                }
-                if(i==1 && this.board[0][6-j] != this.prevboard[0][6-j]) {
-                    pos.x = 7-j;
-                    pos.y = 1;
-                    found = true;
-                    break;
-                }
-                if(i==2 && this.board[j+1][0] != this.prevboard[j+1][0]) {
-                    pos.x = 1;
-                    pos.y = j+2;
-                    found = true;
-                    break;
-                }
-                if(i==3 && this.board[7][j+1] != this.prevboard[7][j+1]) {
-                    pos.x = 2+j;
-                    pos.y = 8;
-                    found = true;
-                    break;
-                }
-            }
-        }
-        
-        if(pos.x == 1) for(let i=1; i<7; i++) if(this.board[pos.y-1][pos.x+i-1] != this.prevboard[pos.y-1][pos.x+i-1]) { pos.len = i; break; }
-        else if(pos.x == 8) for(let i=1; i<7; i++) if(this.board[pos.y-1][pos.x-1-i] != this.prevboard[pos.y-1][pos.x-1-i]) { pos.len = i; break; }
-        else if(pos.y == 1) for(let i=1; i<7; i++) if(this.board[pos.y+i-1][pos.x-1] != this.prevboard[pos.y+i-1][pos.x-1]) { pos.len = i; break; }
-        else if(pos.y == 8) for(let i=1; i<7; i++) if(this.board[pos.y-1-i][pos.x-1] != this.prevboard[pos.y-1-i][pos.x-1]) { pos.len = i; break; }
-        else console.log("ERROR");
+    
 
-        return pos;
-    }
-
-
-    generateRandomBoard() {
-        this.RL = [];   //4 Random Lines (RL)
-        this.aux = [];
-        this.index = 0;
-        for (let i = 0; i < 4; i++)
-            this.RL.push(this.generateRandomLine());
-
-        while (!this.validCorner()) {
-            this.RL = [];
-            this.aux = [];
-            this.index = 0;
-            for (let i = 0; i < 4; i++)
-                this.RL.push(this.generateRandomLine());
-        }
-
-        let R = this.RL;
-        delete this.RL;
-        delete this.aux;
-        delete this.index;
-
-        return R;
-    }
 
     /** @brief used to generate a random line of board each time we load up the game. 
      * 
@@ -188,7 +180,8 @@ class Game
      * There cant be more than 2 pieces of the same color in a row.
      * @return board line with 6 pieces correctly sorted (Array with 6 blocks)
      */
-    generateRandomLine() {
+    generateRandomLine() 
+    {
         var L = [];
         var black_cnt = 0;
         var white_cnt = 0;
@@ -223,7 +216,10 @@ class Game
         return L;
     }
 
-    /** @brief deals with right hand low corner exception 
+
+
+    /** 
+     * @brief deals with right hand low corner exception 
      * @return boolean - true if the board is valid, false otherwise
      */
     validCorner() {
@@ -236,67 +232,136 @@ class Game
 
 
 
-    // ==============================================
-    // ============ PROLOG COMMUNICATION ============
-    // ==============================================
-    getBoardString() {
-        let board_string = '';
-        for (let i=0; i < this.board.length; i++) 
-        {
-            if (i > 0) board_string += ',';
-            board_string += '[';
-            for (let j = 0; j < this.board.length; j++) {
-                if (j > 0) board_string += ',';
-                board_string += this.board[i][j];
-            }
-            board_string += ']';
+
+    generateRandomBoard() 
+    {
+        this.RL = [];   //4 Random Lines (RL)
+        this.aux = [];
+        this.index = 0;
+        for (let i = 0; i < 4; i++)
+            this.RL.push(this.generateRandomLine());
+
+        while (!this.validCorner()) {
+            this.RL = [];
+            this.aux = [];
+            this.index = 0;
+            for (let i = 0; i < 4; i++)
+                this.RL.push(this.generateRandomLine());
         }
-        return board_string;
+
+        let R = this.RL;
+        delete this.RL;
+        delete this.aux;
+        delete this.index;
+
+        return R;
     }
 
 
-    getValidMoves(color) {
+    
+    /** 
+     * @prolog start of communication functions section
+     * 
+     * @brief transform board array to string format
+     * Used for sending requests to server
+     */
+    getBoardString() 
+    {
+        let str = '';
+        for (let i=0; i<this.board.length; i++) 
+        {
+            if (i>0) str+=',';
+            str+='[';
+            for (let j=0; j<this.board.length; j++) {
+                if (j>0) str += ',';
+                str += this.board[i][j];
+            }
+            str += ']';
+        }
+
+        return str;
+    }
+
+
+    arrayToString(array) 
+    {    
+        let str = "["
+        for (let i=0; i<array.length; i++) {
+            if(i>0) str += ",";
+            str += array[i];
+        }
+        str += "]";
+        return str;
+    }
+
+
+
+    getValidMoves(color) 
+    {
         this.validmoves_ready = false;
-        this.prevboard = this.board;
         let thisgame = this;
 
-        // console.log("valid_moves(["+this.getBoardString()+"],"+color+")");
         this.getPrologRequest(
             "valid_moves(["+this.getBoardString()+"],"+color+")",
-            function(data) {
+            function(data) 
+            {
                 let board_str = data.target.response;
-                thisgame.valid_moves_str = board_str;
+                thisgame.valid_moves_str[color] = board_str;
+                thisgame.validmoves_ready = true;
                 
                 if(color === "white") thisgame.whiteValidMoves = JSON.parse(board_str);
                 else if(color === "black") thisgame.blackValidMoves = JSON.parse(board_str);
-                else{ console.log("❌ Bad Request: Invalid piece color"); return; }
-
-                thisgame.validmoves_ready = true;
+                else { console.log("❌ Bad Request: Invalid piece color"); return; }
+    
+                if(thisgame.scene.gameDetails) {
+                    if(color === "white") console.log("⚪ White valid moves: " + board_str);
+                    else if(color === "black") console.log("⚫ Black valid moves: " + board_str);
+                }
             }
         );
-
-        setTimeout(() => { this.validmoves_ready = true; }, 2000);
     }
 
-    getCPUMove(color) {
+    getChosenPlay(color) {
+        this.cpuplay_ready = false;
+        let thisgame = this;
+
+
+        if (this.valid_moves_str[color] != "[]") {
+            this.getPrologRequest(
+                "get_elem_chosen("+this.difficulty.number+","+this.valid_moves_str[color]+")",
+                function (data) {
+                    // handleReply(data);
+                    let play = JSON.parse(data.target.response);
+                    thisgame.cpuplay[color] = play;
+                    thisgame.cpuplay_ready = true;
+                    
+                    if (color === "white") console.log("⚪💻 White CPU chose: " + play);
+                    else if (color === "black") console.log("⚫💻 Black CPU chose: " + play);
+                }
+            );
+        }
+
+    }
+
+
+    getMoveBoard(color, x, y, len) {
         this.board_ready = false;
         let thisgame = this;
-        this.prevboard = this.board;
 
         this.getPrologRequest(
-            "choose_move("+color+","+this.difficulty.number+","+this.valid_moves_str+",["+this.getBoardString()+"])", 
+            "choose_move("+color+","+this.difficulty.number+",[["+x+","+y+","+len+"]],["+this.getBoardString()+"])", 
             function (data) {
                 // handleReply(data);
                 let newBoard = JSON.parse(data.target.response.replace(/(null|empty|white|black)/g, '"$1"'));
                 thisgame.board = newBoard;
+                thisgame.board_ready = true;
             }
         );
-
-        setTimeout(() => { this.board_ready = true; }, 3000);
     }
 
-
-    checkGameOver() {
+    
+    checkGameOver() //unused
+    {
         let thisgame = this;
 
         this.getPrologRequest(
@@ -304,16 +369,16 @@ class Game
             function (data) {
                 let isGameOver = data.target.response;
                 thisgame.gameover = isGameOver;
+                if(thisgame.gameover === '0') thisgame.gameover = false; 
+                else if (thisgame.gameover === '1') thisgame.gameover = true;
             }
         );
-        setTimeout(() => {
-            if(this.gameover === '0') this.gameover = false;
-            else if (this.gameover === '1') this.gameover = true;
-         }, 2000);
     }
     
     
-    getPrologRequest(requestString, onSuccess, onError, port) {
+
+    getPrologRequest(requestString, onSuccess, onError, port) 
+    {
         var requestPort = port || 8081;
         var request = new XMLHttpRequest();
         // http://localhost:8081/handshake
@@ -323,11 +388,19 @@ class Game
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.send();
     }
-
 }
-function handleReply(data){ document.querySelector("#query_result").innerHTML=data.target.response; }
 
-/** @brief determine winner functions using flood fill methods*/
+
+
+
+
+
+
+
+
+/** 
+ * @brief determine winner functions using flood fill methods 
+ */
 function floodFill(data, x0, y0, newValue) {
     let minX = x0, maxX = x0;
     let minY = y0, maxY = y0;
@@ -473,10 +546,10 @@ function convertPOS(pos, outer)
 
 function PLtoPOS(PL) 
 {
-    if(PL.x == 8){ for (let i=2; i<8; i++) if (PL.y == i) return {x: 0, y: 7-i}; }
-    else if(PL.y == 1){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 1, y: 7-i}; }
-    else if(PL.x == 1){ for (let i=2; i<8; i++) if (PL.y == i) return {x: 2, y: i-2}; }
-    else if(PL.y == 8){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 3, y: i-2}; }
+    if(PL.y == 8){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 0, y: 7-i}; }
+    else if(PL.x == 1){ for (let i=2; i<8; i++) if (PL.y == i) return {x: 1, y: 7-i}; }
+    else if(PL.y == 1){ for (let i=2; i<8; i++) if (PL.x == i) return {x: 2, y: i-2}; }
+    else if(PL.x == 8){ for (let i=2; i<8; i++) if (PL.y == i) return {x: 3, y: i-2}; }
     else for(let i=0; i<6; i++) if (pos.y == i) return {x: PL.x-2, y: i-2};
 }
 

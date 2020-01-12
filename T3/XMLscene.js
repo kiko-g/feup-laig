@@ -18,7 +18,8 @@ class XMLscene extends CGFscene
         this.MPress = false;            // letter M key pressed bool
         this.displayAxis = true;        // gui bool for axis
         this.viewLightBoxes = true;     // gui bool for ligh boxes
-        this.freezeCamera = false;  // used for freezing camera
+        this.freezeCamera = true;       // used for freezing camera
+        this.gameDetails = false;       // used for freezing camera
         this.rotateCamera = false;      // used for rotating camera (180 degrees)
         this.angle_cnt = 0;             // angle increment counter
         this.sceneInited = false;
@@ -73,8 +74,16 @@ class XMLscene extends CGFscene
         for(let key in this.graph.animations)
             if(!this.graph.animations[key].animationDone) 
                 this.graph.animations[key].update(this.timeDif);
-
-        this.game.update(this.timeDif);
+        
+        if(this.sceneInited) 
+        {
+            for(let i=0; i<4; i++)
+            for(let j=0; j<6; j++)
+            if((this.gameboard.outertiles[i][j].piece != null) && (this.gameboard.outertiles[i][j].piece.anim != null))
+            if(!this.gameboard.outertiles[i][j].piece.anim.animationDone) {
+                this.gameboard.outertiles[i][j].piece.anim.update(this.timeDif);
+            }
+        }
     }
 
     /** @brief Use camera with default ID if it exists */
@@ -112,7 +121,14 @@ class XMLscene extends CGFscene
     //INTERFACES
     onViewChanged() { this.camera = this.graph.views[this.cameraSelected]; if(this.cameraSelected == 'Perspective') this.gui.close(); }
     onSecurityChanged() { this.securityCAM = this.camerasInited[this.securitySelected]; }
-    onSceneChanged() { this.graphid++; this.graph = this.graphlist[this.graphid % this.graphlist.length]; }
+    onSceneChanged() { 
+        this.graphid++;
+        if(this.graphid === 2) this.graphid = 0;
+
+        this.graph = this.graphlist[this.graphid];
+        this.graphlist[0].scene.gameboard = this.gameboard;
+        this.graphlist[1].scene.gameboard = this.gameboard;
+    }
 
 
     /** @brief Initializes the scene lights with the values read from the XML file */
@@ -244,11 +260,12 @@ class XMLscene extends CGFscene
             this.toggleLights();
             this.setDefaultAppearance();    // Draw Axis
             this.graph.displayScene();      // Displays the scene (xml)
+            
             this.displayPiano();
             this.displayTV();
 
             if(this.displayAxis) this.axis.display();
-            if(this.rotateCamera) {
+            if(this.rotateCamera && this.freezeCamera) {
                 this.angle_cnt++;
                 let inc = 3;
                 if(this.cameraSelected == 'Corner') inc = 1.5;

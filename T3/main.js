@@ -15,6 +15,7 @@ serialInclude(['../lib/CGF.js',
                'XMLscene.js',
                'Interface.js',
                'SceneGraph.js',
+               'KFAnimation.js',
                
                'primitives/Patch.js',
                'primitives/Plane.js',
@@ -31,9 +32,6 @@ serialInclude(['../lib/CGF.js',
 	           'primitives/obj/CGFOBJModel.js',
                'primitives/obj/CGFResourceReader.js',
                
-               'animations/Animation.js',
-               'animations/MyKeyframe.js',
-               'animations/KeyframeAnimation.js',
                
                'game/Tile.js',
                'game/Piece.js',
@@ -41,7 +39,6 @@ serialInclude(['../lib/CGF.js',
                'game/Timer.js',
                'game/Game.js',
                'game/GameBoard.js',
-               'game/Animator.js',
                
 main=function()
 {

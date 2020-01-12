@@ -1,5 +1,5 @@
 <lxs>
-    <scene root="root" axis_length="6"/>
+    <scene root="root-original" axis_length="6"/>
     <views default="Corner">
         <perspective id="Player" near="0.1" far="500" angle="75">
             <from x="0" y="15" z="2" />
@@ -255,6 +255,18 @@
 
 
     <animations>
+        <animation id="atom">
+            <keyframe instant="1.5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="2.3">
+                <translate x="0" y="0" z="-1" />
+                <rotate angle_x="0" angle_y="0" angle_z="-90" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </animation>
     </animations>
 
 
@@ -1194,10 +1206,13 @@
         <!-- GAME TABLE -->
         <component id="GAME_BOARD">
             <transformation>
-                <translate x="0" y="0" z="1" />
+                <!-- <translate x="0" y="0" z="1" /> -->
+                <translate x="0" y="1" z="1" />
                 <rotate axis="x" angle="90"/>
                 <rotate axis="y" angle="180"/>
+                <rotate axis="z" angle="90"/>
             </transformation>
+            <animationref id="atom" />
             <materials>
                 <material id="defaultMAT" />
             </materials>
@@ -1280,7 +1295,7 @@
             </children>
         </component> 
 
-        <component id="root">
+        <component id="root-original">
             <transformation>
                 <scale x="3" y="3" z="3" />
                 <translate x="0" y="0" z="-3" />

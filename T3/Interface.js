@@ -39,15 +39,17 @@ class MyInterface extends CGFinterface
         this.options = this.gui.addFolder('Game Options');
         this.options.open();
         this.options.add(this.scene.game, 'timePerPlay', [30, 45, 60]).name('Time Per Play');
-        this.options.add(this.scene.game, 'gamemode', ['PVP', 'PVC', 'CVC']).name('Gamemode');
+        this.options.add(this.scene.game, 'gamemode', ['PVP', 'PVC', 'CVC']).onChange(this.scene.game.quitGame.bind(this.scene.game)).name('Gamemode');
         this.options.add(this.scene.game.difficulty, 'name', ['Easy', 'Medium']).onChange(this.scene.game.changeDifficulty.bind(this.scene.game)).name('Difficulty');
         this.options.add(this.scene, 'freezeCamera').name('Game Camera');
         this.options.add(this.scene.game, 'startGame').name('Start Game');
         this.options.add(this.scene.game, 'stopTimer').name('Stop Timer');
         this.options.add(this.scene.game, 'resetTimer').name('Reset Timer');
         this.options.add(this.scene.game, 'undoPlay').name('Undo Play');
+        this.options.add(this.scene.game, 'watchMovie').name('Game Movie');
         this.options.add(this.scene.game, 'cameraAnimation').name('Rotate Camera');
         this.options.add(this.scene.game, 'quitGame').name('Quit Game');
+        this.options.add(this.scene, 'gameDetails').name('Log Game Details');
     }
 
     //keys
